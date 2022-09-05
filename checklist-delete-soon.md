@@ -36,29 +36,29 @@ Memory Repository
 
 Funcitonal Requirements
 - Browsable tracks
--- Connect repository to template folder via request handling and stuff
--- Browser through list of tracks (previous and next tracks, maybe first and last tracks?)
+    - Connect repository to template folder via request handling and stuff
+    - Browser through list of tracks (previous and next tracks, maybe first and last tracks?)
 
 Non-Funcional Requirements
 - Project Structure
--- folder structure from above
+    - folder structure from above
 - User Interface - HTML, CSS & Jinja
--- Template folder stuff
+    - Template folder stuff
 - Web Interface - HTTP
--- Request handlers in blueprints
+    - Request handlers in blueprints
 - Repository Pattern
 - Unit and Integrated Testing
--- tests folder
+    - tests folder
 
 ## B requirements
 
 Functional Requirements
 - Displaying/searching tracks based on artists, genres, album etc. 
 - Registering, logging in/logging out users
--- Authentication stuff
+    - Authentication stuff
 - Reviewing tracks
--- Use WTForms
--- In a tracks blueprint
+    - Use WTForms
+    - In a tracks blueprint
 
 Non-Funcitonal Requiements
 - Use of Blueprins
