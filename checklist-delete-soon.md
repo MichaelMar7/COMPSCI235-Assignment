@@ -29,8 +29,8 @@ Inside ***music*** folder
 Maybe? Get lists and sets from csvdatareader and use them for the Repository class
 
 Memory Repository
--Users
--All objects in domainmodel
+- Users
+- All objects in domainmodel
 
 ## C requirements
 
