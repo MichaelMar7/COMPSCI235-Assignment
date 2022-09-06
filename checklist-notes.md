@@ -3,8 +3,7 @@
 These are notes that I (mmar667) created to make it easier to plan out for the assignment. I'm not sure if we can submit this text file but I'll delete this file before the final commit if it's not allowed. Feel free to make changes to this file if you want to (only helpful changes).
 
 ### Lecture Slides
-- **Flask**: L11
-- **Templates and Static**: L11
+- **Flask and Jinja (Templates and Static folders)**: L11
 - **Request Handling**: L12
 - **Blueprints**: L12
 - **Repository Pattern**: L13
@@ -44,7 +43,7 @@ Non-Funcional Requirements
 - Project Structure
     - folder structure from above
 - User Interface - HTML, CSS & Jinja
-    - Template folder stuff
+    - Template and Static folder stuff
 - Web Interface - HTTP
     - Request handlers in blueprints
 - Repository Pattern
@@ -62,7 +61,7 @@ Functional Requirements
     - In a tracks blueprint
 
 Non-Funcitonal Requiements
-- Use of Blueprins
+- Use of Blueprints
 - Use of authentication
 - Use of HTML/WTForms
 
