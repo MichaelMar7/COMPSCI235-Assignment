@@ -14,8 +14,8 @@ from music.adapters.csvdatareader import TrackCSVReader
 
 class MemoryRepository(AbstractRepository):
     def __init__(self):
-        self.__tracks = list() # Sorted by id??? (use insort_left())
-        self.__tracks_index = dict() # ???
+        self.__tracks = list()
+        self.__tracks_index = dict()
         self.__artists = set()
         self.__albums = set()
         self.__genres = set()
@@ -23,7 +23,7 @@ class MemoryRepository(AbstractRepository):
         self.__reviews = list()
 
     def add_track(self, track: Track):
-        self.__tracks.append(track)
+        insort_left(self.__tracks,track)
         self.__tracks_index[track.track_id] = track
 
     def add_user(self, user: User):
@@ -96,10 +96,28 @@ class MemoryRepository(AbstractRepository):
         return None
 
     def get_previous_track(self, track: Track):
-        pass
+        try:
+            index = self.track_index(track)
+            for stored_track in reversed(self.__tracks[0:index]):
+                if stored_track.track_id < track.track_id:
+                    return stored_track.track_id
+        except ValueError:
+            return None
 
     def get_next_track(self, track: Track):
-        pass
+        try:
+            index = self.track_index(track)
+            for stored_track in self.__tracks[index + 1:len(self.__articles)]:
+                if stored_track.track_id > track.track_id:
+                    return stored_track.track_id
+        except ValueError:
+            return None
+    
+    def track_index(self, track: Track):
+        index = bisect_left(self.__tracks, track)
+        if index != len(self.__tracks) and self.__tracks[index].track_id == track.track_id:
+            return index
+        raise ValueError
     
 def populate(data_path: Path, repo: MemoryRepository):
     albums_file_name = str(data_path / "raw_albums_excerpt.csv")
