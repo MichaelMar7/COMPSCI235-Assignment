@@ -1,12 +1,17 @@
 <nav id = "nav">
     <img id="logo" src="{{ url_for('static', filename='music_library.png') }} " />
-
+    <h6 id="nav-header">
+        {% if 'user_name' in session %} Hello, {{session['user_name']}} {% endif %}
+    </h6>
     <a class="btn-nav" href="">Home</a>
+    <a class="btn-nav" href="">Login</a>
+    <a class="btn-nav" href="">Register</a>
+    <a class="btn-nav" href="">Log Out</a>
     <div>
-        <h3>
-            <a class="btn-nav" href="">Browse Tracks</a>
-        </h3>
+        <a class="btn-nav" href="">Browse Tracks</a>
+        <a class="btn-nav" href="">Browse Albums</a>
     </div>
+    <a class="btn-nav" href="">Liked Tracks</a>
     <div id="nav-footer">
         COMPSCI 235 MMAR667 ELI384
     </div>
