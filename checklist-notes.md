@@ -42,31 +42,31 @@ Funcitonal Requirements
 Non-Funcional Requirements
 - [x] Project Structure
     - folder structure from above
-- [] User Interface - HTML, CSS & Jinja
+- [ ] User Interface - HTML, CSS & Jinja
     - Template and Static folder stuff
-- [] Web Interface - HTTP
+- [ ] Web Interface - HTTP
     - Request handlers in blueprints
 - [x] Repository Pattern
-- [] Unit and Integrated Testing
+- [ ] Unit and Integrated Testing
     - tests folder
 
 ## B requirements
 
 Functional Requirements
-- [] Displaying/searching tracks based on artists, genres, album etc. 
-- [] Registering, logging in/logging out users
+- [ ] Displaying/searching tracks based on artists, genres, album etc. 
+- [ ] Registering, logging in/logging out users
     - Authentication stuff
-- [] Reviewing tracks
+- [ ] Reviewing tracks
     - Use WTForms
     - In a tracks blueprint
 
 Non-Funcitonal Requiements
-- [] Use of Blueprints
-- [] Use of authentication
-- [] Use of HTML/WTForms
+- [ ] Use of Blueprints
+- [ ] Use of authentication
+- [ ] Use of HTML/WTForms
 
 ## A and A+ requirements
 
-- [] The ***new cool feature!*** for **A**
+- [ ] The ***new cool feature!*** for **A**
 
-- [] and a 2-3 page report of that feature for **A+**
+- [ ] and a 2-3 page report of that feature for **A+**
