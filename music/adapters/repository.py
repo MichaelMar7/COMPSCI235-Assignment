@@ -10,7 +10,7 @@ from music.domainmodel.playlist import PlayList
 repo_instance = None
 
 
-class RepositoryException(Exception):
+class RepositoryException(Exception): # message (in covid app, when review not attached properly (not used))
     def __init__(self, message=None):
         pass
 
@@ -26,6 +26,7 @@ class AbstractRepository(abc.ABC):
 
     @abc.abstractmethod
     def add_review(self, review: Review):
+        # Raises RepositoryException. But since review object is not bidirectional, I'm not sure what to do yet.
         raise NotImplementedError
     
     @abc.abstractmethod
@@ -91,4 +92,8 @@ class AbstractRepository(abc.ABC):
 
     @abc.abstractmethod
     def get_next_track(self, track: Track):
+        raise NotImplementedError
+
+    @abc.abstractmethod
+    def track_index(self, track: Track):
         raise NotImplementedError
