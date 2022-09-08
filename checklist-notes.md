@@ -32,6 +32,10 @@ Memory Repository
 - Users
 - All objects in domainmodel
 
+### Blueprints
+
+To get data into the webapp, we put them in the render_template() method (i.e. render_tempate( ... variable_name: variable or method, ...)) so they can be accessed in the templates.
+
 ## C requirements
 
 Funcitonal Requirements
@@ -70,3 +74,14 @@ Non-Funcitonal Requiements
 - [ ] The ***new cool feature!*** for **A**
 
 - [ ] and a 2-3 page report of that feature for **A+**
+
+
+### Web layout review notes
+
+- Top Tracks and Album look different (Track horizontal, Albums vertical)?
+    - For space for the main content block
+    - Maybe put them on same bar?
+- The links are alright. You can have a blueprint/page for Home, blueprint/page for Authentication, combining the register, login, and logout, a blueprint/page for browsing tracks and albums (maybe two blueprints for each). Since you have a liked tracks link, maybe we should have a profile page (that could be our *cool feature* if that counts) containing reviews and liked tracks.
+    - So blueprint for Home, Tracks/Album Browsing (maybe two blueprints?), Authentication, Profile?
+- Should be actually browser for album since that wasn't in the requirements?
+- Needs a main content block
