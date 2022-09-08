@@ -4,12 +4,13 @@
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
     <title>CS235 Music Library</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}"/>
 </head>
 <body>
     <div id="body">
         <!-- navigator -->
         {% include 'navigator.html' %}
-        <div id = "content-2" style="margin-left: 150px;border-top-width: 0px; border-top-style: solid; margin-top: -15px;">
+        <div id = "content-2">
             <!-- header -->
             {% include 'header.html' %}
         </div>
