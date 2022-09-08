@@ -1,5 +1,7 @@
 from pathlib import Path
 
+from bisect import bisect, bisect_left, insort_left # when adding article and article index
+
 from music.domainmodel.artist import Artist
 from music.domainmodel.album import Album
 from music.domainmodel.track import Track
@@ -12,8 +14,8 @@ from music.adapters.csvdatareader import TrackCSVReader
 
 class MemoryRepository(AbstractRepository):
     def __init__(self):
-        self.__tracks = list() # Sorted by id???
-        self.__tracks_index = dict()
+        self.__tracks = list() # Sorted by id??? (use insort_left())
+        self.__tracks_index = dict() # ???
         self.__artists = set()
         self.__albums = set()
         self.__genres = set()
@@ -62,23 +64,36 @@ class MemoryRepository(AbstractRepository):
         return next((genre for genre in self.__genres if genre.name == genre_name), None) 
     
     # B requirements search by methods
-    def get_tracks_by_id(self, target_artist: Artist):
-        pass
+    def get_tracks_by_artists(self, target_artist_name: str):
+        artist = self.get_artist(target_artist_name)
+        matching_tracks = list()
+        if artist is not None:
+            matching_tracks = [track for track in self.__track if track.artist == artist]
+        return matching_tracks
 
-    def get_tracks_by_artists(self, target_artist: Artist):
-        pass
+    def get_tracks_by_album(self, target_album_name: str):
+        album = self.get_album(target_album_name)
+        matching_tracks = list()
+        if album is not None:
+            matching_tracks = [track for track in self.__track if track.album == album]
+        return matching_tracks
 
-    def get_tracks_by_album(self, target_album: Album):
-        pass
-
-    def get_tracks_by_genre(self, target_genre: Genre):
-        pass
+    def get_tracks_by_genre(self, target_genre_name: str):
+        genre = self.get_genre(target_genre_name)
+        matching_tracks = list()
+        if genre is not None:
+            matching_tracks = [track for track in self.__track if genre in track.genre]
+        return matching_tracks
 
     def get_first_track(self):
-        pass
+        if len(self.__articles) > 0:
+            return self.__articles[0]
+        return None
 
     def get_last_track(self):
-        pass
+        if len(self.__articles) > 0:
+            return self.__articles[-1]
+        return None
 
     def get_previous_track(self, track: Track):
         pass

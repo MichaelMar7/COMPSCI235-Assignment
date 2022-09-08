@@ -26,7 +26,6 @@ class AbstractRepository(abc.ABC):
 
     @abc.abstractmethod
     def add_review(self, review: Review):
-        # Do extra stuff
         raise NotImplementedError
     
     @abc.abstractmethod
@@ -75,15 +74,15 @@ class AbstractRepository(abc.ABC):
         raise NotImplementedError
 
     @abc.abstractmethod
-    def get_tracks_by_artists(self, target_artist: Artist):
+    def get_tracks_by_artists(self, target_artist_name: str):
         raise NotImplementedError
 
     @abc.abstractmethod
-    def get_tracks_by_album(self, target_album: Album):
+    def get_tracks_by_album(self, target_album_name: str):
         raise NotImplementedError
 
     @abc.abstractmethod
-    def get_tracks_by_genre(self, target_genre: Genre):
+    def get_tracks_by_genre(self, target_genre_name: str):
         raise NotImplementedError
 
     @abc.abstractmethod
