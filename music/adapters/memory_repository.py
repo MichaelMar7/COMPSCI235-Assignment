@@ -34,13 +34,13 @@ class MemoryRepository(AbstractRepository):
         self.__reviews.append(review)
 
     def add_artist(self, artist: Artist):
-        self.__artists.append(artist)
+        self.__artists.add(artist)
 
     def add_album(self, album: Album):
-        self.__albums.append(album)
+        self.__albums.add(album)
     
     def add_genre(self, genre: Genre):
-        self.__genres.append(genre)
+        self.__genres.add(genre)
     
     def get_user(self, user_name) -> User:
         return next((user for user in self.__users if user.user_name == user_name), None)
@@ -129,6 +129,6 @@ def populate(data_path: Path, repo: MemoryRepository):
     for album in reader.dataset_of_albums:
         repo.add_album(album)
     for artist in reader.dataset_of_artists:
-        repo.add_track(artist)
+        repo.add_artist(artist)
     for genre in reader.dataset_of_genres:
         repo.add_genre(genre)
