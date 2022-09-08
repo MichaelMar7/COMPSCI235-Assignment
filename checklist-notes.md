@@ -35,7 +35,7 @@ Memory Repository
 ## C requirements
 
 Funcitonal Requirements
-- [] Browsable tracks
+- [ ] Browsable tracks
     - Connect repository to template folder via request handling and stuff
     - Browser through list of tracks (previous and next tracks, maybe first and last tracks?)
 
