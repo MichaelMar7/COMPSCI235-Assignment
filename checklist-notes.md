@@ -40,13 +40,13 @@ Funcitonal Requirements
     - Browser through list of tracks (previous and next tracks, maybe first and last tracks?)
 
 Non-Funcional Requirements
-- Project Structure
+- Project Structure [x]
     - folder structure from above
 - User Interface - HTML, CSS & Jinja
     - Template and Static folder stuff
 - Web Interface - HTTP
     - Request handlers in blueprints
-- Repository Pattern
+- Repository Pattern [x]
 - Unit and Integrated Testing
     - tests folder
 
