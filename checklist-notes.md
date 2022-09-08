@@ -85,3 +85,4 @@ Non-Funcitonal Requiements
     - So blueprint for Home, Tracks/Album Browsing (maybe two blueprints?), Authentication, Profile?
 - Should be actually browser for album since that wasn't in the requirements?
 - Needs a main content block
+- Other than that, good job with the layout!
