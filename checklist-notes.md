@@ -78,6 +78,7 @@ Non-Funcitonal Requiements
 
 ### Web layout review notes
 
+<!--
 - Top Tracks and Album look different (Track horizontal, Albums vertical)?
     - For space for the main content block
     - Maybe put them on same bar?
@@ -86,3 +87,4 @@ Non-Funcitonal Requiements
 - Should be actually browser for album since that wasn't in the requirements?
 - Needs a main content block
 - Other than that, good job with the layout!
+-->
