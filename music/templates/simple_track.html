@@ -15,10 +15,11 @@
             {% include 'header.html' %}
             <div id="container">
                 <!-- Main content block to be supplied by page. -->
-                {% include 'sidebar1.html' %}
+                {% block content %} {% endblock %}
       
                 <!-- Include sidebar partial. -->
-                {% include 'sidebar2.html' %}
+                {% include 'sidebar1.html' %}
+                <!-- {% include 'sidebar2.html' %} -->
             </div>
         </div>
     </div>

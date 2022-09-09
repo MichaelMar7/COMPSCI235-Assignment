@@ -1,14 +1,27 @@
 <aside id="sidebar1">
 
     <header>
+        <h2>Top Suggested Track</h2>
+    </header>
+    <div style="word-wrap: break-word">
+        <h3>{{ track.title }}</h3>
+        <h4>Track Duration: <b>{{ track.track_duration }}</b></h4>
+        <h4>Track URL: {{ track.track_url }}</h4>
+    </div>
+    <br>
+    <br>
+    <br>
+    <header>
         <h2>Top Suggested Albums</h2>
     </header>
-    <div>
+    <div style="word-wrap: break-word">
         <h3>{{ track.title }}</h3>
         <h4>Track Duration: <b>{{ track.track_duration }}</b></h4>
         <h4>Track URL: {{ track.track_url }}</h4>
     </div>
 </aside>
+
+
 
 <!-- this actual sidebar is for Album Suggestions
 have to make this suggest albums -->
