@@ -67,6 +67,10 @@ class AbstractRepository(abc.ABC):
     
     # B requirements search by methods
     @abc.abstractmethod
+    def get_tracks_by_id(self, id_list):
+        raise NotImplementedError
+
+    @abc.abstractmethod
     def get_first_track(self):
         raise NotImplementedError
 

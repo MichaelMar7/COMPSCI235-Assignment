@@ -12,6 +12,11 @@ from music.domainmodel.playlist import PlayList
 from music.adapters.repository import AbstractRepository, RepositoryException
 from music.adapters.csvdatareader import TrackCSVReader
 
+"""
+TODO:
+Allow browsing of albums (change get album form album name to album id and add similar methods from tracks to albums)
+"""
+
 class MemoryRepository(AbstractRepository):
     def __init__(self):
         self.__tracks = list()
@@ -64,6 +69,11 @@ class MemoryRepository(AbstractRepository):
         return next((genre for genre in self.__genres if genre.name == genre_name), None) 
     
     # B requirements search by methods
+    def get_tracks_by_id(self, id_list):
+        existing_ids = [id for id in id_list if id in self.__tracks_index]
+        tracks = [self.__tracks_index[id] for id in existing_ids]
+        return tracks
+
     def get_tracks_by_artists(self, target_artist_name: str):
         artist = self.get_artist(target_artist_name)
         matching_tracks = list()
