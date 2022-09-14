@@ -4,9 +4,9 @@
         {% if 'user_name' in session %} Hello, {{session['user_name']}} {% endif %}
     </h6>
     <a class="btn-nav" href="{{ url_for('home_bp.home') }}">Home</a>
-    <a class="btn-nav" href="">Login</a>
-    <a class="btn-nav" href="">Register</a> 
-    <a class="btn-nav" href="">Log Out</a> 
+    <a class="btn-nav" href="{{ url_for('authentication_bp.register') }}">Login</a>
+    <a class="btn-nav" href="{{ url_for('authentication_bp.register') }}">Register</a> 
+    <a class="btn-nav" href="{{ url_for('authentication_bp.logout') }}">Log Out</a> 
     <div>
         <a class="btn-nav" href="{{ url_for('browse_bp.browse_tracks')}}">Browse Tracks</a>
         <a class="btn-nav" href="">Browse Albums</a>
