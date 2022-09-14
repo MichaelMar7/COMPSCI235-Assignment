@@ -38,8 +38,8 @@ def browse_tracks():
     last_track = services.get_last_track(repo.repo_instance)
     if first_track is None:
         target_title = first_track["title"]
-    track = services.get_track_by_title(target_title, repo)
-    if services.get_track_by_title(target_title, repo) is not None and target_title is not None:
+    track = first_track
+    if target_title is not None and services.get_track_by_title(target_title, repo) is not None:
         track = services.get_track_by_title(target_title, repo)
     #if services.get_track(target_id, repo) is not None and target_id is not None:
     #    track = services.get_track(target_id, repo)
