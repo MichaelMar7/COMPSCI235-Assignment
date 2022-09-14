@@ -1,6 +1,6 @@
 from pathlib import Path
 
-from bisect import bisect, bisect_left, insort_left # when adding article and article index
+from bisect import bisect, bisect_left, insort_left # when adding tracks and tracks index
 
 from music.domainmodel.artist import Artist
 from music.domainmodel.album import Album
@@ -21,6 +21,7 @@ class MemoryRepository(AbstractRepository):
     def __init__(self):
         self.__tracks = list()
         self.__tracks_index = dict()
+        #self.__track_title_index = dict()
         self.__artists = set()
         self.__albums = set()
         self.__genres = set()
@@ -30,6 +31,7 @@ class MemoryRepository(AbstractRepository):
     def add_track(self, track: Track):
         insort_left(self.__tracks,track)
         self.__tracks_index[track.track_id] = track
+        #self.__track_title_index[track.track_id] = track.title
 
     def add_user(self, user: User):
         self.__users.append(user)
@@ -68,12 +70,15 @@ class MemoryRepository(AbstractRepository):
     def get_genre(self, genre_name):
         return next((genre for genre in self.__genres if genre.name == genre_name), None) 
     
+    def get_track_by_title(self, target_title):
+        return next((track for track in self.__tracks if track.title == target_title), None) 
+
     # B requirements search by methods
     def get_tracks_by_id(self, id_list):
         existing_ids = [id for id in id_list if id in self.__tracks_index]
         tracks = [self.__tracks_index[id] for id in existing_ids]
         return tracks
-
+    
     def get_tracks_by_artists(self, target_artist_name: str):
         artist = self.get_artist(target_artist_name)
         matching_tracks = list()
@@ -96,13 +101,13 @@ class MemoryRepository(AbstractRepository):
         return matching_tracks
 
     def get_first_track(self):
-        if len(self.__articles) > 0:
-            return self.__articles[0]
+        if len(self.__tracks) > 0:
+            return self.__tracks[0]
         return None
 
     def get_last_track(self):
-        if len(self.__articles) > 0:
-            return self.__articles[-1]
+        if len(self.__tracks) > 0:
+            return self.__tracks[-1]
         return None
 
     def get_previous_track(self, track: Track):
@@ -117,7 +122,7 @@ class MemoryRepository(AbstractRepository):
     def get_next_track(self, track: Track):
         try:
             index = self.track_index(track)
-            for stored_track in self.__tracks[index + 1:len(self.__articles)]:
+            for stored_track in self.__tracks[index + 1:len(self.__tracks)]:
                 if stored_track.track_id > track.track_id:
                     return stored_track.track_id
         except ValueError:

@@ -9,7 +9,7 @@ from wtforms import TextAreaField, HiddenField, SubmitField
 from wtforms.validators import DataRequired, Length, ValidationError
 
 import music.adapters.repository as repo
-#import music.utilities.utilities as utilities
+import music.blueprints.utilities.utilities as utilities
 import music.blueprints.browse.services as services
 
 #from music.authentication.authentication import login_required
@@ -18,6 +18,7 @@ import music.blueprints.browse.services as services
 # Configure Blueprint
 browse_blueprint = Blueprint("browse_bp", __name__)
 
+"""
 @browse_blueprint.route('/browse_tracks', methods=['GET'])
 def browse_tracks_by_id():
     target_id = request.args.get("track_name")
@@ -26,19 +27,28 @@ def browse_tracks_by_id():
     if first_track is None:
         target_id = first_track["id"]
 
-    return render_template("browse/tracks.html")
+    return render_template("browse/tracks.html", random_track=utilities.get_random_track(), track_by_title_demo=services.get_track_by_title(repo, "Piano "))
+"""
 
 @browse_blueprint.route('/browse_tracks', methods=['GET'])
 def browse_tracks_by_title():
     target_title = request.args.get("track_name")
-    first_track = services.get_first_article(repo.repo_instance)
-    last_track = services.get_last_article(repo.repo_instance)
+    target_id = request.args.get("track_name")
+    track = None
+    first_track = services.get_first_track(repo.repo_instance)
+    last_track = services.get_last_track(repo.repo_instance)
     if first_track is None:
         target_title = first_track["title"]
+    if services.get_track_by_title(target_title, repo) is not None and target_title is not None:
+        track = services.get_track_by_title(target_title, repo)
+    #if services.get_track(target_id, repo) is not None and target_id is not None:
+    #    track = services.get_track(target_id, repo)
 
     return render_template(
         "browse/tracks.html",
         title="Tracks",
+        random_track=utilities.get_random_track(), 
+        track_by_title_demo=track
     )
 
 @browse_blueprint.route('/browse_albums', methods=['GET'])

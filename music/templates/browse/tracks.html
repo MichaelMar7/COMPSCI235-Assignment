@@ -1,4 +1,9 @@
 {% extends "simple_track.html" %}
 {% block content %}
 This is the tracks page.
+
+<!--Demo for getting track  by title-->
+<h3>{{ track_by_title_demo.title }}</h3>
+<h4>Track Duration: <b>{{ track_by_title_demo.track_duration }}</b></h4>
+<h4>Track URL: {{ track_by_title_demo.track_url }}</h4>
 {% endblock %}

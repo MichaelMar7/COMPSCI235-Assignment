@@ -18,12 +18,14 @@ class UnknownUserException(Exception):
 def add_review(track: Track, review: Review, user: User, repo: AbstractRepository):
     pass
 
-def get_track(article_id: int, repo: AbstractRepository):
-    track = repo.get_article(article_id)
+def get_track(track_id: int, repo: AbstractRepository):
+    track = repo.repo_instance.get_track(track_id)
     if track is None:
         raise NonExistentArticleException
     return track_to_dict(track)
 
+def get_track_by_title(title, repo: AbstractRepository):
+    return repo.repo_instance.get_track_by_title(title)
 
 def get_first_track(repo: AbstractRepository):
     track = repo.get_first_track()
@@ -39,6 +41,7 @@ def get_album(album_id: int, repo: AbstractRepository):
     if album is None:
         raise NonExistentArticleException
     #return album_to_dict(album)
+
 
 """
 def get_first_album(repo: AbstractRepository):
@@ -59,8 +62,8 @@ def track_to_dict(track: Track):
         "title": track.title,
         "artist": track.artist,
         "album": track.album,
-        "genre": track.genre,
-        "track_url": track.hyperlink,
+        "genre": track.genres,
+        "track_url": track.track_url,
         #"reviews": reviews_to_dict(track.reviews)
     }
     return article_dict

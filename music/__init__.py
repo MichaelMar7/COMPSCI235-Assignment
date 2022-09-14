@@ -51,6 +51,9 @@ def create_app(test_config=None):
         
         from .blueprints.home import home
         app.register_blueprint(home.home_blueprint)
+
+        from .blueprints.browse import browse
+        app.register_blueprint(browse.browse_blueprint)
         """
 
     """"""
