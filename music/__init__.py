@@ -54,6 +54,10 @@ def create_app(test_config=None):
 
         from .blueprints.browse import browse
         app.register_blueprint(browse.browse_blueprint)
+
+        from .blueprints.authentication import authentication
+        app.register_blueprint(authentication.authentication_blueprint)
+
         """
 
     """"""
