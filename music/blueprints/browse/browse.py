@@ -34,20 +34,26 @@ def browse_tracks_by_id():
 def browse_tracks():
     target_title = request.args.get("track_title")
     target_id = request.args.get("track_id")
-    track = None
     first_track = services.get_first_track(repo.repo_instance)
     last_track = services.get_last_track(repo.repo_instance)
     if first_track is None:
         target_title = first_track["title"]
+    track = services.get_track_by_title(target_title, repo)
     if services.get_track_by_title(target_title, repo) is not None and target_title is not None:
         track = services.get_track_by_title(target_title, repo)
     #if services.get_track(target_id, repo) is not None and target_id is not None:
     #    track = services.get_track(target_id, repo)
 
+    # sidebar random album
+    random_album = utilities.get_random_album()
+    random_album_tracks = repo.repo_instance.get_tracks_by_album(random_album.title)
+
     return render_template(
         "browse/tracks.html",
         title="Tracks",
         random_track=utilities.get_random_track(), 
+        random_album=random_album, 
+        random_album_tracks=random_album_tracks,
         track_by_title_demo=track
     )
 
