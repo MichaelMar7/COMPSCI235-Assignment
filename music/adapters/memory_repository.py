@@ -74,7 +74,6 @@ class MemoryRepository(AbstractRepository):
         return next((genre for genre in self.__genres if genre.name == genre_name), None) 
     
     def get_track_by_title(self, target_title):
-        # for whatever reason, if you push, then this
         return next((track for track in self.__tracks if track.title.lower() == target_title.lower()), None) 
     
     def get_album_by_title(self, album_title):
