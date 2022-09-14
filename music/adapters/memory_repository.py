@@ -21,17 +21,20 @@ class MemoryRepository(AbstractRepository):
     def __init__(self):
         self.__tracks = list()
         self.__tracks_index = dict()
-        #self.__track_title_index = dict()
-        self.__artists = set()
-        self.__albums = set()
-        self.__genres = set()
+        self.__albums = list()
+        self.__albums_index = dict()
+        self.__artists = list()
+        self.__genres = list()
         self.__users = list()
         self.__reviews = list()
 
     def add_track(self, track: Track):
         insort_left(self.__tracks,track)
         self.__tracks_index[track.track_id] = track
-        #self.__track_title_index[track.track_id] = track.title
+    
+    def add_album(self, album: Album):
+        self.__albums.append(album)
+        self.__albums_index[album.album_id] = album
 
     def add_user(self, user: User):
         self.__users.append(user)
@@ -41,37 +44,40 @@ class MemoryRepository(AbstractRepository):
         self.__reviews.append(review)
 
     def add_artist(self, artist: Artist):
-        self.__artists.add(artist)
-
-    def add_album(self, album: Album):
-        self.__albums.add(album)
+        self.__artists.append(artist)
     
     def add_genre(self, genre: Genre):
-        self.__genres.add(genre)
+        self.__genres.append(genre)
     
-    def get_user(self, user_name) -> User:
+    def get_user(self, user_name):
         return next((user for user in self.__users if user.user_name == user_name), None)
     
-    def get_track(self, id: int) -> Track:
+    def get_track(self, id: int):
         try:
             return self.__tracks_index[id]
         except KeyError:
             return None
-    
+     
     def get_number_of_tracks(self):
         return len(self.__tracks)
     
+    def get_album(self, id: int):
+        try:
+            return self.__albums_index[id]
+        except KeyError:
+            return None
+    
     def get_artist(self, artist_name):
         return next((artist for artist in self.__artists if artist.full_name == artist_name), None) 
-    
-    def get_album(self, album_title):
-        return next((album for album in self.__albums if album.title == album_title), None) 
     
     def get_genre(self, genre_name):
         return next((genre for genre in self.__genres if genre.name == genre_name), None) 
     
     def get_track_by_title(self, target_title):
         return next((track for track in self.__tracks if track.title.lower() == target_title.lower()), None) 
+    
+    def get_album_by_title(self, album_title):
+        return next((album for album in self.__albums if album.title.lower() == album_title.lower()), None) 
 
     # B requirements search by methods
     def get_tracks_by_id(self, id_list):
@@ -83,21 +89,21 @@ class MemoryRepository(AbstractRepository):
         artist = self.get_artist(target_artist_name)
         matching_tracks = list()
         if artist is not None:
-            matching_tracks = [track for track in self.__track if track.artist == artist]
+            matching_tracks = [track for track in self.__tracks if track is not None and track.artist == artist]
         return matching_tracks
 
     def get_tracks_by_album(self, target_album_name: str):
-        album = self.get_album(target_album_name)
+        target_album = self.get_album_by_title(target_album_name)
         matching_tracks = list()
-        if album is not None:
-            matching_tracks = [track for track in self.__track if track.album == album]
+        if target_album is not None:
+            matching_tracks = [track for track in self.__tracks if track is not None and track.album == target_album]
         return matching_tracks
 
     def get_tracks_by_genre(self, target_genre_name: str):
         genre = self.get_genre(target_genre_name)
         matching_tracks = list()
         if genre is not None:
-            matching_tracks = [track for track in self.__track if genre in track.genre]
+            matching_tracks = [track for track in self.__tracks if track is not None and genre in track.genre]
         return matching_tracks
 
     def get_first_track(self):
@@ -133,6 +139,28 @@ class MemoryRepository(AbstractRepository):
         if index != len(self.__tracks) and self.__tracks[index].track_id == track.track_id:
             return index
         raise ValueError
+    
+    def get_albums_by_id(self, id_list):
+        pass
+
+    def get_first_album(self):
+        if len(self.__albums) > 0:
+            return self.__albums[0]
+        return None
+
+    def get_last_album(self):
+        if len(self.__albums) > 0:
+            return self.__albums[-1]
+        return None
+
+    def get_previous_album(self, album: Album):
+        pass
+
+    def get_next_album(self, album: Album):
+        pass
+    
+    def album_index(self, album: Album):
+        pass
     
 def populate(data_path: Path, repo: MemoryRepository):
     albums_file_name = str(data_path / "raw_albums_excerpt.csv")
