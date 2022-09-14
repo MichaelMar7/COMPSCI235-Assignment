@@ -71,7 +71,7 @@ class MemoryRepository(AbstractRepository):
         return next((genre for genre in self.__genres if genre.name == genre_name), None) 
     
     def get_track_by_title(self, target_title):
-        return next((track for track in self.__tracks if track.title == target_title), None) 
+        return next((track for track in self.__tracks if track.title.lower() == target_title.lower()), None) 
 
     # B requirements search by methods
     def get_tracks_by_id(self, id_list):
