@@ -20,6 +20,3 @@ def get_random_track():
         for track in get_100_tracks(index, index+1):
             if track is not None:
                 return track
-
-def get_track_by_title(title):
-    return repo.repo_instance.get_track_by_title(title)

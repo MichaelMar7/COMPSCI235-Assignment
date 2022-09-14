@@ -31,9 +31,9 @@ def browse_tracks_by_id():
 """
 
 @browse_blueprint.route('/browse_tracks', methods=['GET'])
-def browse_tracks_by_title():
-    target_title = request.args.get("track_name")
-    target_id = request.args.get("track_name")
+def browse_tracks():
+    target_title = request.args.get("track_title")
+    target_id = request.args.get("track_id")
     track = None
     first_track = services.get_first_track(repo.repo_instance)
     last_track = services.get_last_track(repo.repo_instance)
