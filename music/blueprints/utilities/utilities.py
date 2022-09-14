@@ -16,7 +16,8 @@ def get_track_count():
 
 def get_random_track():
     while True:
-        index = random.randint(0, 10000)
+        last_id = repo.repo_instance.get_last_track().track_id
+        index = random.randint(0, last_id)
         for track in get_100_tracks(index, index+1):
             if track is not None:
                 return track
