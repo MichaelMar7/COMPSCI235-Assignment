@@ -55,10 +55,10 @@ h4 {
     border-top: 1px solid rgba(255, 255, 255, 0.05);
     color: #ffffff;
     display: block;
+    text-align: center;
 }
-  
-  .btn-nav:hover {
-    background-color: lightblue;
+.btn-nav:hover {
+    background-color: rgb(0, 0, 0);
     color: #fff;
 }
 .btn-general {
@@ -77,12 +77,13 @@ h4 {
     background: lightblue;
     padding: 30px 0px;
     position: fixed;
+    text-align: center;
 }
 #nav-footer {
     color: #fff;
-    margin-top: 25px;
+    margin-top: 75px;
     margin-bottom: 20px;
-    position: absolute;
+    padding-bottom: 0%;
     bottom: 0;
     font-size: x-small;
     text-align: center;
@@ -97,23 +98,14 @@ h4 {
 }
 #logo {
     width: 150px;
-}
-#sidebar2 {
-    background-color: aliceblue;
-    color: aliceblue;
-    width: 66.6666666%;
-    min-height: 50px;
-    height: 30%;
-    padding: 20px;
-    border-bottom: 1px solid #e0e4e8;
-    float: left;
+    text-align: center;
 }
 #sidebar1 {
     background-color: aliceblue;
     color: aliceblue;
     width: 33.3333333%;
     min-height: 100vh;
-    height: 50%;
+    height: 100%;
     padding: 20px;
     border-bottom: 1px solid #e0e4e8;
     float: right;
