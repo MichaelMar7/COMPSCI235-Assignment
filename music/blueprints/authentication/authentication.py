@@ -7,6 +7,7 @@ from functools import wraps
 
 import music.adapters.repository as repo
 import music.blueprints.authentication.services as services
+import music.blueprints.utilities.utilities as utilities
 
 
 authentication_blueprint = Blueprint('authentication_bp', __name__, url_prefix='/authentication')
@@ -22,7 +23,7 @@ def register():
         except services.NameNotUniqueException:
             user_name_not_unique = "Your username is taken. Please try again."
     
-    return render_template('authentication/credentials.html', title='Register', form=form, user_name_error_message=user_name_not_unique, handler_url=url_for('authentication_bp.register'))
+    return render_template('authentication/credentials.html', random_track=utilities.get_random_track(), form=form, user_name_error_message=user_name_not_unique, handler_url=url_for('authentication_bp.register'))
 
 class PasswordValid:
     def __init__(self, message=None):
@@ -62,7 +63,7 @@ def login():
             user_name_not_recognised = "User name is not recognised. Please try again."
         except services.AuthenticationException:
             password_doesnt_match = "Password does not match the given user name. Please try again."
-    return render_template('authentication/credentials.html',title='Login', user_name_error_message=user_name_not_recognised, password_error_message=password_doesnt_match, form=form)
+    return render_template('authentication/credentials.html',random_track=utilities.get_random_track(), user_name_error_message=user_name_not_recognised, password_error_message=password_doesnt_match, form=form)
 
 @authentication_blueprint.route('/logout')
 def logout():
