@@ -13,6 +13,7 @@
 body,
 html {
   height: 100%;
+  background-color: lightblue;
 }
 
 h1 {
@@ -85,14 +86,13 @@ h4 {
     text-align: center;
 }
 #nav-footer {
-    color: #fff;
-    margin-top: 200px;
-    margin-bottom: 0px;
-    padding-bottom: 0%;
+    position: fixed;
+    left: 0;
     bottom: 0;
-    font-size: x-small;
+    width: 200px;
+    color: white;
     text-align: center;
-    word-wrap: break-word;
+    font-size: 12px;
 }
 #main {
     margin: 20px;
