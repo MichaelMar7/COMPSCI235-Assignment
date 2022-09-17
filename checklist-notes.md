@@ -87,4 +87,7 @@ Non-Funcitonal Requiements
 - Should be actually browser for album since that wasn't in the requirements?
 - Needs a main content block
 - Other than that, good job with the layout!
+
+Yeah I reckon we should have browsable tracks and albums? 
+
 -->
