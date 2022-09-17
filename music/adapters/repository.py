@@ -46,7 +46,7 @@ class AbstractRepository(abc.ABC):
         raise NotImplementedError
     
     @abc.abstractmethod
-    def get_track(self, id: int) -> Track:
+    def get_track_by_id(self, id: int) -> Track:
         raise NotImplementedError
     
     @abc.abstractmethod
@@ -58,7 +58,7 @@ class AbstractRepository(abc.ABC):
         raise NotImplementedError
     
     @abc.abstractmethod
-    def get_album(self, album_title):
+    def get_album_by_id(self, album_title):
         raise NotImplementedError
     
     @abc.abstractmethod
@@ -89,6 +89,14 @@ class AbstractRepository(abc.ABC):
     @abc.abstractmethod
     def get_tracks_by_genre(self, target_genre_name: str):
         raise NotImplementedError
+    
+    @abc.abstractmethod
+    def get_first_track(self):
+        raise NotImplementedError
+    
+    @abc.abstractmethod
+    def get_last_track(self):
+        raise NotImplementedError
 
     @abc.abstractmethod
     def get_previous_track(self, track: Track):
@@ -100,4 +108,22 @@ class AbstractRepository(abc.ABC):
 
     @abc.abstractmethod
     def track_index(self, track: Track):
+        raise NotImplementedError
+    
+    def get_albums_by_id(self, id_list):
+        pass
+
+    def get_first_album(self):
+        raise NotImplementedError
+
+    def get_last_album(self):
+        raise NotImplementedError
+
+    def get_previous_album(self, album: Album):
+        raise NotImplementedError
+
+    def get_next_album(self, album: Album):
+        raise NotImplementedError
+    
+    def album_index(self, album: Album):
         raise NotImplementedError

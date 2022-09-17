@@ -6,6 +6,7 @@
     <div style="word-wrap: break-word">
         <h3>{{ random_track.title }}</h3>
         <h4>Track Duration: <b>{{ random_track.track_duration }}</b></h4>
+        <h4>Track ID: {{ random_track.track_id }}</h4>
         <h4>Track URL: {{ random_track.track_url }}</h4>
         <h4>Track Album: {{ random_track.album.title }}</h4>
     </div>
@@ -13,18 +14,25 @@
     <br>
     <br>
     <header>
-        <h2>Featured Album (up to first five tracks shown)</h2>
+        <h2>Featured Album</h2>
     </header>
     <div style="word-wrap: break-word">
         <h3>{{ random_album.title }}</h3>
-        {% if random_album_tracks|length < 5 %}
+        {% if random_album_tracks|length <= 5 %}
             {% for i in range(0,random_album_tracks|length) %}
             <h4>Track {{i+1}}: {{ random_album_tracks[i].title }}</h4>
+            <h5>Track Duration: <b>{{ random_album_tracks[i].track_duration }}</b></h5>
+            <h5>Track ID: {{ random_album_tracks[i].track_id }}</h5>
+            <h5>Track URL: {{ random_album_tracks[i].track_url }}</h5>
             {% endfor %}
         {% else %}
             {% for i in range(0,5) %}
             <h4>Track {{i+1}}: {{ random_album_tracks[i].title }}</h4>
+            <h5>Track Duration: <b>{{ random_album_tracks[i].track_duration }}</b></h5>
+            <h5>Track ID: {{ random_album_tracks[i].track_id }}</h5>
+            <h5>Track URL: {{ random_album_tracks[i].track_url }}</h5>
             {% endfor %}
+            <h4>...</h4>
         {% endif %}
     </div>
 </aside>

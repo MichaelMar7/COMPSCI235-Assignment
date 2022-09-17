@@ -16,14 +16,14 @@ def get_track_count():
 
 def get_random_track():
     last_track_id = repo.repo_instance.get_last_track().track_id
-    track = repo.repo_instance.get_track(random.randint(0, last_track_id))
+    track = repo.repo_instance.get_track_by_id(random.randint(0, last_track_id))
     while track is None:
-        track = repo.repo_instance.get_track(random.randint(0, last_track_id))
+        track = repo.repo_instance.get_track_by_id(random.randint(0, last_track_id))
     return track
 
 def get_random_album():
     last_album_id = repo.repo_instance.get_last_album().album_id
-    album = repo.repo_instance.get_album(random.randint(0, last_album_id))
+    album = repo.repo_instance.get_album_by_id(random.randint(0, last_album_id))
     while album is None:
-        album = repo.repo_instance.get_album(random.randint(0, last_album_id))
+        album = repo.repo_instance.get_album_by_id(random.randint(0, last_album_id))
     return album
