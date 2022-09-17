@@ -14,14 +14,14 @@ def add_user(user_name: str, password: str, repo: AbstractRepository):
     if user is not None:
         raise NameNotUniqueException
     password_hash = generate_password_hash(password)
-    user = User(user_name, password_hash)
+    user = User(1, user_name, password_hash)
     repo.add_user(user)
+
 
 def get_user(user_name: str, repo: AbstractRepository):
     user = repo.get_user(user_name)
     if user is None:
         raise UnknownUserException
-
     return user_to_dict(user)
 
 def user_to_dict(user: User):
