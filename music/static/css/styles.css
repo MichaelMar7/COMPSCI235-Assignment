@@ -135,3 +135,6 @@ h4 {
     background-color: #04AA6D;
     color: white;
 }
+.authentication {
+    float: left;
+}
