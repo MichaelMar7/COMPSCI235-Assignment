@@ -101,3 +101,21 @@ class AbstractRepository(abc.ABC):
     @abc.abstractmethod
     def track_index(self, track: Track):
         raise NotImplementedError
+    
+    def get_albums_by_id(self, id_list):
+        pass
+
+    def get_first_album(self):
+        raise NotImplementedError
+
+    def get_last_album(self):
+        raise NotImplementedError
+
+    def get_previous_album(self, album: Album):
+        raise NotImplementedError
+
+    def get_next_album(self, album: Album):
+        raise NotImplementedError
+    
+    def album_index(self, album: Album):
+        raise NotImplementedError

@@ -141,7 +141,9 @@ class MemoryRepository(AbstractRepository):
         raise ValueError
     
     def get_albums_by_id(self, id_list):
-        pass
+        existing_ids = [id for id in id_list if id in self.__albums_index]
+        albums = [self.__albums_index[id] for id in existing_ids]
+        return albums
 
     def get_first_album(self):
         if len(self.__albums) > 0:
@@ -154,13 +156,28 @@ class MemoryRepository(AbstractRepository):
         return None
 
     def get_previous_album(self, album: Album):
-        pass
+        try:
+            index = self.track_index(album)
+            for stored_album in reversed(self.__albums[0:index]):
+                if stored_album.album_id < album.album_id:
+                    return stored_album.album_id
+        except ValueError:
+            return None
 
     def get_next_album(self, album: Album):
-        pass
+        try:
+            index = self.track_index(album)
+            for stored_album in self.__albums[index + 1:len(self.__albums)]:
+                if stored_album.album_id > album.album_id:
+                    return stored_album.album_id
+        except ValueError:
+            return None
     
     def album_index(self, album: Album):
-        pass
+        index = bisect_left(self.__albums, album)
+        if index != len(self.__albums) and self.__albums[index].album_id == album.album_id:
+            return index
+        raise ValueError
     
 def populate(data_path: Path, repo: MemoryRepository):
     albums_file_name = str(data_path / "raw_albums_excerpt.csv")
