@@ -48,7 +48,6 @@ def get_album(album_id: int, repo: AbstractRepository):
         raise NonExistentArticleException
     #return album_to_dict(album)
 
-
 """
 def get_first_album(repo: AbstractRepository):
     album = repo.get_first_album()
@@ -59,8 +58,6 @@ def get_last_album(repo: AbstractRepository):
     album = repo.get_last_album()
     return track_to_dict(album)
 """
-
-
 
 def track_to_dict(track: Track):
     article_dict = {
@@ -74,7 +71,39 @@ def track_to_dict(track: Track):
     }
     return article_dict
 
-
 def tracks_to_dict(tracks: Iterable[Track]):
     return [track_to_dict(track) for track in tracks]
 
+def get_album_by_id(album_id: int, repo: AbstractRepository):
+    album = repo.repo_instance.get_album_by_id(album_id)
+    return album
+
+def get_album_by_title(title, repo: AbstractRepository):
+    album = repo.repo_instance.get_album_by_title(title)
+
+def get_first_album(repo: AbstractRepository):
+    album = repo.get_first_album
+    return album
+
+def get_last_album(repo: AbstractRepository):
+    album = repo.get_last_album
+    return album
+
+def get_previous_album(album, repo:AbstractRepository):
+    album = repo.repo_instance.get_previous_album(album)
+    return album
+
+def get_next_album(album, repo: AbstractRepository):
+    album = repo.repo_instance.get_next_album(album)
+    return album
+
+def album_to_dict(album: Album):
+    article_dict = {
+        "id": album.album_id,
+        "title": album.title,
+        "release_year": album.release_year
+    }
+    return article_dict
+
+def albums_to_dict(albums: Iterable[Album]):
+    return [album_to_dict(album) for album in albums]
