@@ -90,9 +90,11 @@ class AbstractRepository(abc.ABC):
     def get_tracks_by_genre(self, target_genre_name: str):
         raise NotImplementedError
     
+    @abc.abstractmethod
     def get_first_track(self):
         raise NotImplementedError
     
+    @abc.abstractmethod
     def get_last_track(self):
         raise NotImplementedError
 
