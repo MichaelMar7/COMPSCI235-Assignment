@@ -46,11 +46,11 @@ def browse_tracks():
     if target_id is not None and services.get_track_by_id(target_id, repo) is not None:
         #print("a") Testing
         track = services.get_track_by_id(target_id, repo)
-        print(track)
+        #print(track)
     if target_title is not None and services.get_track_by_title(target_title, repo) is not None:
         #print("b") Testing
         track = services.get_track_by_title(target_title, repo)
-        print(track)
+        #print(track)
     #print(track)
     
     # These are the URL links when we browse
@@ -88,7 +88,7 @@ def browse_tracks():
 
         return render_template(
             "browse/tracks.html",
-            title="Tracks",
+            page_title="Tracks",
             random_track=utilities.get_random_track(),  # random track in sidebar
             random_album=random_album,  # random album in sidebar
             random_album_tracks=random_album_tracks, # all tracks in the album from random_album
@@ -104,7 +104,7 @@ def browse_tracks():
     return redirect(url_for('home_bp.home'))
 
 """
-Copy above moethod into here, but use album instead of track, and add a link in the nav for broswe album
+Copy above method into here, but use album instead of track, and add a link in the nav for broswe album
 """
 @browse_blueprint.route('/browse_albums', methods=['GET'])
 def browse_albums():
@@ -115,7 +115,46 @@ I'm going to complete these methods, so ask me if you're going to touch these
 """
 @browse_blueprint.route('/browse_tracks_by_artist', methods=['GET'])
 def browse_tracks_by_artist():
-    pass
+    target_artist = request.args.get("artist_name")
+    cursor = request.args.get("cursor")
+    if target_artist is None:
+        target_artist = services.get_first_track(repo.repo_instance).artist.full_name
+    if cursor is None:
+        cursor = 0
+    else:
+        cursor = int(cursor)
+
+    tracks = services.get_tracks_by_artist(target_artist, repo)
+
+    if len(tracks) > 0:
+        first_track_url = None
+        last_track_url = None
+        previous_track_url = None
+        next_track_url = None
+
+        if cursor > 0:
+            previous_track_url = url_for("browse_bp.browse_tracks_by_artist", artist_name=target_artist, cursor=cursor-1)
+            first_track_url = url_for("browse_bp.browse_tracks_by_artist", artist_name=target_artist, cursor=0)
+        if cursor+1 < len(tracks):
+            next_track_url = url_for("browse_bp.browse_tracks_by_artist", artist_name=target_artist, cursor=cursor+1)
+            last_track_url = url_for("browse_bp.browse_tracks_by_artist", artist_name=target_artist, cursor=len(tracks)-1)
+
+        # sidebar random album
+        random_album = utilities.get_random_album()
+        random_album_tracks = repo.repo_instance.get_tracks_by_album(random_album.title)
+
+        return render_template(
+            "browse/tracks.html",
+            page_title="Tracks by Album - " + target_artist,
+            random_track=utilities.get_random_track(),
+            random_album=random_album, 
+            random_album_tracks=random_album_tracks,
+            track=tracks[cursor],
+            first_track_url=first_track_url,
+            last_track_url=last_track_url,
+            previous_track_url=previous_track_url,
+            next_track_url=next_track_url
+        )
 
 @browse_blueprint.route('/browse_tracks_by_genre', methods=['GET'])
 def browse_tracks_by_genre():
