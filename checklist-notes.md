@@ -46,7 +46,7 @@ Funcitonal Requirements
 Non-Funcional Requirements
 - [x] Project Structure
     - folder structure from above
-- [ ] User Interface - HTML, CSS & Jinja
+- [X] User Interface - HTML, CSS & Jinja
     - Template and Static folder stuff
 - [ ] Web Interface - HTTP
     - Request handlers in blueprints
