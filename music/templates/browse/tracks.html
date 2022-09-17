@@ -1,5 +1,7 @@
 {% extends "simple_track.html" %}
 {% block content %}
+
+<h1 style="text-align:center"> {{ page_title }}</h1>
 This is the tracks page.
 Type "http://127.0.0.1:5000/browse_tracks?track_title=&lt track_title &gt", where &lt track_title &gt is the title of the track or <br>
 type "http://127.0.0.1:5000/browse_tracks?track_id=&lt track_id &gt", where &lt track_id &gt is the id of the track
@@ -7,6 +9,7 @@ type "http://127.0.0.1:5000/browse_tracks?track_id=&lt track_id &gt", where &lt 
 <div style="text-align:center">
     <h3>{{ track.title }}</h3>
     <h4>Track ID: {{ track.track_id }}</h4>
+    <h4>Track Artist: {{ track.artist }}</h4>
     <h4>Track Duration: <b>{{ track.track_duration }}</b></h4>
     <h4>Track URL: {{ track.track_url }}</h4>
 </div>
