@@ -52,7 +52,8 @@ class MemoryRepository(AbstractRepository):
     def get_user(self, user_name):
         return next((user for user in self.__users if user.user_name == user_name), None)
     
-    def get_track(self, id: int):
+    def get_track_by_id(self, id):
+        id = int(id)
         try:
             return self.__tracks_index[id]
         except KeyError:
@@ -61,11 +62,15 @@ class MemoryRepository(AbstractRepository):
     def get_number_of_tracks(self):
         return len(self.__tracks)
     
-    def get_album(self, id: int):
+    def get_album_by_id(self, id: int):
+        id = int(id)
         try:
             return self.__albums_index[id]
         except KeyError:
             return None
+    
+    def get_number_of_albums(self):
+        return len(self.__albums)
     
     def get_artist(self, artist_name):
         return next((artist for artist in self.__artists if artist.full_name == artist_name), None) 
@@ -107,12 +112,12 @@ class MemoryRepository(AbstractRepository):
         return matching_tracks
 
     def get_first_track(self):
-        if len(self.__tracks) > 0:
+        if self.get_number_of_tracks() > 0:
             return self.__tracks[0]
         return None
 
     def get_last_track(self):
-        if len(self.__tracks) > 0:
+        if self.get_number_of_tracks()  > 0:
             return self.__tracks[-1]
         return None
 
@@ -121,7 +126,7 @@ class MemoryRepository(AbstractRepository):
             index = self.track_index(track)
             for stored_track in reversed(self.__tracks[0:index]):
                 if stored_track.track_id < track.track_id:
-                    return stored_track.track_id
+                    return stored_track
         except ValueError:
             return None
 
@@ -130,7 +135,7 @@ class MemoryRepository(AbstractRepository):
             index = self.track_index(track)
             for stored_track in self.__tracks[index + 1:len(self.__tracks)]:
                 if stored_track.track_id > track.track_id:
-                    return stored_track.track_id
+                    return stored_track
         except ValueError:
             return None
     
@@ -146,12 +151,12 @@ class MemoryRepository(AbstractRepository):
         return albums
 
     def get_first_album(self):
-        if len(self.__albums) > 0:
+        if self.get_number_of_albums() > 0:
             return self.__albums[0]
         return None
 
     def get_last_album(self):
-        if len(self.__albums) > 0:
+        if self.get_number_of_albums() > 0:
             return self.__albums[-1]
         return None
 
