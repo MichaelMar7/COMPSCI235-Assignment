@@ -14,6 +14,9 @@ import music.blueprints.browse.services as services
 
 #from music.authentication.authentication import login_required
 
+""""
+url to escape case
+"""
 
 # Configure Blueprint
 browse_blueprint = Blueprint("browse_bp", __name__)
@@ -64,12 +67,15 @@ def browse_tracks():
         previous_track = services.get_previous_track(track, repo) # is None if it's on the first track
         next_track = services.get_next_track(track, repo) # is None if it's on the last track
         if previous_track is not None:
-            previous_track_url = url_for('browse_bp.browse_tracks', track_title=previous_track.title)
-            first_track_url = url_for('browse_bp.browse_tracks', track_title=first_track.title)
+            #previous_track_url = url_for('browse_bp.browse_tracks', track_title=previous_track.title)
+            #first_track_url = url_for('browse_bp.browse_tracks', track_title=first_track.title)
+            previous_track_url = url_for('browse_bp.browse_tracks', track_id=previous_track.track_id)
+            first_track_url = url_for('browse_bp.browse_tracks', track_id=first_track.track_id)
         if next_track is not None:
-            next_track_url = url_for('browse_bp.browse_tracks', track_title=next_track.title)
-            last_track_url = url_for('browse_bp.browse_tracks', track_title=last_track.title)
-        
+            #next_track_url = url_for('browse_bp.browse_tracks', track_title=next_track.title)
+            #last_track_url = url_for('browse_bp.browse_tracks', track_title=last_track.title)
+            next_track_url = url_for('browse_bp.browse_tracks', track_id=next_track.track_id)
+            last_track_url = url_for('browse_bp.browse_tracks', track_id=last_track.track_id)
         """Testing
         print(first_track)
         print(last_track)
@@ -115,16 +121,16 @@ I'm going to complete these methods, so ask me if you're going to touch these
 """
 @browse_blueprint.route('/browse_tracks_by_artist', methods=['GET'])
 def browse_tracks_by_artist():
-    target_artist = request.args.get("artist_name")
+    target_artist_name = request.args.get("artist_name")
     cursor = request.args.get("cursor")
-    if target_artist is None:
-        target_artist = services.get_first_track(repo.repo_instance).artist.full_name
+    if target_artist_name is None:
+        target_artist_name = services.get_first_track(repo.repo_instance).artist.full_name
     if cursor is None:
         cursor = 0
     else:
         cursor = int(cursor)
 
-    tracks = services.get_tracks_by_artist(target_artist, repo)
+    tracks = services.get_tracks_by_artist(target_artist_name, repo)
 
     if len(tracks) > 0:
         first_track_url = None
@@ -133,11 +139,11 @@ def browse_tracks_by_artist():
         next_track_url = None
 
         if cursor > 0:
-            previous_track_url = url_for("browse_bp.browse_tracks_by_artist", artist_name=target_artist, cursor=cursor-1)
-            first_track_url = url_for("browse_bp.browse_tracks_by_artist", artist_name=target_artist, cursor=0)
+            previous_track_url = url_for("browse_bp.browse_tracks_by_artist", artist_name=target_artist_name, cursor=cursor-1)
+            first_track_url = url_for("browse_bp.browse_tracks_by_artist", artist_name=target_artist_name, cursor=0)
         if cursor+1 < len(tracks):
-            next_track_url = url_for("browse_bp.browse_tracks_by_artist", artist_name=target_artist, cursor=cursor+1)
-            last_track_url = url_for("browse_bp.browse_tracks_by_artist", artist_name=target_artist, cursor=len(tracks)-1)
+            next_track_url = url_for("browse_bp.browse_tracks_by_artist", artist_name=target_artist_name, cursor=cursor+1)
+            last_track_url = url_for("browse_bp.browse_tracks_by_artist", artist_name=target_artist_name, cursor=len(tracks)-1)
 
         # sidebar random album
         random_album = utilities.get_random_album()
@@ -145,7 +151,7 @@ def browse_tracks_by_artist():
 
         return render_template(
             "browse/tracks.html",
-            page_title="Tracks by Album - " + target_artist,
+            page_title="Tracks by Album - " + target_artist_name,
             random_track=utilities.get_random_track(),
             random_album=random_album, 
             random_album_tracks=random_album_tracks,
@@ -155,11 +161,51 @@ def browse_tracks_by_artist():
             previous_track_url=previous_track_url,
             next_track_url=next_track_url
         )
+    return redirect(url_for('home_bp.home'))
 
 @browse_blueprint.route('/browse_tracks_by_genre', methods=['GET'])
 def browse_tracks_by_genre():
-    pass
+    target_genre_name = request.args.get("genre_name")
+    cursor = request.args.get("cursor")
+    if target_genre_name is None:
+        target_genre_name = services.get_first_track(repo.repo_instance).genres[0].name
+    if cursor is None:
+        cursor = 0
+    else:
+        cursor = int(cursor)
 
+    tracks = services.get_tracks_by_genre(target_genre_name, repo)
+
+    if len(tracks) > 0:
+        first_track_url = None
+        last_track_url = None
+        previous_track_url = None
+        next_track_url = None
+
+        if cursor > 0:
+            previous_track_url = url_for("browse_bp.browse_tracks_by_genre", genre_name=target_genre_name, cursor=cursor-1)
+            first_track_url = url_for("browse_bp.browse_tracks_by_genre", genre_name=target_genre_name, cursor=0)
+        if cursor+1 < len(tracks):
+            next_track_url = url_for("browse_bp.browse_tracks_by_genre", genre_name=target_genre_name, cursor=cursor+1)
+            last_track_url = url_for("browse_bp.browse_tracks_by_genre", genre_name=target_genre_name, cursor=len(tracks)-1)
+
+        # sidebar random album
+        random_album = utilities.get_random_album()
+        random_album_tracks = repo.repo_instance.get_tracks_by_album(random_album.title)
+
+        return render_template(
+            "browse/tracks.html",
+            page_title="Tracks by Album - " + target_genre_name,
+            random_track=utilities.get_random_track(),
+            random_album=random_album, 
+            random_album_tracks=random_album_tracks,
+            track=tracks[cursor],
+            first_track_url=first_track_url,
+            last_track_url=last_track_url,
+            previous_track_url=previous_track_url,
+            next_track_url=next_track_url
+        )
+    return redirect(url_for('home_bp.home'))
 
 
 

@@ -118,7 +118,7 @@ class MemoryRepository(AbstractRepository):
         tracks = [self.__tracks_index[id] for id in existing_ids]
         return tracks
     
-    def get_tracks_by_artists(self, target_artist_name: str):
+    def get_tracks_by_artist(self, target_artist_name: str):
         artist = self.get_artist(target_artist_name)
         matching_tracks = list()
         if artist is not None:
@@ -135,8 +135,8 @@ class MemoryRepository(AbstractRepository):
     def get_tracks_by_genre(self, target_genre_name: str):
         genre = self.get_genre(target_genre_name)
         matching_tracks = list()
-        if genre is not None:
-            matching_tracks = [track for track in self.__tracks if track is not None and genre in track.genre]
+        if target_genre_name is not None:
+            matching_tracks = [track for track in self.__tracks if track is not None and genre in track.genres]
         return matching_tracks
 
     def get_first_track(self):

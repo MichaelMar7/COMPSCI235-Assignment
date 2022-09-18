@@ -80,5 +80,9 @@ def tracks_to_dict(tracks: Iterable[Track]):
 
 
 def get_tracks_by_artist(artist_name, repo: AbstractRepository):
-    tracks = repo.repo_instance.get_tracks_by_artists(artist_name)
+    tracks = repo.repo_instance.get_tracks_by_artist(artist_name)
+    return tracks
+
+def get_tracks_by_genre(genre_name, repo: AbstractRepository):
+    tracks = repo.repo_instance.get_tracks_by_genre(genre_name)
     return tracks
