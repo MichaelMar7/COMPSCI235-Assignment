@@ -104,7 +104,10 @@ class MemoryRepository(AbstractRepository):
         return next((track for track in self.__tracks if track.title.lower() == target_title.lower()), None) 
     
     def get_album_by_title(self, album_title):
-        return next((album for album in self.__albums if album.title.lower() == album_title.lower()), None) 
+        #print(album_title.strip().lower())
+        #for album in self.__albums:
+        #    print(album.title, album_title, album.title.lower() == album_title.strip().lower())
+        return next((album for album in self.__albums if album.title.lower() == album_title.strip().lower()), None) 
 
     # B requirements search by methods
     """

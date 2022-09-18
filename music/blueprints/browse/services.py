@@ -80,6 +80,7 @@ def get_album_by_id(album_id: int, repo: AbstractRepository):
 
 def get_album_by_title(title, repo: AbstractRepository):
     album = repo.repo_instance.get_album_by_title(title)
+    return album
 
 def get_first_album(repo: AbstractRepository):
     album = repo.get_first_album()

@@ -114,7 +114,7 @@ def browse_tracks():
 """
 Copy above method into here, but use album instead of track, and add a link in the nav for broswe album
 """
-@browse_blueprint.route('/browse_albums', methods=['GET'])
+@browse_blueprint.route('/browse_albums', methods=["GET", "POST"])
 def browse_albums():
     target_title = request.args.get("album_title") # http://127.0.0.1:5000/browse_albums?album_title=<target_title>
     target_id = request.args.get("album_id") # http://127.0.0.1:5000/browse_albums?album_id=<target_id>
@@ -130,12 +130,12 @@ def browse_albums():
     if target_id is not None and services.get_album_by_id(target_id, repo) is not None:
         #print("a") Testing
         album = services.get_album_by_id(target_id, repo)
-        print(album)
+        #print(album)
     if target_title is not None and services.get_album_by_title(target_title, repo) is not None:
         #print("b") Testing
         album = services.get_album_by_title(target_title, repo)
-        print(album)
-    print(album)
+        #print(album)
+    #print(album)
     
     # These are the URL links when we browse
     first_album_url = None #url_for('browse_bp.browse_albums', album_title=first_album.title)
@@ -147,7 +147,7 @@ def browse_albums():
     if repo.repo_instance.get_number_of_albums() > 0:
         previous_album = services.get_previous_album(album, repo) # is None if it's on the first album
         next_album = services.get_next_album(album, repo) # is None if it's on the last album
-        print(previous_album, next_album)
+        #print(previous_album, next_album)
         if previous_album is not None:
             previous_album_url = url_for('browse_bp.browse_albums', album_id=previous_album.album_id)
             first_album_url = url_for('browse_bp.browse_albums', album_id=first_album.album_id)
@@ -166,6 +166,12 @@ def browse_albums():
         print(previous_album_url)
         print(next_album_url)
         """
+        form = TrackSearch()
+        if form.validate_on_submit():
+            album_search = services.get_album_by_title(form.input_name.data, repo)
+            if album_search is not None:
+                return redirect(url_for("browse_bp.browse_albums", album_id=album_search.album_id))
+
 
         # sidebar random album
         random_album = utilities.get_random_album()
@@ -178,12 +184,15 @@ def browse_albums():
             random_album=random_album,  # random album in sidebar
             random_album_tracks=random_album_tracks, # all tracks in the album from random_album
             album=album, # selected track
+            album_tracks=repo.repo_instance.get_tracks_by_album(album.title),
             first_album=first_album, # not used
             last_album=last_album, # not used
             first_album_url=first_album_url, # following are the url for the first, last, previous, and next album
             last_album_url=last_album_url,
             previous_album_url=previous_album_url,
-            next_album_url=next_album_url
+            next_album_url=next_album_url,
+            form=form,
+            handler_url=url_for("browse_bp.browse_albums")
 
         )
     return redirect(url_for('home_bp.home'))
@@ -269,7 +278,6 @@ def browse_tracks_by_genre():
         
         form = TrackSearch()
         if form.validate_on_submit():
-            print(form.input_name.data)
             return redirect(url_for("browse_bp.browse_tracks_by_genre", genre_name=form.input_name.data))
 
         # sidebar random album
