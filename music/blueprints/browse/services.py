@@ -82,11 +82,11 @@ def get_album_by_title(title, repo: AbstractRepository):
     album = repo.repo_instance.get_album_by_title(title)
 
 def get_first_album(repo: AbstractRepository):
-    album = repo.get_first_album
+    album = repo.get_first_album()
     return album
 
 def get_last_album(repo: AbstractRepository):
-    album = repo.get_last_album
+    album = repo.get_last_album()
     return album
 
 def get_previous_album(album, repo:AbstractRepository):

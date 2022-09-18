@@ -193,19 +193,19 @@ class MemoryRepository(AbstractRepository):
 
     def get_previous_album(self, album: Album):
         try:
-            index = self.track_index(album)
+            index = self.album_index(album)
             for stored_album in reversed(self.__albums[0:index]):
                 if stored_album.album_id < album.album_id:
-                    return stored_album.album_id
+                    return stored_album
         except ValueError:
             return None
 
     def get_next_album(self, album: Album):
         try:
-            index = self.track_index(album)
+            index = self.album_index(album)
             for stored_album in self.__albums[index + 1:len(self.__albums)]:
                 if stored_album.album_id > album.album_id:
-                    return stored_album.album_id
+                    return stored_album
         except ValueError:
             return None
     

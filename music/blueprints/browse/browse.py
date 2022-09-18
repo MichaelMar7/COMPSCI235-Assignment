@@ -127,7 +127,7 @@ def browse_albums():
         #print("b") Testing
         album = services.get_album_by_title(target_title, repo)
         print(album)
-    #print(album)
+    print(album)
     
     # These are the URL links when we browse
     first_album_url = None #url_for('browse_bp.browse_albums', album_title=first_album.title)
@@ -139,12 +139,13 @@ def browse_albums():
     if repo.repo_instance.get_number_of_albums() > 0:
         previous_album = services.get_previous_album(album, repo) # is None if it's on the first album
         next_album = services.get_next_album(album, repo) # is None if it's on the last album
+        print(previous_album, next_album)
         if previous_album is not None:
-            previous_album_url = url_for('browse_bp.browse_albums', album_title=previous_album.title)
-            first_album_url = url_for('browse_bp.browse_albums', album_title=first_album.title)
+            previous_album_url = url_for('browse_bp.browse_albums', album_id=previous_album.album_id)
+            first_album_url = url_for('browse_bp.browse_albums', album_id=first_album.album_id)
         if next_album is not None:
-            next_album_url = url_for('browse_bp.browse_albums', album_title=next_album.title)
-            last_album_url = url_for('browse_bp.browse_albums', album_title=last_album.title)
+            next_album_url = url_for('browse_bp.browse_albums', album_id=next_album.album_id)
+            last_album_url = url_for('browse_bp.browse_albums', album_id=last_album.album_id)
         
         """Testing
         print(first_album)
