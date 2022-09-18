@@ -5,7 +5,7 @@
         <h2>Featured Track</h2>
     </header>
     <div style="word-wrap: break-word">
-        <h3>{{ random_track.title }}</h3>
+        <h3><a href="/browse_tracks?track_id={{random_track.track_id}}">{{ random_track.title }}</a></h3>
         <h4>Track Duration: {{ random_track.track_duration }} </h4>
         <h4>Track ID: {{ random_track.track_id }}</h4>
         <h4>Track Artist: {{ random_track.artist.full_name }}</h4>
@@ -26,7 +26,7 @@
         <h3>{{ random_album.title }}</h3>
         {% if random_album_tracks|length <= 5 %}
             {% for i in range(0,random_album_tracks|length) %}
-            <h4>Track {{i+1}}: {{ random_album_tracks[i].title }}</h4>
+            <h4>Track {{i+1}}: <a href="/browse_tracks?track_id={{random_album_tracks[i].track_id}}">{{ random_album_tracks[i].title }}</a></h4>
             <h5>Track ID: {{ random_album_tracks[i].track_id }}</h5>
             <h5>Track Artist: {{ random_album_tracks[i].artist.full_name }}</h5>
             <h5>Track Genres: </h5>
@@ -38,7 +38,7 @@
             {% endfor %}
         {% else %}
             {% for i in range(0,5) %}
-            <h4>Track {{i+1}}: {{ random_album_tracks[i].title }}</h4>
+            <h4>Track {{i+1}}: <a href="/browse_tracks?track_id={{random_album_tracks[i].track_id}}">{{ random_album_tracks[i].title }}</a></h4>
             <h5>Track ID: {{ random_album_tracks[i].track_id }}</h5>
             <h5>Track Artist: {{ random_album_tracks[i].artist.full_name }}</h5>
             <h5>Track Genres: </h5>
