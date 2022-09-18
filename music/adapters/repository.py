@@ -79,7 +79,7 @@ class AbstractRepository(abc.ABC):
         raise NotImplementedError
 
     @abc.abstractmethod
-    def get_tracks_by_artists(self, target_artist_name: str):
+    def get_tracks_by_artist(self, target_artist_name: str):
         raise NotImplementedError
 
     @abc.abstractmethod

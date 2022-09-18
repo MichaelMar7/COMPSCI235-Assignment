@@ -48,7 +48,7 @@ Non-Funcional Requirements
     - folder structure from above
 - [X] User Interface - HTML, CSS & Jinja
     - Template and Static folder stuff
-- [ ] Web Interface - HTTP
+- [X] Web Interface - HTTP
     - Request handlers in blueprints
 - [x] Repository Pattern
 - [ ] Unit and Integrated Testing
@@ -58,16 +58,16 @@ Non-Funcional Requirements
 
 Functional Requirements
 - [ ] Displaying/searching tracks based on artists, genres, album etc. 
-- [ ] Registering, logging in/logging out users
+- [X] Registering, logging in/logging out users
     - Authentication stuff
 - [ ] Reviewing tracks
     - Use WTForms
     - In a tracks blueprint
 
 Non-Funcitonal Requiements
-- [ ] Use of Blueprints
-- [ ] Use of authentication
-- [ ] Use of HTML/WTForms
+- [X] Use of Blueprints
+- [X] Use of authentication
+- [X] Use of HTML/WTForms
 
 ## A and A+ requirements
 

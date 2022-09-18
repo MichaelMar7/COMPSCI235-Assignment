@@ -95,10 +95,10 @@ class MemoryRepository(AbstractRepository):
         return len(self.__albums)
     
     def get_artist(self, artist_name):
-        return next((artist for artist in self.__artists if artist.full_name == artist_name), None) 
+        return next((artist for artist in self.__artists if artist.full_name.lower() == artist_name.lower()), None) 
     
     def get_genre(self, genre_name):
-        return next((genre for genre in self.__genres if genre.name == genre_name), None) 
+        return next((genre for genre in self.__genres if genre.name.lower() == genre_name.lower()), None) 
     
     def get_track_by_title(self, target_title):
         return next((track for track in self.__tracks if track.title.lower() == target_title.lower()), None) 
@@ -118,11 +118,9 @@ class MemoryRepository(AbstractRepository):
         tracks = [self.__tracks_index[id] for id in existing_ids]
         return tracks
     
-    def get_tracks_by_artists(self, target_artist_name: str):
-        artist = self.get_artist(target_artist_name)
+    def get_tracks_by_artist(self, target_artist_name: str):
         matching_tracks = list()
-        if artist is not None:
-            matching_tracks = [track for track in self.__tracks if track is not None and track.artist == artist]
+        matching_tracks = [track for track in self.__tracks if track is not None and target_artist_name.lower() == track.artist.full_name.lower()]
         return matching_tracks
 
     def get_tracks_by_album(self, target_album_name: str):
@@ -133,10 +131,8 @@ class MemoryRepository(AbstractRepository):
         return matching_tracks
 
     def get_tracks_by_genre(self, target_genre_name: str):
-        genre = self.get_genre(target_genre_name)
         matching_tracks = list()
-        if genre is not None:
-            matching_tracks = [track for track in self.__tracks if track is not None and genre in track.genre]
+        matching_tracks = [track for track in self.__tracks if track is not None and target_genre_name.lower() in [genre.name.lower() for genre in track.genres]]
         return matching_tracks
 
     def get_first_track(self):
