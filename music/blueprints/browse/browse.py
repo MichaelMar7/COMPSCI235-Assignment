@@ -5,7 +5,7 @@ from flask import request, render_template, redirect, url_for, session
 
 from better_profanity import profanity
 from flask_wtf import FlaskForm
-from wtforms import TextAreaField, HiddenField, SubmitField
+from wtforms import StringField, TextAreaField, HiddenField, SubmitField
 from wtforms.validators import DataRequired, Length, ValidationError
 
 import music.adapters.repository as repo
@@ -33,7 +33,7 @@ def browse_tracks_by_id():
     return render_template("browse/tracks.html", random_track=utilities.get_random_track(), track_by_title_demo=services.get_track_by_title(repo, "Piano "))
 """
 
-@browse_blueprint.route('/browse_tracks', methods=['GET'])
+@browse_blueprint.route("/browse_tracks", methods=["GET", "POST"])
 def browse_tracks():
     target_title = request.args.get("track_title") # http://127.0.0.1:5000/browse_tracks?track_title=<target_title>
     target_id = request.args.get("track_id") # http://127.0.0.1:5000/browse_tracks?track_id=<target_id>
@@ -44,17 +44,12 @@ def browse_tracks():
         target_title = first_track.track_title
         target_id = first_track.track_id
     
-    # NOTE: the target_title takes priority over target_id if both are in the URL search. If ID instead takes prioity, you can swap the two if statements around
+    # NOTE: the target_id takes priority over target_title if both are in the URL search. If title instead takes prioity, you can swap the two if statements around
     track = first_track # default track to the first track
-    if target_id is not None and services.get_track_by_id(target_id, repo) is not None:
-        #print("a") Testing
-        track = services.get_track_by_id(target_id, repo)
-        #print(track)
     if target_title is not None and services.get_track_by_title(target_title, repo) is not None:
-        #print("b") Testing
         track = services.get_track_by_title(target_title, repo)
-        #print(track)
-    #print(track)
+    if target_id is not None and services.get_track_by_id(target_id, repo) is not None:
+        track = services.get_track_by_id(target_id, repo)
     
     # These are the URL links when we browse
     first_track_url = None #url_for('browse_bp.browse_tracks', track_title=first_track.title)
@@ -69,13 +64,13 @@ def browse_tracks():
         if previous_track is not None:
             #previous_track_url = url_for('browse_bp.browse_tracks', track_title=previous_track.title)
             #first_track_url = url_for('browse_bp.browse_tracks', track_title=first_track.title)
-            previous_track_url = url_for('browse_bp.browse_tracks', track_id=previous_track.track_id)
-            first_track_url = url_for('browse_bp.browse_tracks', track_id=first_track.track_id)
+            previous_track_url = url_for("browse_bp.browse_tracks", track_id=previous_track.track_id)
+            first_track_url = url_for("browse_bp.browse_tracks", track_id=first_track.track_id)
         if next_track is not None:
             #next_track_url = url_for('browse_bp.browse_tracks', track_title=next_track.title)
             #last_track_url = url_for('browse_bp.browse_tracks', track_title=last_track.title)
-            next_track_url = url_for('browse_bp.browse_tracks', track_id=next_track.track_id)
-            last_track_url = url_for('browse_bp.browse_tracks', track_id=last_track.track_id)
+            next_track_url = url_for("browse_bp.browse_tracks", track_id=next_track.track_id)
+            last_track_url = url_for("browse_bp.browse_tracks", track_id=last_track.track_id)
         """Testing
         print(first_track)
         print(last_track)
@@ -87,6 +82,11 @@ def browse_tracks():
         print(previous_track_url)
         print(next_track_url)
         """
+        form = TrackSearch()
+        if form.validate_on_submit():
+            track_search = services.get_track_by_title(form.input_name.data, repo)
+            if track_search is not None:
+                return redirect(url_for("browse_bp.browse_tracks", track_id=track_search.track_id))
 
         # sidebar random album
         random_album = utilities.get_random_album()
@@ -104,8 +104,10 @@ def browse_tracks():
             first_track_url=first_track_url, # following are the url for the first, last, previous, and next track
             last_track_url=last_track_url,
             previous_track_url=previous_track_url,
-            next_track_url=next_track_url
-
+            next_track_url=next_track_url,
+            form=form,
+            handler_url=url_for("browse_bp.browse_tracks")
+            
         )
     return redirect(url_for('home_bp.home'))
 
@@ -119,7 +121,7 @@ def browse_albums():
 """
 I'm going to complete these methods, so ask me if you're going to touch these
 """
-@browse_blueprint.route('/browse_tracks_by_artist', methods=['GET'])
+@browse_blueprint.route('/browse_tracks_by_artist', methods=["GET", "POST"])
 def browse_tracks_by_artist():
     target_artist_name = request.args.get("artist_name")
     cursor = request.args.get("cursor")
@@ -144,6 +146,10 @@ def browse_tracks_by_artist():
         if cursor+1 < len(tracks):
             next_track_url = url_for("browse_bp.browse_tracks_by_artist", artist_name=target_artist_name, cursor=cursor+1)
             last_track_url = url_for("browse_bp.browse_tracks_by_artist", artist_name=target_artist_name, cursor=len(tracks)-1)
+        
+        form = TrackSearch()
+        if form.validate_on_submit():
+            return redirect(url_for("browse_bp.browse_tracks_by_artist", artist_name=form.input_name.data))
 
         # sidebar random album
         random_album = utilities.get_random_album()
@@ -151,7 +157,7 @@ def browse_tracks_by_artist():
 
         return render_template(
             "browse/tracks.html",
-            page_title="Tracks by Album - " + target_artist_name,
+            page_title="Tracks by Album - " + repo.repo_instance.get_artist(target_artist_name).full_name,
             random_track=utilities.get_random_track(),
             random_album=random_album, 
             random_album_tracks=random_album_tracks,
@@ -159,11 +165,13 @@ def browse_tracks_by_artist():
             first_track_url=first_track_url,
             last_track_url=last_track_url,
             previous_track_url=previous_track_url,
-            next_track_url=next_track_url
+            next_track_url=next_track_url,
+            form=form,
+            handler_url=url_for("browse_bp.browse_tracks_by_artist")
         )
     return redirect(url_for('home_bp.home'))
 
-@browse_blueprint.route('/browse_tracks_by_genre', methods=['GET'])
+@browse_blueprint.route('/browse_tracks_by_genre', methods=["GET", "POST"])
 def browse_tracks_by_genre():
     target_genre_name = request.args.get("genre_name")
     cursor = request.args.get("cursor")
@@ -188,6 +196,11 @@ def browse_tracks_by_genre():
         if cursor+1 < len(tracks):
             next_track_url = url_for("browse_bp.browse_tracks_by_genre", genre_name=target_genre_name, cursor=cursor+1)
             last_track_url = url_for("browse_bp.browse_tracks_by_genre", genre_name=target_genre_name, cursor=len(tracks)-1)
+        
+        form = TrackSearch()
+        if form.validate_on_submit():
+            print(form.input_name.data)
+            return redirect(url_for("browse_bp.browse_tracks_by_genre", genre_name=form.input_name.data))
 
         # sidebar random album
         random_album = utilities.get_random_album()
@@ -195,7 +208,7 @@ def browse_tracks_by_genre():
 
         return render_template(
             "browse/tracks.html",
-            page_title="Tracks by Album - " + target_genre_name,
+            page_title="Tracks by Genre - " + repo.repo_instance.get_genre(target_genre_name).name,
             random_track=utilities.get_random_track(),
             random_album=random_album, 
             random_album_tracks=random_album_tracks,
@@ -203,9 +216,15 @@ def browse_tracks_by_genre():
             first_track_url=first_track_url,
             last_track_url=last_track_url,
             previous_track_url=previous_track_url,
-            next_track_url=next_track_url
+            next_track_url=next_track_url,
+            form=form,
+            handler_url=url_for("browse_bp.browse_tracks_by_genre")
         )
     return redirect(url_for('home_bp.home'))
+
+class TrackSearch(FlaskForm):
+    input_name = StringField("Track Name")
+    submit = SubmitField()
 
 
 
