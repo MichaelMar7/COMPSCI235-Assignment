@@ -39,7 +39,7 @@ To get data into the webapp, we put them in the render_template() method (i.e. r
 ## C requirements
 
 Funcitonal Requirements
-- [ ] Browsable tracks
+- [X] Browsable tracks
     - Connect repository to template folder via request handling and stuff
     - Browser through list of tracks (previous and next tracks, maybe first and last tracks?)
 
@@ -57,7 +57,7 @@ Non-Funcional Requirements
 ## B requirements
 
 Functional Requirements
-- [ ] Displaying/searching tracks based on artists, genres, album etc. 
+- [X] Displaying/searching tracks based on artists, genres, album etc. 
 - [X] Registering, logging in/logging out users
     - Authentication stuff
 - [ ] Reviewing tracks
