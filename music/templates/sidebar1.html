@@ -23,7 +23,8 @@
         <h2>Featured Album</h2>
     </header>
     <div style="word-wrap: break-word; margin-bottom:5%">
-        <h3>{{ random_album.title }}</h3>
+        <h3><a href="/browse_albums?album_id={{random_album.album_id}}">{{ random_album.title }}</h3>
+        <h4 style="margin-top:10px">Album ID: {{ random_album.album_id }}</h4>
         {% if random_album_tracks|length <= 5 %}
             {% for i in range(0,random_album_tracks|length) %}
             <h4>Track {{i+1}}: <a href="/browse_tracks?track_id={{random_album_tracks[i].track_id}}">{{ random_album_tracks[i].title }}</a></h4>
