@@ -9,7 +9,11 @@ type "http://127.0.0.1:5000/browse_tracks?track_id=&lt track_id &gt", where &lt 
 <div style="text-align:center">
     <h3>{{ track.title }}</h3>
     <h4>Track ID: {{ track.track_id }}</h4>
-    <h4>Track Artist: {{ track.artist }}</h4>
+    <h4>Track Artist: {{ track.artist.full_name }}</h4>
+        <h4>Track Genres: </h4>
+        {% for genre in track.genres %}
+        <h5>{{ genre.name }}</h5>
+        {% endfor %}
     <h4>Track Duration: <b>{{ track.track_duration }}</b></h4>
     <h4>Track URL: {{ track.track_url }}</h4>
 </div>
