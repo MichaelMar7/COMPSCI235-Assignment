@@ -60,15 +60,7 @@
             <button class="btn-general-disabled"  disabled'">Last</button>
         {% endif %}
     </div>
-    {% for track in tracks %} <!-- {% for article in articles %} -->
-    <!-- for loop is not working. Figure out wtf is article in articles -->
-    <article id="article">
-        <h2>{{track.title}}</h2>
-        <div>
-            testing can something appear?
-        </div>
-    </article>
-    {% endfor %} 
+    <p>{review.comment_text, by {{review.user_name}}, {{review.timestamp}}</p>
 </main>
 
 {% endblock %}

@@ -382,9 +382,9 @@ class ProfanityFree:
 
 
 class CommentForm(FlaskForm):
-    comment = TextAreaField('Comment', [
+    comment = TextAreaField('Review', [
         DataRequired(),
-        Length(min=4, message='Your comment is too short'),
-        ProfanityFree(message='Your comment must not contain profanity')])
-    track_id = HiddenField("Article id")
+        Length(min=4, message='Your review is too short'),
+        ProfanityFree(message='Your review must not contain profanity')])
+    track_id = HiddenField("Track id")
     submit = SubmitField('Submit')
