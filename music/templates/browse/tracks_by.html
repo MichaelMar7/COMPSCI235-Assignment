@@ -11,19 +11,15 @@
         <form type="text" method="POST" action="{{ handler_url }}">
             {{ form.csrf_token }}
             <div class="form-field"> {{ form.input_name.label }} {{ form.input_name }} <button type="submit" class="btn-general">{{ form.submit }}</button></div>
-        </form>
         
-    </div>
-    <!--{#
-    <div class="formwrapper">
-        <form style="float:right" type="text" method="POST" action="{{ handler_url }}">
-            {{ form2.csrf_token }}
-            <div class="form-field"> {{ form2.input_name.label }} {{ form2.input_name }} <button type="submit" class="btn-general">{{ form2.submit }}</button></div>
         </form>
-    </div>#}
-    -->
-
+    </div>
     <div style="text-align:center">
+        <h3>{{ browse["title"] }}</h3>
+        <h4>{{browse["type"]}} ID: {{ browse["id"] }}</h4>
+    </div>
+
+    <div style="text-align:center; padding:20px">
         <h3>{{ track.title }}</h3>
         <h4>Track ID: {{ track.track_id }}</h4>
         <h4>Track Artist: {{ track.artist.full_name }}</h4>

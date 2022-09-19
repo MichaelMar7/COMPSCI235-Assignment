@@ -83,10 +83,19 @@ def browse_tracks():
         print(next_track_url)
         """
         form = TrackSearch()
+        #form2 = TrackIDSearch()
         if form.validate_on_submit():
+            print(form.input_name.data, "a")
             track_search = services.get_track_by_title(form.input_name.data, repo)
             if track_search is not None:
                 return redirect(url_for("browse_bp.browse_tracks", track_id=track_search.track_id))
+        """Attempted search by id, but form2 keeps linking up with form for some reason
+        if form2.validate_on_submit():
+            print(form2.input_name.data, "b")
+            track_search = services.get_track_by_id(form2.input_name.data, repo)
+            if track_search is not None:
+                return redirect(url_for("browse_bp.browse_tracks", track_id=track_search.track_id))
+        """
 
         # sidebar random album
         random_album = utilities.get_random_album()
@@ -106,6 +115,7 @@ def browse_tracks():
             previous_track_url=previous_track_url,
             next_track_url=next_track_url,
             form=form,
+            #form2=form2,
             handler_url=url_for("browse_bp.browse_tracks")
             
         )
@@ -166,7 +176,7 @@ def browse_albums():
         print(previous_album_url)
         print(next_album_url)
         """
-        form = TrackSearch()
+        form = AlbumSearch()
         if form.validate_on_submit():
             album_search = services.get_album_by_title(form.input_name.data, repo)
             if album_search is not None:
@@ -212,6 +222,7 @@ def browse_tracks_by_artist():
         cursor = int(cursor)
 
     tracks = services.get_tracks_by_artist(target_artist_name, repo)
+    artist = repo.repo_instance.get_artist(target_artist_name)
 
     if len(tracks) > 0:
         first_track_url = None
@@ -226,7 +237,7 @@ def browse_tracks_by_artist():
             next_track_url = url_for("browse_bp.browse_tracks_by_artist", artist_name=target_artist_name, cursor=cursor+1)
             last_track_url = url_for("browse_bp.browse_tracks_by_artist", artist_name=target_artist_name, cursor=len(tracks)-1)
         
-        form = TrackSearch()
+        form = ArtistSearch()
         if form.validate_on_submit():
             return redirect(url_for("browse_bp.browse_tracks_by_artist", artist_name=form.input_name.data))
 
@@ -235,12 +246,13 @@ def browse_tracks_by_artist():
         random_album_tracks = repo.repo_instance.get_tracks_by_album(random_album.title)
 
         return render_template(
-            "browse/tracks.html",
-            page_title="Tracks by Album - " + repo.repo_instance.get_artist(target_artist_name).full_name,
+            "browse/tracks_by.html",
+            page_title="Tracks by Artist - " + repo.repo_instance.get_artist(target_artist_name).full_name,
             random_track=utilities.get_random_track(),
             random_album=random_album, 
             random_album_tracks=random_album_tracks,
             track=tracks[cursor],
+            browse=services.get_browse_dict("Artist", artist.full_name, artist.artist_id),
             first_track_url=first_track_url,
             last_track_url=last_track_url,
             previous_track_url=previous_track_url,
@@ -262,6 +274,7 @@ def browse_tracks_by_genre():
         cursor = int(cursor)
 
     tracks = services.get_tracks_by_genre(target_genre_name, repo)
+    genre = repo.repo_instance.get_genre(target_genre_name)
 
     if len(tracks) > 0:
         first_track_url = None
@@ -276,7 +289,7 @@ def browse_tracks_by_genre():
             next_track_url = url_for("browse_bp.browse_tracks_by_genre", genre_name=target_genre_name, cursor=cursor+1)
             last_track_url = url_for("browse_bp.browse_tracks_by_genre", genre_name=target_genre_name, cursor=len(tracks)-1)
         
-        form = TrackSearch()
+        form = GenreSearch()
         if form.validate_on_submit():
             return redirect(url_for("browse_bp.browse_tracks_by_genre", genre_name=form.input_name.data))
 
@@ -291,6 +304,7 @@ def browse_tracks_by_genre():
             random_album=random_album, 
             random_album_tracks=random_album_tracks,
             track=tracks[cursor],
+            browse=services.get_browse_dict("Genre", genre.name, genre.genre_id),
             first_track_url=first_track_url,
             last_track_url=last_track_url,
             previous_track_url=previous_track_url,
@@ -302,6 +316,34 @@ def browse_tracks_by_genre():
 
 class TrackSearch(FlaskForm):
     input_name = StringField("Track Name")
+    submit = SubmitField()
+
+class AlbumSearch(FlaskForm):
+    input_name = StringField("Album Name")
+    submit = SubmitField()
+
+class ArtistSearch(FlaskForm):
+    input_name = StringField("Artist Name")
+    submit = SubmitField()
+
+class GenreSearch(FlaskForm):
+    input_name = StringField("Genre Name")
+    submit = SubmitField()
+
+class TrackIDSearch(FlaskForm):
+    input_name = StringField("Track ID")
+    submit = SubmitField()
+
+class AlbumIDSearch(FlaskForm):
+    input_name = StringField("Album ID")
+    submit = SubmitField()
+
+class ArtistIDSearch(FlaskForm):
+    input_name = StringField("Artist ID")
+    submit = SubmitField()
+
+class GenreIDSearch(FlaskForm):
+    input_name = StringField("Genre ID")
     submit = SubmitField()
 
 

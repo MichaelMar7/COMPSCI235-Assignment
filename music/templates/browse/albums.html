@@ -14,24 +14,6 @@
         </form>
     </div>
 
-    <div style="text-align:center";>
-        <h3> {{ album.title }} </h3>
-        <h4>Album ID: {{ album.album_id }}</h4>
-        {% for i in range(0,album_tracks|length) %}
-            <div style="padding:20px">
-                <h4>Track {{i+1}}: <a href="/browse_tracks?track_id={{album_tracks[i].track_id}}">{{ album_tracks[i].title }}</a></h4>
-                <h5>Track ID: {{ album_tracks[i].track_id }}</h5>
-                <h5>Track Artist: {{ album_tracks[i].artist.full_name }}</h5>
-                <h5>Track Genres: </h5>
-                {% for genre in album_tracks[i].genres %}
-                    <h5 style="margin-top:1px">{{ genre.name }}</h5>
-                {% endfor %}
-                <h5>Track Duration: {{ album_tracks[i].track_duration }} </h5>
-                <h5>Track URL: {{ album_tracks[i].track_url }}</h5>
-            </div>
-        {% endfor %}
-    </div>
-
     <div style="float:left">
         {% if first_album_url is not none %}
             <button class="btn-general" onclick="location.href='{{first_album_url}}'">First</button>
@@ -55,6 +37,24 @@
         {% else %}
             <button class="btn-general-disabled"  disabled'">Last</button>
         {% endif %}
+    </div>
+
+    <div style="text-align:center";>
+        <h3> {{ album.title }} </h3>
+        <h4>Album ID: {{ album.album_id }}</h4>
+        {% for i in range(0,album_tracks|length) %}
+            <div style="padding:20px">
+                <h4>Track {{i+1}}: <a href="/browse_tracks?track_id={{album_tracks[i].track_id}}">{{ album_tracks[i].title }}</a></h4>
+                <h5>Track ID: {{ album_tracks[i].track_id }}</h5>
+                <h5>Track Artist: {{ album_tracks[i].artist.full_name }}</h5>
+                <h5>Track Genres: </h5>
+                {% for genre in album_tracks[i].genres %}
+                    <h5 style="margin-top:1px">{{ genre.name }}</h5>
+                {% endfor %}
+                <h5>Track Duration: {{ album_tracks[i].track_duration }} </h5>
+                <h5>Track URL: {{ album_tracks[i].track_url }}</h5>
+            </div>
+        {% endfor %}
     </div>
 </main>
 
