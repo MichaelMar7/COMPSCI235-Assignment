@@ -64,7 +64,7 @@ class MemoryRepository(AbstractRepository):
         """"
         next() method gets user if it's in the self.__users list via checking with a for loop, returns None if not in list.
         """
-        return next((user for user in self.__users if user.user_name == user_name), None)
+        return next((user for user in self.__users if user.user_name.lower() == user_name.lower()), None)
     
     def get_track_by_id(self, id):
         """
@@ -107,14 +107,14 @@ class MemoryRepository(AbstractRepository):
     def get_artist_by_id(self, id: int):
         id = int(id)
         try:
-            return self.__albums_index[id]
+            return self.__artists_index[id]
         except KeyError:
             return None
     
     def get_genre_by_id(self, id: int):
         id = int(id)
         try:
-            return self.__albums_index[id]
+            return self.__genres_index[id]
         except KeyError:
             return None
     
