@@ -12,7 +12,7 @@ import music.adapters.repository as repo
 import music.blueprints.utilities.utilities as utilities
 import music.blueprints.browse.services as services
 
-#from music.authentication.authentication import login_required
+from music.blueprints.authentication.authentication import login_required
 
 """"
 url to escape case
@@ -314,6 +314,30 @@ def browse_tracks_by_genre():
         )
     return redirect(url_for('home_bp.home'))
 
+@browse_blueprint.route('/comment', methods=['GET', 'POST'])
+@login_required
+def review_track():
+    user_name = session['user_name']
+    form = CommentForm()
+    if form.validate_on_submit():
+        track_id = int(form.track_id.data)
+        services.add_review(track_id, form.comment.data, user_name, repo.repo_instance)
+        track = services.get_track_by_id(track_id, repo.repo_instance)
+        return redirect(url_for("browse_bp.browse_tracks", date=track['date'], view_comments_for=track_id))
+    
+    if request.method == 'GET':
+        track_id = int(request.args.get('track'))
+        form.track_id.data = track_id
+    else:
+        track_id = int(form.track_id.data)
+
+    track = services.get_track_by_id(track_id, repo.repo_instance)
+    return render_template('browse/review_on_track.html',
+    title='Review',
+    track=track,
+    form=form,
+    handler_url=url_for('browse_bp.review_track'))
+
 class TrackSearch(FlaskForm):
     input_name = StringField("Track Name")
     submit = SubmitField()
@@ -346,6 +370,21 @@ class GenreIDSearch(FlaskForm):
     input_name = StringField("Genre ID")
     submit = SubmitField()
 
+class ProfanityFree:
+    def __init__(self, message=None):
+        if not message:
+            message = u'Field must not contain profanity'
+        self.message = message
+
+    def __call__(self, form, field):
+        if profanity.contains_profanity(field.data):
+            raise ValidationError(self.message)
 
 
-
+class CommentForm(FlaskForm):
+    comment = TextAreaField('Comment', [
+        DataRequired(),
+        Length(min=4, message='Your comment is too short'),
+        ProfanityFree(message='Your comment must not contain profanity')])
+    track_id = HiddenField("Article id")
+    submit = SubmitField('Submit')
