@@ -15,7 +15,10 @@ class NonExistentArticleException(Exception):
 class UnknownUserException(Exception):
     pass
 
-def add_review(track: Track, review: Review, user: User, repo: AbstractRepository):
+def add_review(track_id: int, review_text: str, user_name: str, repo: AbstractRepository):
+    #work on this 
+    #need to check if track exists 
+    #create the comment and then add it to the repo
     pass
 
 def get_track_by_id(track_id: int, repo: AbstractRepository):
