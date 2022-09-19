@@ -19,6 +19,10 @@ class AbstractRepository(abc.ABC):
     @abc.abstractmethod
     def add_track(self, track: Track):
         raise NotImplementedError
+    
+    @abc.abstractmethod
+    def add_album(self, album: Album):
+        raise NotImplementedError
 
     @abc.abstractmethod
     def add_user(self, user: User):
@@ -31,10 +35,6 @@ class AbstractRepository(abc.ABC):
     
     @abc.abstractmethod
     def add_artist(self, artist: Artist):
-        raise NotImplementedError
-    
-    @abc.abstractmethod
-    def add_album(self, album: Album):
         raise NotImplementedError
     
     @abc.abstractmethod
@@ -54,15 +54,26 @@ class AbstractRepository(abc.ABC):
         raise NotImplementedError
     
     @abc.abstractmethod
+    def get_album_by_id(self, album_id):
+        raise NotImplementedError
+    
+    @abc.abstractmethod
+    def get_number_of_albums(self):
+        raise NotImplementedError
+    
+    @abc.abstractmethod
     def get_artist(self, artist_name):
         raise NotImplementedError
     
-    @abc.abstractmethod
-    def get_album_by_id(self, album_title):
-        raise NotImplementedError
     
     @abc.abstractmethod
     def get_genre(self, genre_name):
+        raise NotImplementedError
+    
+    def get_artist_by_id(self, id: int):
+        raise NotImplementedError
+    
+    def get_genre_by_id(self, id: int):
         raise NotImplementedError
     
     # B requirements search by methods

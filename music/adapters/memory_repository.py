@@ -15,11 +15,13 @@ from music.adapters.csvdatareader import TrackCSVReader
 class MemoryRepository(AbstractRepository):
     def __init__(self):
         self.__tracks = list()
-        self.__tracks_index = dict()
         self.__albums = list()
-        self.__albums_index = dict()
         self.__artists = list()
         self.__genres = list()
+        self.__tracks_index = dict()
+        self.__albums_index = dict()
+        self.__artists_index = dict()
+        self.__genres_index = dict()
         self.__users = list()
         self.__reviews = list()
         """
@@ -52,9 +54,11 @@ class MemoryRepository(AbstractRepository):
 
     def add_artist(self, artist: Artist):
         self.__artists.append(artist)
+        self.__artists_index[artist.artist_id] = artist
     
     def add_genre(self, genre: Genre):
         self.__genres.append(genre)
+        self.__genres_index[genre.genre_id] = genre
     
     def get_user(self, user_name):
         """"
@@ -99,6 +103,20 @@ class MemoryRepository(AbstractRepository):
     
     def get_genre(self, genre_name):
         return next((genre for genre in self.__genres if genre.name.lower() == genre_name.lower()), None) 
+    
+    def get_artist_by_id(self, id: int):
+        id = int(id)
+        try:
+            return self.__albums_index[id]
+        except KeyError:
+            return None
+    
+    def get_genre_by_id(self, id: int):
+        id = int(id)
+        try:
+            return self.__albums_index[id]
+        except KeyError:
+            return None
     
     def get_track_by_title(self, target_title):
         return next((track for track in self.__tracks if track.title.lower() == target_title.lower()), None) 
