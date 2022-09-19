@@ -247,7 +247,7 @@ def browse_tracks_by_artist():
 
         return render_template(
             "browse/tracks_by.html",
-            page_title="Tracks by Artist - " + repo.repo_instance.get_artist(target_artist_name).full_name,
+            page_title="Tracks by Artist",
             random_track=utilities.get_random_track(),
             random_album=random_album, 
             random_album_tracks=random_album_tracks,
@@ -299,7 +299,7 @@ def browse_tracks_by_genre():
 
         return render_template(
             "browse/tracks.html",
-            page_title="Tracks by Genre - " + repo.repo_instance.get_genre(target_genre_name).name,
+            page_title="Tracks by Genre",
             random_track=utilities.get_random_track(),
             random_album=random_album, 
             random_album_tracks=random_album_tracks,
