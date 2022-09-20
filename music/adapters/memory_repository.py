@@ -253,5 +253,5 @@ def populate(data_path: Path, repo: MemoryRepository):
 
 #loading reviews 
 def load_reviews(repo: AbstractRepository, user_id: int):
-    reviews = repo.reviews_for_track(user_id)
+    reviews = repo.get_reviews_for_track(user_id)
     return reviews
