@@ -32,11 +32,17 @@ def browse_tracks_by_id():
 
     return render_template("browse/tracks.html", random_track=utilities.get_random_track(), track_by_title_demo=services.get_track_by_title(repo, "Piano "))
 """
-
+#need to add a show_comments_for_article in browse_tracks method
 @browse_blueprint.route("/browse_tracks", methods=["GET", "POST"])
 def browse_tracks():
     target_title = request.args.get("track_title") # http://127.0.0.1:5000/browse_tracks?track_title=<target_title>
     target_id = request.args.get("track_id") # http://127.0.0.1:5000/browse_tracks?track_id=<target_id>
+
+    track_to_show_comments = request.args.get("track_id")
+    if track_to_show_comments is None:
+        track_to_show_comments = -1
+    else:
+        track_to_show_comments = services.get_track_by_id(int(track_to_show_comments), repo)
 
     first_track = services.get_first_track(repo.repo_instance)
     last_track = services.get_last_track(repo.repo_instance)
@@ -117,6 +123,7 @@ def browse_tracks():
             previous_track_url=previous_track_url,
             next_track_url=next_track_url,
             add_comment_url=add_comment_url,
+            show_comments_for_track=track_to_show_comments,
             form=form,
             #form2=form2,
             handler_url=url_for("browse_bp.browse_tracks")
