@@ -30,11 +30,6 @@ h3 {
 }
 h4 {
     margin: 20px;
-    margin-bottom: 10px;
-}
-h5 {
-    margin-left: 25px;
-    margin-top: 10px;
 }
 #header {
     text-align: center;
@@ -68,48 +63,20 @@ h5 {
     display: block;
     text-align: center;
 }
-.btn-nav-sub {
-    padding: 10px;
-    border-bottom: 1px solid #bdb8d7;
-    border-bottom: 1px solid rgba(0, 0, 0, 0.05);
-    border-top: 1px solid rgba(255, 255, 255, 0.05);
-    color: #ffffff;
-    display: block;
-    text-align: center;
-    font-size: 12px;
-}
 .btn-nav:hover {
     background-color: rgb(0, 0, 0);
     color: #fff;
 }
-.btn-nav-sub:hover {
-    background-color: rgb(64, 64, 64);
-    color: #fff;
-}
 .btn-general {
-    background-color: lightskyblue;
+    background-color: lightblue;
     color: white;
     border: none;
     border-radius: 8px;
     display: inline-block;
     padding: 10px;
-    margin: 10px;
-    /*float:left;*/
+    margin: 5px;
+    float:left;
 }
-
-.btn-general-disabled {
-    background-color: lightskyblue;
-    color: white;
-    border: none;
-    border-radius: 8px;
-    display: inline-block;
-    padding: 10px;
-    margin: 10px;
-    opacity: 0.5;
-    /*float:left;*/
-}
-
-
 #nav {
     width: 200px;
     height: 100%;
@@ -142,7 +109,7 @@ h5 {
     text-align: center;
 }
 #sidebar1 {
-    background-color: lightskyblue;
+    background-color: lightblue;
     color: aliceblue;
     width: 33.3333333%;
     min-height: 100vh;
@@ -173,12 +140,4 @@ h5 {
 }
 .authentication {
     float: left;
-}
-
-input[type=search] {
-    width: 100%;
-    padding: 12px 20px;
-    margin: 8px 0;
-    box-sizing: border-box;
-    font-size: 20px;
 }
