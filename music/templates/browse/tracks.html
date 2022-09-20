@@ -60,7 +60,11 @@
             <button class="btn-general-disabled"  disabled'">Last</button>
         {% endif %}
     </div>
-    <p>{{track.review_text}}, by {{track.user_name}}</p>
+    <article id="article">
+        <div style="flaot:left"> 
+            <button class="btn-general" onclick="location.href='{{ tag_urls[tag.name] }}'"></button>
+        </div>
+    </article>
 </main>
 
 {% endblock %}
