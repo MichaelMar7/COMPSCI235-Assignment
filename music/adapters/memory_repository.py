@@ -1,3 +1,5 @@
+import csv
+import datetime
 from pathlib import Path
 
 from bisect import bisect, bisect_left, insort_left # when adding tracks and tracks index
@@ -248,3 +250,8 @@ def populate(data_path: Path, repo: MemoryRepository):
         repo.add_artist(artist)
     for genre in reader.dataset_of_genres:
         repo.add_genre(genre)
+
+#loading reviews 
+def load_reviews(repo: AbstractRepository, user_id: int):
+    reviews = repo.reviews_for_track(user_id)
+    return reviews
