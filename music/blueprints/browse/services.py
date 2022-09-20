@@ -26,7 +26,7 @@ def add_review(track_id: int, review_text: str, user_name: str, repo: AbstractRe
         raise UnknownUserException
     review = Review(track, review_text, 1)
     repo.add_review(review)
-
+'''
 def get_reviews_for_track(track_id: int, repo: AbstractRepository):
     track = repo.repo_instance.get_track_by_id(track_id)
     if track is None:
@@ -40,7 +40,7 @@ def review_to_dict(review: Review):
         'rating': review.rating
     }
     return track_dict
-    
+    '''
 def get_track_by_id(track_id: int, repo: AbstractRepository):
     track = repo.repo_instance.get_track_by_id(track_id)
     return track

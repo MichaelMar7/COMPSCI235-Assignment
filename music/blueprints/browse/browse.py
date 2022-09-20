@@ -72,7 +72,7 @@ def browse_tracks():
             #last_track_url = url_for('browse_bp.browse_tracks', track_title=last_track.title)
             next_track_url = url_for("browse_bp.browse_tracks", track_id=next_track.track_id)
             last_track_url = url_for("browse_bp.browse_tracks", track_id=last_track.track_id)
-        add_comment_url = url_for('browse_bp.review_track', track_id=target_id)
+        add_comment_url = url_for("browse_bp.review_track", track_id=target_id)
         """Testing
         print(first_track)
         print(last_track)
@@ -326,17 +326,27 @@ def review_track():
         track_id = int(form.track_id.data)
         services.add_review(track_id, form.comment.data, user_name, repo.repo_instance)
         track = services.get_track_by_id(track_id, repo.repo_instance)
-        return redirect(url_for("browse_bp.browse_tracks", date=track['date'], view_comments_for=track_id))
+        return redirect(url_for("browse_bp.browse_tracks", view_comments_for=track_id))
     
     if request.method == 'GET':
-        print(request.args) #request.arg is None
-        track_id = int(request.args.get('track_id'))
+        if request.args.get('track_id') is None: 
+            track_id = services.get_first_track(repo.repo_instance).track_id
+            print(track_id)
+        else:
+            track_id = int(request.args.get('track_id'))
         form.track_id.data = track_id
     else:
         track_id = int(form.track_id.data)
 
-    track = services.get_track_by_id(track_id, repo.repo_instance)
+    track = services.get_track_by_id(track_id, repo)
+    # sidebar random album
+    random_album = utilities.get_random_album()
+    random_album_tracks = repo.repo_instance.get_tracks_by_album(random_album.title)
+
     return render_template('browse/comment_on_track.html',
+    random_track=utilities.get_random_track(),
+    random_album=random_album, 
+    random_album_tracks=random_album_tracks,
     title='Review',
     track=track,
     form=form,
