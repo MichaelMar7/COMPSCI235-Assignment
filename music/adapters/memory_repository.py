@@ -250,6 +250,7 @@ def load_users(data_path: Path, repo: MemoryRepository):
     users_filename = str(Path(data_path) / "users.csv")
     for data_row in read_csv_file(users_filename):
         user = User(
+            1,
             user_name = data_row[1],
             password=generate_password_hash(data_row[2]))
         repo.add_user(user)
