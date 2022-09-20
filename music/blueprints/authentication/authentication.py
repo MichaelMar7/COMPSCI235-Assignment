@@ -27,8 +27,8 @@ def register():
         form=form,
         user_name_error_message=user_name_not_unique,
         handler_url=url_for('authentication_bp.register'),
-        random_track=utilities.get_random_track(), 
-        random_album=utilities.get_random_album())
+        random_track=utilities.get_random_track(repo.repo_instance), 
+        random_album=utilities.get_random_album(repo.repo_instance))
 
 class PasswordValid:
     def __init__(self, message=None):
@@ -75,8 +75,8 @@ def login():
         title='Login',
         user_name_error_message=user_name_not_recognised,
         password_error_message=password_does_not_match_user_name,
-        form=form,random_track=utilities.get_random_track(),
-        random_album=utilities.get_random_album())
+        form=form,random_track=utilities.get_random_track(repo.repo_instance),
+        random_album=utilities.get_random_album(repo.repo_instance))
 
 @authentication_blueprint.route('/logout')
 def logout():
