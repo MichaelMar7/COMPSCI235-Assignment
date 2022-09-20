@@ -27,12 +27,19 @@ def add_review(track_id: int, review_text: str, user_name: str, repo: AbstractRe
     review = Review(track, review_text, 1)
     repo.add_review(review)
 
-def reviews_for_track(self, track_id: int):
-    reviews = []
-    for review in self.__reviews:
-        if review.track.track_id == track_id:
-            reviews.append(review)
-    return reviews
+def get_reviews_for_track(track_id: int, repo: AbstractRepository):
+    track = repo.repo_instance.get_track_by_id(track_id)
+    if track is None:
+        raise NonExistentArticleException
+    return review_to_dict(track.review_text)
+
+def review_to_dict(review: Review):
+    track_dict = {
+        'track': review.track,
+        'review_text': review.review_text,
+        'rating': review.rating
+    }
+    return track_dict
     
 def get_track_by_id(track_id: int, repo: AbstractRepository):
     track = repo.repo_instance.get_track_by_id(track_id)
