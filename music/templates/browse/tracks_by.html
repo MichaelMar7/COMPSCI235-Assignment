@@ -3,28 +3,23 @@
 
 <main id="main">
     <h1 style="text-align:center"> {{ page_title }}</h1>
-    <!--
-    This is the tracks page.
+    <!--This is the tracks page.
     Type "http://127.0.0.1:5000/browse_tracks?track_title=&lt track_title &gt", where &lt track_title &gt is the title of the track or <br>
     type "http://127.0.0.1:5000/browse_tracks?track_id=&lt track_id &gt", where &lt track_id &gt is the id of the track
-    --> 
+    -->
     <div class="formwrapper">
         <form type="text" method="POST" action="{{ handler_url }}">
             {{ form.csrf_token }}
             <div class="form-field"> {{ form.input_name.label }} {{ form.input_name }} <button type="submit" class="btn-general">{{ form.submit }}</button></div>
-        </form>
         
-    </div>
-    <!--{#
-    <div class="formwrapper">
-        <form style="float:right" type="text" method="POST" action="{{ handler_url }}">
-            {{ form2.csrf_token }}
-            <div class="form-field"> {{ form2.input_name.label }} {{ form2.input_name }} <button type="submit" class="btn-general">{{ form2.submit }}</button></div>
         </form>
-    </div>#}
-    -->
-
+    </div>
     <div style="text-align:center">
+        <h3>{{ browse["title"] }}</h3>
+        <h4>{{browse["type"]}} ID: {{ browse["id"] }}</h4>
+    </div>
+
+    <div style="text-align:center; padding:20px">
         <h3>{{ track.title }}</h3>
         <h4>Track ID: {{ track.track_id }}</h4>
         <h4>Track Artist: {{ track.artist.full_name }}</h4>
@@ -60,18 +55,6 @@
             <button class="btn-general-disabled"  disabled'">Last</button>
         {% endif %}
     </div>
-    <article id="article">
-        <div style="float:left"> 
-            <button class="btn-general" onclick="location.href='{{add_comment_url}}'">Comment</button>
-        </div>
-        {% if track.id == show_comments_for_tracks %} 
-        <div style="clear:both">
-            {% for comment in track.reviews %} 
-                <p>{{comment.review_text}}, by {{comment.user_name}}</p>
-            {% endfor %}
-        </div>
-        {% endif %} 
-    </article>
 </main>
 
 {% endblock %}

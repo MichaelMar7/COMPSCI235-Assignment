@@ -39,16 +39,16 @@ To get data into the webapp, we put them in the render_template() method (i.e. r
 ## C requirements
 
 Funcitonal Requirements
-- [ ] Browsable tracks
+- [X] Browsable tracks
     - Connect repository to template folder via request handling and stuff
     - Browser through list of tracks (previous and next tracks, maybe first and last tracks?)
 
 Non-Funcional Requirements
 - [x] Project Structure
     - folder structure from above
-- [ ] User Interface - HTML, CSS & Jinja
+- [X] User Interface - HTML, CSS & Jinja
     - Template and Static folder stuff
-- [ ] Web Interface - HTTP
+- [X] Web Interface - HTTP
     - Request handlers in blueprints
 - [x] Repository Pattern
 - [ ] Unit and Integrated Testing
@@ -57,17 +57,17 @@ Non-Funcional Requirements
 ## B requirements
 
 Functional Requirements
-- [ ] Displaying/searching tracks based on artists, genres, album etc. 
-- [ ] Registering, logging in/logging out users
+- [X] Displaying/searching tracks based on artists, genres, album etc. 
+- [X] Registering, logging in/logging out users
     - Authentication stuff
 - [ ] Reviewing tracks
     - Use WTForms
     - In a tracks blueprint
 
 Non-Funcitonal Requiements
-- [ ] Use of Blueprints
-- [ ] Use of authentication
-- [ ] Use of HTML/WTForms
+- [X] Use of Blueprints
+- [X] Use of authentication
+- [X] Use of HTML/WTForms
 
 ## A and A+ requirements
 
@@ -87,4 +87,7 @@ Non-Funcitonal Requiements
 - Should be actually browser for album since that wasn't in the requirements?
 - Needs a main content block
 - Other than that, good job with the layout!
+
+Yeah I reckon we should have browsable tracks and albums? 
+
 -->
