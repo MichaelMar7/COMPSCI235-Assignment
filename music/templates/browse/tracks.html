@@ -64,6 +64,13 @@
         <div style="float:left"> 
             <button class="btn-general" onclick="location.href='{{add_comment_url}}'">Comment</button>
         </div>
+        {% if track.id == show_comments_for_tracks %} 
+        <div style="clear:both">
+            {% for comment in track.reviews %} 
+                <p>{{comment.review_text}}, by {{comment.user_name}}</p>
+            {% endfor %}
+        </div>
+        {% endif %} 
     </article>
 </main>
 
