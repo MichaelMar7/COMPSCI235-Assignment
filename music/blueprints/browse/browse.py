@@ -56,6 +56,7 @@ def browse_tracks():
     last_track_url = None #url_for('browse_bp.browse_tracks', track_title=last_track.title)
     previous_track_url = None
     next_track_url = None
+    add_comment_url = None
 
     # Only if repo tracks list is not empty, which is very unlikely except for when we do testing
     if repo.repo_instance.get_number_of_tracks() > 0:
@@ -71,6 +72,7 @@ def browse_tracks():
             #last_track_url = url_for('browse_bp.browse_tracks', track_title=last_track.title)
             next_track_url = url_for("browse_bp.browse_tracks", track_id=next_track.track_id)
             last_track_url = url_for("browse_bp.browse_tracks", track_id=last_track.track_id)
+        add_comment_url = url_for('browse_bp.review_track', track_id=target_id)
         """Testing
         print(first_track)
         print(last_track)
@@ -114,6 +116,7 @@ def browse_tracks():
             last_track_url=last_track_url,
             previous_track_url=previous_track_url,
             next_track_url=next_track_url,
+            add_comment_url=add_comment_url,
             form=form,
             #form2=form2,
             handler_url=url_for("browse_bp.browse_tracks")
