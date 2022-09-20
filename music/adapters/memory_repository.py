@@ -250,8 +250,24 @@ def populate(data_path: Path, repo: MemoryRepository):
         repo.add_artist(artist)
     for genre in reader.dataset_of_genres:
         repo.add_genre(genre)
+#######################
+#####review methods####
+#######################
+def read_csv_file(filename:str):
+    with open(filename, encoding='utf-8-sig') as infile:
+        reader = csv.reader(infile)
+        headers = next(reader)
+        for row in reader:
+            row = [item.strip() for item in row]
+            yield row
 
-#loading reviews 
-def load_reviews(repo: AbstractRepository, user_id: int):
-    reviews = repo.get_reviews_for_track(user_id)
-    return reviews
+def load_reviews(data_path: Path, repo: MemoryRepository, users):
+    reviews_filename = str(Path(data_path) / "reviews.csv")
+    for data_row in read_csv_file(reviews_filename):
+        review = Review(
+            track=repo.get_track_by_id(int[data_row[0]]),
+            review_text = data_row[2],
+            rating=data_row[3]
+        )
+        repo.add_review(review)
+    
