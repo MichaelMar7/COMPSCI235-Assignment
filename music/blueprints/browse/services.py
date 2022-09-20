@@ -16,11 +16,24 @@ class UnknownUserException(Exception):
     pass
 
 def add_review(track_id: int, review_text: str, user_name: str, repo: AbstractRepository):
-    #work on this 
     #need to check if track exists 
     #create the comment and then add it to the repo
-    pass
+    track = repo.get_track_by_id(track_id)
+    if track is None:
+        raise NonExistentArticleException
+    user = repo.get_user(user_name)
+    if user is None: 
+        raise UnknownUserException
+    review = Review(track, review_text, 1)
+    repo.add_review(review)
 
+def reviews_for_track(self, track_id: int):
+    reviews = []
+    for review in self.__reviews:
+        if review.track.track_id == track_id:
+            reviews.append(review)
+    return reviews
+    
 def get_track_by_id(track_id: int, repo: AbstractRepository):
     track = repo.repo_instance.get_track_by_id(track_id)
     return track
