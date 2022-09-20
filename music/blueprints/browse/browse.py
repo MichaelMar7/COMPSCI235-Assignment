@@ -317,7 +317,7 @@ def browse_tracks_by_genre():
         )
     return redirect(url_for('home_bp.home'))
 
-@browse_blueprint.route('/comment', methods=['GET', 'POST'])
+@browse_blueprint.route('/review_track', methods=['GET', 'POST'])
 @login_required
 def review_track():
     user_name = session['user_name']
@@ -329,13 +329,14 @@ def review_track():
         return redirect(url_for("browse_bp.browse_tracks", date=track['date'], view_comments_for=track_id))
     
     if request.method == 'GET':
-        track_id = int(request.args.get('track'))
+        print(request.args) #request.arg is None
+        track_id = int(request.args.get('track_id'))
         form.track_id.data = track_id
     else:
         track_id = int(form.track_id.data)
 
     track = services.get_track_by_id(track_id, repo.repo_instance)
-    return render_template('browse/review_on_track.html',
+    return render_template('browse/comment_on_track.html',
     title='Review',
     track=track,
     form=form,
