@@ -24,9 +24,8 @@
             </form>
         </div>
         <div style="clear:both">
-            {% for review in tracks.reviews %}
-                <p>{comment.comment_text, by {{comment.user_name}}, {{comment.timestamp}}</p>
-            {% endfor %}
+            <p>{form.comment_text, by {{form.comment.user_name}}, {{form.comment.timestamp}}</p>
+    
         </div>
     </div>
 </main>
