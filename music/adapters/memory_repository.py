@@ -1,6 +1,9 @@
+import csv
+import datetime
 from pathlib import Path
 
 from bisect import bisect, bisect_left, insort_left # when adding tracks and tracks index
+from werkzeug.security import generate_password_hash
 
 from music.domainmodel.artist import Artist
 from music.domainmodel.album import Album
@@ -231,7 +234,40 @@ class MemoryRepository(AbstractRepository):
         if index != len(self.__albums) and self.__albums[index].album_id == album.album_id:
             return index
         raise ValueError
+
+#######################
+#####review methods####
+#######################
+def read_csv_file(filename:str):
+    with open(filename, encoding='utf-8-sig') as infile:
+        reader = csv.reader(infile)
+        headers = next(reader)
+        for row in reader:
+            row = [item.strip() for item in row]
+            yield row
+def load_users(data_path: Path, repo: MemoryRepository):
+    users = dict()
+    users_filename = str(Path(data_path) / "users.csv")
+    for data_row in read_csv_file(users_filename):
+        user = User(
+            1,
+            user_name = data_row[1],
+            password=generate_password_hash(data_row[2]))
+        repo.add_user(user)
+        users[data_row[0]] = user
+    return users
+
+def load_reviews(data_path: Path, repo: MemoryRepository, users):
+    reviews_filename = str(Path(data_path) / "reviews.csv")
+    for data_row in read_csv_file(reviews_filename):
+        review = Review(
+            track=repo.get_track_by_id(int[data_row[0]]),
+            review_text = data_row[2],
+            rating=data_row[3]
+        )
+        repo.add_review(review)
     
+
 def populate(data_path: Path, repo: MemoryRepository):
     """
     Reads csv files and adds all objects from the csv_reader object to this repo from csv_reader object's lists to the repo's lists.
@@ -248,3 +284,6 @@ def populate(data_path: Path, repo: MemoryRepository):
         repo.add_artist(artist)
     for genre in reader.dataset_of_genres:
         repo.add_genre(genre)
+    users = load_users(data_path, repo)
+    load_reviews(data_path, repo, users)
+

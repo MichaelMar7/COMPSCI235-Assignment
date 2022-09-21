@@ -127,6 +127,9 @@ h5 {
     text-align: center;
     font-size: 12px;
 }
+#nav_header {
+    font-size: 40px;
+}
 #main {
     margin: 20px;
     color: #717171;

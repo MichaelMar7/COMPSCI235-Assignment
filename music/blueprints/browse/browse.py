@@ -12,7 +12,7 @@ import music.adapters.repository as repo
 import music.blueprints.utilities.utilities as utilities
 import music.blueprints.browse.services as services
 
-#from music.authentication.authentication import login_required
+from music.blueprints.authentication.authentication import login_required
 
 """"
 url to escape case
@@ -32,11 +32,17 @@ def browse_tracks_by_id():
 
     return render_template("browse/tracks.html", random_track=utilities.get_random_track(repo.repo_instance), track_by_title_demo=services.get_track_by_title(repo, "Piano "))
 """
-
+#need to add a show_comments_for_article in browse_tracks method
 @browse_blueprint.route("/browse_tracks", methods=["GET", "POST"])
 def browse_tracks():
     target_title = request.args.get("track_title") # http://127.0.0.1:5000/browse_tracks?track_title=<target_title>
     target_id = request.args.get("track_id") # http://127.0.0.1:5000/browse_tracks?track_id=<target_id>
+
+    track_to_show_comments = request.args.get("view_comments_for")
+    if track_to_show_comments is None:
+        track_to_show_comments = -1
+    else:
+        track_to_show_comments = int(track_to_show_comments)
 
     first_track = services.get_first_track(repo.repo_instance)
     last_track = services.get_last_track(repo.repo_instance)
@@ -56,6 +62,7 @@ def browse_tracks():
     last_track_url = None #url_for('browse_bp.browse_tracks', track_title=last_track.title)
     previous_track_url = None
     next_track_url = None
+    add_comment_url = None
 
     # Only if repo tracks list is not empty, which is very unlikely except for when we do testing
     if repo.repo_instance.get_number_of_tracks() > 0:
@@ -71,6 +78,8 @@ def browse_tracks():
             #last_track_url = url_for('browse_bp.browse_tracks', track_title=last_track.title)
             next_track_url = url_for("browse_bp.browse_tracks", track_id=next_track.track_id)
             last_track_url = url_for("browse_bp.browse_tracks", track_id=last_track.track_id)
+        view_comment_url = url_for("browse_bp.browse_tracks", view_comment_url=target_id)
+        add_comment_url = url_for("browse_bp.review_track", track_id=target_id)
         """Testing
         print(first_track)
         print(last_track)
@@ -114,6 +123,9 @@ def browse_tracks():
             last_track_url=last_track_url,
             previous_track_url=previous_track_url,
             next_track_url=next_track_url,
+            view_comment_url=view_comment_url,
+            add_comment_url=add_comment_url,
+            show_comments_for_track=track_to_show_comments,
             form=form,
             #form2=form2,
             handler_url=url_for("browse_bp.browse_tracks")
@@ -315,6 +327,40 @@ def browse_tracks_by_genre():
         )
     return redirect(url_for('home_bp.home'))
 
+@browse_blueprint.route('/review_track', methods=['GET', 'POST'])
+@login_required
+def review_track():
+    user_name = session['user_name']
+    form = CommentForm()
+    if form.validate_on_submit():
+        track_id = int(form.track_id.data)
+        services.add_review(track_id, form.comment.data, user_name, repo.repo_instance)
+        track = services.get_track_by_id(track_id, repo)
+        return redirect(url_for("browse_bp.browse_tracks", track_title=track,track_id=track_id,view_comments_for=track_id))
+    
+    if request.method == 'GET':
+        if request.args.get('track_id') is None: 
+            track_id = services.get_first_track(repo.repo_instance).track_id
+        else:
+            track_id = int(request.args.get('track_id'))
+        form.track_id.data = track_id
+    else:
+        track_id = int(form.track_id.data)
+
+    track = services.get_track_by_id(track_id, repo)
+    # sidebar random album
+    random_album = utilities.get_random_album()
+    random_album_tracks = repo.repo_instance.get_tracks_by_album(random_album.title)
+
+    return render_template('browse/comment_on_track.html',
+    random_track=utilities.get_random_track(),
+    random_album=random_album, 
+    random_album_tracks=random_album_tracks,
+    title='Review',
+    track=track,
+    form=form,
+    handler_url=url_for('browse_bp.review_track'))
+
 class TrackSearch(FlaskForm):
     input_name = StringField("Track Name")
     submit = SubmitField()
@@ -347,6 +393,21 @@ class GenreIDSearch(FlaskForm):
     input_name = StringField("Genre ID")
     submit = SubmitField()
 
+class ProfanityFree:
+    def __init__(self, message=None):
+        if not message:
+            message = u'Field must not contain profanity'
+        self.message = message
+
+    def __call__(self, form, field):
+        if profanity.contains_profanity(field.data):
+            raise ValidationError(self.message)
 
 
-
+class CommentForm(FlaskForm):
+    comment = TextAreaField('Review', [
+        DataRequired(),
+        Length(min=4, message='Your review is too short'),
+        ProfanityFree(message='Your review must not contain profanity')])
+    track_id = HiddenField("Track id")
+    submit = SubmitField('Submit')
