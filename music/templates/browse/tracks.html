@@ -64,14 +64,11 @@
         <div style="float:left"> 
             <button class="btn-general" onclick="location.href='{{add_comment_url}}'">Comment</button>
         </div>
-        {% if track.id == show_comments_for_tracks %} 
+        {% if track.id == show_commesnts_for_tracks %} 
         <div style="clear:both">
             testing
-            {% for comment in track.reviews %} 
-                testing for loop
-                <p>{{comment.review_text}}, by {{comment.user_name}}</p>
-            {% endfor %}
-            for loop not working?
+            <br>
+            {{get_reviews_for_track(track.track_id)}}
         </div>
         {% endif %} 
     </article>

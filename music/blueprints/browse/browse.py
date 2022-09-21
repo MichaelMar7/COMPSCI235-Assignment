@@ -78,6 +78,7 @@ def browse_tracks():
             #last_track_url = url_for('browse_bp.browse_tracks', track_title=last_track.title)
             next_track_url = url_for("browse_bp.browse_tracks", track_id=next_track.track_id)
             last_track_url = url_for("browse_bp.browse_tracks", track_id=last_track.track_id)
+        view_comment_url = url_for("browse_bp.browse_tracks", view_comment_url=target_id)
         add_comment_url = url_for("browse_bp.review_track", track_id=target_id)
         """Testing
         print(first_track)
