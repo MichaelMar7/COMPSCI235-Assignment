@@ -123,6 +123,7 @@ def browse_tracks():
             last_track_url=last_track_url,
             previous_track_url=previous_track_url,
             next_track_url=next_track_url,
+            view_comment_url=view_comment_url,
             add_comment_url=add_comment_url,
             show_comments_for_track=track_to_show_comments,
             form=form,

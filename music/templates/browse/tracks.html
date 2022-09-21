@@ -62,13 +62,13 @@
     </div>
     <article id="article">
         <div style="float:left"> 
+            <button class="btn-general" onclick="location.href='{{ view_comment_url }}'">Comments</button>
             <button class="btn-general" onclick="location.href='{{add_comment_url}}'">Comment</button>
         </div>
-        {% if track.id == show_commesnts_for_tracks %} 
+        {% if track.track_id == show_comments_for_tracks %} 
         <div style="clear:both">
             testing
             <br>
-            {{get_reviews_for_track(track.track_id)}}
         </div>
         {% endif %} 
     </article>
