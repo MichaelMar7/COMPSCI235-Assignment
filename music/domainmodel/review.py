@@ -4,10 +4,14 @@ from music.domainmodel.track import Track
 
 class Review:
 
-    def __init__(self, track: Track, review_text: str, rating: int):
+    def __init__(self, track: Track, user_name: str, review_text: str, rating: int):
         self.__track = None
         if isinstance(track, Track):
             self.__track = track
+
+        self.__user_name = None
+        if isinstance(user_name, str):
+            self.__user_name = user_name
 
         self.__review_text = 'N/A'
         if isinstance(review_text, str):
@@ -23,6 +27,10 @@ class Review:
     @property
     def track(self) -> Track:
         return self.__track
+    
+    @property
+    def user_name(self) -> str:
+        return self.__user_name
 
     @property
     def review_text(self) -> str:

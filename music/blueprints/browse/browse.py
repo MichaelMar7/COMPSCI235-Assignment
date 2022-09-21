@@ -78,7 +78,7 @@ def browse_tracks():
             #last_track_url = url_for('browse_bp.browse_tracks', track_title=last_track.title)
             next_track_url = url_for("browse_bp.browse_tracks", track_id=next_track.track_id)
             last_track_url = url_for("browse_bp.browse_tracks", track_id=last_track.track_id)
-        view_comment_url = url_for("browse_bp.browse_tracks", view_comment_url=target_id)
+        view_comment_url = url_for("browse_bp.browse_tracks", view_comments_for=target_id)
         add_comment_url = url_for("browse_bp.review_track", track_id=target_id)
         """Testing
         print(first_track)
@@ -339,7 +339,7 @@ def review_track():
         track_id = int(form.track_id.data)
         services.add_review(track_id, form.comment.data, user_name, repo.repo_instance)
         track = services.get_track_by_id(track_id, repo)
-        return redirect(url_for("browse_bp.browse_tracks", track_title=track,track_id=track_id,view_comments_for=track_id))
+        return redirect(url_for("browse_bp.browse_tracks", track_title=track.title,track_id=track_id,view_comments_for=track_id))
     
     if request.method == 'GET':
         if request.args.get('track_id') is None: 
