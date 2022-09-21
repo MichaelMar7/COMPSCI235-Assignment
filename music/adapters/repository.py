@@ -145,3 +145,7 @@ class AbstractRepository(abc.ABC):
     def album_index(self, album: Album):
         raise NotImplementedError
     
+    @abc.abstractmethod
+    def get_reviews_for_track(track_id: int):
+        raise NotImplementedError
+    

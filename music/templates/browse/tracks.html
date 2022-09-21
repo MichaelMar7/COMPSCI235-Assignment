@@ -67,7 +67,9 @@
         </div>
         {% if track.track_id == show_comments_for_tracks %} 
         <div style="clear:both">
-            testing
+            {% for review in reviews %}
+                <p> {{review.review_text}} </p>
+            {% endfor %}
             <br>
         </div>
         {% endif %} 
