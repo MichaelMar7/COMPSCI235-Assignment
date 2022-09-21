@@ -30,7 +30,7 @@ def browse_tracks_by_id():
     if first_track is None:
         target_id = first_track["id"]
 
-    return render_template("browse/tracks.html", random_track=utilities.get_random_track(), track_by_title_demo=services.get_track_by_title(repo, "Piano "))
+    return render_template("browse/tracks.html", random_track=utilities.get_random_track(repo.repo_instance), track_by_title_demo=services.get_track_by_title(repo, "Piano "))
 """
 #need to add a show_comments_for_article in browse_tracks method
 @browse_blueprint.route("/browse_tracks", methods=["GET", "POST"])
@@ -107,13 +107,13 @@ def browse_tracks():
         """
 
         # sidebar random album
-        random_album = utilities.get_random_album()
+        random_album = utilities.get_random_album(repo.repo_instance)
         random_album_tracks = repo.repo_instance.get_tracks_by_album(random_album.title)
 
         return render_template(
             "browse/tracks.html",
             page_title="Tracks",
-            random_track=utilities.get_random_track(),  # random track in sidebar
+            random_track=utilities.get_random_track(repo.repo_instance),  # random track in sidebar
             random_album=random_album,  # random album in sidebar
             random_album_tracks=random_album_tracks, # all tracks in the album from random_album
             track=track, # selected track
@@ -196,13 +196,13 @@ def browse_albums():
 
 
         # sidebar random album
-        random_album = utilities.get_random_album()
+        random_album = utilities.get_random_album(repo.repo_instance)
         random_album_tracks = repo.repo_instance.get_tracks_by_album(random_album.title)
 
         return render_template(
             "browse/albums.html",
             title="Albums",
-            random_track=utilities.get_random_track(),  # random track in sidebar
+            random_track=utilities.get_random_track(repo.repo_instance),  # random track in sidebar
             random_album=random_album,  # random album in sidebar
             random_album_tracks=random_album_tracks, # all tracks in the album from random_album
             album=album, # selected track
@@ -228,15 +228,16 @@ def browse_tracks_by_artist():
     cursor = request.args.get("cursor")
     if target_artist_name is None:
         target_artist_name = services.get_first_track(repo.repo_instance).artist.full_name
-    if cursor is None:
-        cursor = 0
-    else:
-        cursor = int(cursor)
 
     tracks = services.get_tracks_by_artist(target_artist_name, repo)
     artist = repo.repo_instance.get_artist(target_artist_name)
 
     if len(tracks) > 0:
+        if cursor is None or int(cursor) >= len(tracks):
+            cursor = 0
+        else:
+            cursor = int(cursor)
+
         first_track_url = None
         last_track_url = None
         previous_track_url = None
@@ -254,13 +255,13 @@ def browse_tracks_by_artist():
             return redirect(url_for("browse_bp.browse_tracks_by_artist", artist_name=form.input_name.data))
 
         # sidebar random album
-        random_album = utilities.get_random_album()
+        random_album = utilities.get_random_album(repo.repo_instance)
         random_album_tracks = repo.repo_instance.get_tracks_by_album(random_album.title)
 
         return render_template(
             "browse/tracks_by.html",
             page_title="Tracks by Artist",
-            random_track=utilities.get_random_track(),
+            random_track=utilities.get_random_track(repo.repo_instance),
             random_album=random_album, 
             random_album_tracks=random_album_tracks,
             track=tracks[cursor],
@@ -280,15 +281,15 @@ def browse_tracks_by_genre():
     cursor = request.args.get("cursor")
     if target_genre_name is None:
         target_genre_name = services.get_first_track(repo.repo_instance).genres[0].name
-    if cursor is None:
-        cursor = 0
-    else:
-        cursor = int(cursor)
 
     tracks = services.get_tracks_by_genre(target_genre_name, repo)
     genre = repo.repo_instance.get_genre(target_genre_name)
 
     if len(tracks) > 0:
+        if cursor is None or int(cursor) >= len(tracks):
+            cursor = 0
+        else:
+            cursor = int(cursor)
         first_track_url = None
         last_track_url = None
         previous_track_url = None
@@ -312,7 +313,7 @@ def browse_tracks_by_genre():
         return render_template(
             "browse/tracks.html",
             page_title="Tracks by Genre",
-            random_track=utilities.get_random_track(),
+            random_track=utilities.get_random_track(repo.repo_instance),
             random_album=random_album, 
             random_album_tracks=random_album_tracks,
             track=tracks[cursor],
