@@ -66,9 +66,12 @@
         </div>
         {% if track.id == show_comments_for_tracks %} 
         <div style="clear:both">
+            testing
             {% for comment in track.reviews %} 
+                testing for loop
                 <p>{{comment.review_text}}, by {{comment.user_name}}</p>
             {% endfor %}
+            for loop not working?
         </div>
         {% endif %} 
     </article>
