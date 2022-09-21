@@ -332,7 +332,7 @@ def review_track():
     if form.validate_on_submit():
         track_id = int(form.track_id.data)
         services.add_review(track_id, form.comment.data, user_name, repo.repo_instance)
-        track = services.get_track_by_id(track_id, repo.repo_instance)
+        track = services.get_track_by_id(track_id, repo)
         return redirect(url_for("browse_bp.browse_tracks", track_title=track,track_id=track_id,view_comments_for=track_id))
     
     if request.method == 'GET':
