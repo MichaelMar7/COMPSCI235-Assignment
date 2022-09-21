@@ -35,6 +35,16 @@
         <h4>Track Duration: <b>{{ track.track_duration }}</b></h4>
         <h4>Track URL: {{ track.track_url }}</a></h4>
     </div>
+    <div>
+        <b>Reviews</b>
+        {% if reviews|length > 0 %}
+            {% for review in reviews %}
+                <p> <b>{{review.user_name}}</b> {{review.timestamp}}: {{review.review_text}}  </p>
+            {% endfor %}
+        {% else %}
+            <p> There are no reviews for this track </p>
+        {% endif %}
+    </div>
 
     <div style="float:left">
         {% if first_track_url is not none %}
@@ -62,16 +72,19 @@
     </div>
     <article id="article">
         <div style="float:left"> 
-            <button class="btn-general" onclick="location.href='{{ view_comment_url }}'">Comments</button>
+            <!--<button class="btn-general" onclick="location.href='{{ view_comment_url }}'">Comments</button>-->
             <button class="btn-general" onclick="location.href='{{add_comment_url}}'">Comment</button>
         </div>
         {% if track.track_id == show_comments_for_tracks %} 
         <div style="clear:both">
-            testing
+            
             <br>
         </div>
         {% endif %} 
     </article>
+    <br>
+    
+    </div>
 </main>
 
 {% endblock %}

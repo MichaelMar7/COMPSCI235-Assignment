@@ -78,7 +78,7 @@ def browse_tracks():
             #last_track_url = url_for('browse_bp.browse_tracks', track_title=last_track.title)
             next_track_url = url_for("browse_bp.browse_tracks", track_id=next_track.track_id)
             last_track_url = url_for("browse_bp.browse_tracks", track_id=last_track.track_id)
-        view_comment_url = url_for("browse_bp.browse_tracks", view_comment_url=target_id)
+        view_comment_url = url_for("browse_bp.browse_tracks", view_comments_for=target_id)
         add_comment_url = url_for("browse_bp.review_track", track_id=target_id)
         """Testing
         print(first_track)
@@ -94,7 +94,7 @@ def browse_tracks():
         form = TrackSearch()
         #form2 = TrackIDSearch()
         if form.validate_on_submit():
-            print(form.input_name.data, "a")
+            #print(form.input_name.data, "a")
             track_search = services.get_track_by_title(form.input_name.data, repo)
             if track_search is not None:
                 return redirect(url_for("browse_bp.browse_tracks", track_id=track_search.track_id))
@@ -105,6 +105,8 @@ def browse_tracks():
             if track_search is not None:
                 return redirect(url_for("browse_bp.browse_tracks", track_id=track_search.track_id))
         """
+
+        reviews = services.get_reviews_for_track(track.track_id, repo)
 
         # sidebar random album
         random_album = utilities.get_random_album(repo.repo_instance)
@@ -127,6 +129,7 @@ def browse_tracks():
             add_comment_url=add_comment_url,
             show_comments_for_track=track_to_show_comments,
             form=form,
+            reviews=reviews,
             #form2=form2,
             handler_url=url_for("browse_bp.browse_tracks")
             
@@ -307,7 +310,7 @@ def browse_tracks_by_genre():
             return redirect(url_for("browse_bp.browse_tracks_by_genre", genre_name=form.input_name.data))
 
         # sidebar random album
-        random_album = utilities.get_random_album()
+        random_album = utilities.get_random_album(repo.repo_instance)
         random_album_tracks = repo.repo_instance.get_tracks_by_album(random_album.title)
 
         return render_template(
@@ -336,7 +339,7 @@ def review_track():
         track_id = int(form.track_id.data)
         services.add_review(track_id, form.comment.data, user_name, repo.repo_instance)
         track = services.get_track_by_id(track_id, repo)
-        return redirect(url_for("browse_bp.browse_tracks", track_title=track,track_id=track_id,view_comments_for=track_id))
+        return redirect(url_for("browse_bp.browse_tracks", track_title=track.title,track_id=track_id,view_comments_for=track_id))
     
     if request.method == 'GET':
         if request.args.get('track_id') is None: 
@@ -349,11 +352,11 @@ def review_track():
 
     track = services.get_track_by_id(track_id, repo)
     # sidebar random album
-    random_album = utilities.get_random_album()
+    random_album = utilities.get_random_album(repo.repo_instance)
     random_album_tracks = repo.repo_instance.get_tracks_by_album(random_album.title)
 
     return render_template('browse/comment_on_track.html',
-    random_track=utilities.get_random_track(),
+    random_track=utilities.get_random_track(repo.repo_instance),
     random_album=random_album, 
     random_album_tracks=random_album_tracks,
     title='Review',

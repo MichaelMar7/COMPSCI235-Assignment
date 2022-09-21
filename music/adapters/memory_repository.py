@@ -234,6 +234,13 @@ class MemoryRepository(AbstractRepository):
         if index != len(self.__albums) and self.__albums[index].album_id == album.album_id:
             return index
         raise ValueError
+    
+    def get_reviews_for_track(self, track_id: int):
+        reviews = list()
+        for review in self.__reviews:
+            if review.track.track_id == track_id:
+                reviews.append(review)
+        return reviews
 
 #######################
 #####review methods####
