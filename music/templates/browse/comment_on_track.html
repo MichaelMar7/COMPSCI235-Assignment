@@ -5,7 +5,7 @@
         <h2>Track: {{track.title}}</h2>
     </div>
     <div class="form-wrapper">
-        <form action="{[hander_url}}" method="post">
+        <form action="{{hander_url}}" method="post">
             {{form.track_id}}
             {{form.csrf_token}}
             <br>

@@ -38,11 +38,11 @@ def browse_tracks():
     target_title = request.args.get("track_title") # http://127.0.0.1:5000/browse_tracks?track_title=<target_title>
     target_id = request.args.get("track_id") # http://127.0.0.1:5000/browse_tracks?track_id=<target_id>
 
-    track_to_show_comments = request.args.get("track_id")
+    track_to_show_comments = request.args.get("view_comments_for")
     if track_to_show_comments is None:
         track_to_show_comments = -1
     else:
-        track_to_show_comments = services.get_track_by_id(int(track_to_show_comments), repo)
+        track_to_show_comments = int(track_to_show_comments)
 
     first_track = services.get_first_track(repo.repo_instance)
     last_track = services.get_last_track(repo.repo_instance)
@@ -333,12 +333,11 @@ def review_track():
         track_id = int(form.track_id.data)
         services.add_review(track_id, form.comment.data, user_name, repo.repo_instance)
         track = services.get_track_by_id(track_id, repo.repo_instance)
-        return redirect(url_for("browse_bp.browse_tracks", view_comments_for=track_id))
+        return redirect(url_for("browse_bp.browse_tracks", track_title=track,track_id=track_id,view_comments_for=track_id))
     
     if request.method == 'GET':
         if request.args.get('track_id') is None: 
             track_id = services.get_first_track(repo.repo_instance).track_id
-            print(track_id)
         else:
             track_id = int(request.args.get('track_id'))
         form.track_id.data = track_id
