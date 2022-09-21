@@ -135,7 +135,7 @@ h5 {
     color: #717171;
     line-height: 25px;
     padding: 10px;
-    width: 66.666667%;
+    width: 63.33333%;
 }
 #logo {
     width: 150px;
@@ -207,7 +207,7 @@ input[type='password'],
     }
 
 input[type='submit'] {
-    width: 95%;
+    width: 100%;
      background-color: lightskyblue;
      color: white;
      padding: 14px 20px;
@@ -224,8 +224,8 @@ input[type='submit']:hover {
 }
 .form-field{
     text-align: center;
-    width:95%
+    width:100%
 }
 .authentication{
-    width: 95%;
+    width: 100%;
 }
