@@ -136,6 +136,7 @@ h5 {
     line-height: 25px;
     padding: 10px;
     width: 63.33333%;
+    float: left;
 }
 #logo {
     width: 150px;
@@ -150,6 +151,7 @@ h5 {
     padding: 20px;
     border-bottom: 1px solid #e0e4e8;
     float: right;
+    min-width: 30%
 }
 .topnav{
     background-color: lightskyblue;
