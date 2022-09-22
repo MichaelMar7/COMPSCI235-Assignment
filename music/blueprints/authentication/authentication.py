@@ -21,6 +21,8 @@ def register():
             return redirect(url_for('authentication_bp.login'))
         except services.NameNotUniqueException:
             user_name_not_unique = 'Your username is already taken. Please try another username.'
+    random_album=utilities.get_random_album(repo.repo_instance)
+    random_album_tracks=repo.repo_instance.get_tracks_by_album(random_album.title)
     return render_template(
         'authentication/credentials.html',
         title='Register',
@@ -28,7 +30,8 @@ def register():
         user_name_error_message=user_name_not_unique,
         handler_url=url_for('authentication_bp.register'),
         random_track=utilities.get_random_track(repo.repo_instance), 
-        random_album=utilities.get_random_album(repo.repo_instance))
+        random_album=random_album,
+        random_album_tracks=random_album_tracks)
 
 class PasswordValid:
     def __init__(self, message=None):
@@ -70,13 +73,16 @@ def login():
             user_name_not_recognised = 'User name not recognised - please supply another'
         except services.AuthenticationException:
             password_does_not_match_user_name = 'Password does not match the given username. Please try again.'
+    random_album=utilities.get_random_album(repo.repo_instance)
+    random_album_tracks=repo.repo_instance.get_tracks_by_album(random_album.title)
     return render_template(
         'authentication/credentials.html',
         title='Login',
         user_name_error_message=user_name_not_recognised,
         password_error_message=password_does_not_match_user_name,
         form=form,random_track=utilities.get_random_track(repo.repo_instance),
-        random_album=utilities.get_random_album(repo.repo_instance))
+        random_album=random_album,
+        random_album_tracks=random_album_tracks)
 
 @authentication_blueprint.route('/logout')
 def logout():
