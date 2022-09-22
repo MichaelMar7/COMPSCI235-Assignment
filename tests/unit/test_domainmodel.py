@@ -446,31 +446,31 @@ class TestReview:
 
     def test_construction(self):
         track1 = Track(2, 'Heat Waves')
-        review1 = Review(track1, 'Sample review', 3)
-        review2 = Review(track1, ' Another review ', 2)
+        review1 = Review(track1, "user123", 'Sample review', 3)
+        review2 = Review(track1, "user123", ' Another review ', 2)
 
         assert review1.track == track1
         assert review1.review_text == 'Sample review'
         assert review1.rating == 3
         assert review2.review_text == 'Another review'
 
-        review2 = Review('Invalid track', 23, 1)
+        review2 = Review('Invalid track', "user123", 23, 1)
         assert review2.track is None
         assert review2.review_text == 'N/A'
 
         with pytest.raises(ValueError):
-            Review(track1, 'Text', 'rating')
+            Review(track1, "user123", 'Text', 'rating')
 
         # Negative value of comment raises error
         with pytest.raises(ValueError):
-            Review(track1, 'Text', -5)
+            Review(track1, "user123", 'Text', -5)
         # Rating value > 5 raises error
         with pytest.raises(ValueError):
-            Review(track1, 'Text', 10)
+            Review(track1, "user123", 'Text', 10)
 
     def test_attributes(self):
         track1 = Track(2, 'Heat Waves')
-        review1 = Review(track1, 'Sample review', 3)
+        review1 = Review(track1, "user123", 'Sample review', 3)
 
         assert review1.track == track1
 
@@ -484,7 +484,7 @@ class TestReview:
 
     def test_attributes_fail(self):
         track1 = Track(2, 'Heat Waves')
-        review1 = Review(track1, 'Sweater Weather', 2)
+        review1 = Review(track1, "user123", 'Sweater Weather', 2)
 
         review1.review_text = 5
         assert review1.review_text is None
@@ -500,10 +500,10 @@ class TestReview:
 
     def test_equality(self):
         track1 = Track(2, 'Heat Waves')
-        review1 = Review(track1, 'Sweater Weather', 2)
-        review3 = Review(track1, 'Sweater Weather', 5)
-        review4 = Review(track1, 'Sweater Weather 2', 2)
-        review5 = Review(None, 'Sweater Weather', 2)
+        review1 = Review(track1, "user123", 'Sweater Weather', 2)
+        review3 = Review(track1, "user123", 'Sweater Weather', 5)
+        review4 = Review(track1, "user123", 'Sweater Weather 2', 2)
+        review5 = Review(None, "user123", 'Sweater Weather', 2)
 
         assert review1 == review1
         assert review1 != review3
@@ -640,9 +640,9 @@ class TestUser:
         """ Test add_review() and remove_review() methods """
         user1 = User(7232, 'gavi', 'gavi9281')
         track1 = Track(2, 'Heat Waves')
-        review1 = Review(track1, 'review 1', 2)
-        review2 = Review(track1, 'review 2', 3)
-        review3 = Review(track1, 'review 3', 5)
+        review1 = Review(track1, 'gavi', 'review 1', 2)
+        review2 = Review(track1, 'gavi', 'review 2', 3)
+        review3 = Review(track1, 'gavi', 'review 3', 5)
 
         assert user1.reviews == []
 

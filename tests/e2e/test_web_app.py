@@ -19,18 +19,14 @@ def test_register(client):
         ('cj', '', b'Your user name is too short'),
         ('test', '', b'Your password is required'),
         ('test', 'test', b'Your password must be at least 8 characters, contain an upper case letter, a lower case letter and a digit.'),
-        ('test1', 'NewPassword123', b'Your user name is already taken - please supply another')
+        ('mjackson', 'NewPassword123', b'Your username is already taken. Please try another username.')
 ))
 def test_register_with_invalid_input(client, user_name, password, message):
-    response1 = client.post(
+    response = client.post(
         '/authentication/register',
         data={'user_name': user_name, 'password': password}
     )
-    response2 = client.post(
-        '/authentication/register',
-        data={'user_name': user_name, 'password': password}
-    )
-    assert message in response2.data
+    assert message in response.data
 
 
 def test_login(client, auth):
@@ -59,44 +55,40 @@ def test_index(client):
     assert response.status_code == 200
     assert b'Music Library' in response.data
 
-"""
-def test_login_required_to_comment(client):
-    response = client.post('/comment')
-    assert response.headers['Location'] == 'http://localhost/authentication/login'
+
+def test_login_required_to_review(client):
+    response = client.post("/review_track")
+    assert response.headers["Location"] == "/authentication/login"
 
 
 def test_comment(client, auth):
-    # Login a user.
+    auth.register()
     auth.login()
 
-    # Check that we can retrieve the comment page.
-    response = client.get('/comment?article=2')
+    response = client.get("/review_track?track_id=3")
 
     response = client.post(
-        '/comment',
-        data={'comment': 'Who needs quarantine?', 'article_id': 2}
+        '/review_track',
+        data={'comment': 'I like this track', 'track_id': 3}
     )
-    assert response.headers['Location'] == '/articles_by_date?date=2020-02-29&view_comments_for=2'
+    assert response.headers['Location'] == "/browse_tracks?track_title=Electric+Ave&track_id=3&view_comments_for=3"
 
 
 @pytest.mark.parametrize(('comment', 'messages'), (
-        ('Who thinks Trump is a f***wit?', (b'Your comment must not contain profanity')),
         ('Hey', (b'Your comment is too short')),
-        ('ass', (b'Your comment is too short', b'Your comment must not contain profanity')),
+        ('Hey Hey!', (b''))
 ))
 def test_comment_with_invalid_input(client, auth, comment, messages):
-    # Login a user.
+    auth.register()
     auth.login()
 
-    # Attempt to comment on an article.
     response = client.post(
-        '/comment',
-        data={'comment': comment, 'article_id': 2}
+        '/review_track',
+        data={'comment': comment, 'track_id': 2}
     )
-    # Check that supplying invalid comment text generates appropriate error messages.
     for message in messages:
         assert message in response.data
-"""
+
 
 
 def test_track_without_title_or_id(client):
