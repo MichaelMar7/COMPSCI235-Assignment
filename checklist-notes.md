@@ -51,7 +51,7 @@ Non-Funcional Requirements
 - [X] Web Interface - HTTP
     - Request handlers in blueprints
 - [x] Repository Pattern
-- [ ] Unit and Integrated Testing
+- [x] Unit and Integrated Testing
     - tests folder
 
 ## B requirements
@@ -60,7 +60,7 @@ Functional Requirements
 - [X] Displaying/searching tracks based on artists, genres, album etc. 
 - [X] Registering, logging in/logging out users
     - Authentication stuff
-- [ ] Reviewing tracks
+- [x] Reviewing tracks
     - Use WTForms
     - In a tracks blueprint
 
@@ -71,23 +71,7 @@ Non-Funcitonal Requiements
 
 ## A and A+ requirements
 
-- [ ] The ***new cool feature!*** for **A**
+- [x] The ***new cool feature!*** for **A**
 
-- [ ] and a 2-3 page report of that feature for **A+**
+- [x] and a 2-3 page report of that feature for **A+**
 
-
-### Web layout review notes
-
-<!--
-- Top Tracks and Album look different (Track horizontal, Albums vertical)?
-    - For space for the main content block
-    - Maybe put them on same bar?
-- The links are alright. You can have a blueprint/page for Home, blueprint/page for Authentication, combining the register, login, and logout, a blueprint/page for browsing tracks and albums (maybe two blueprints for each). Since you have a liked tracks link, maybe we should have a profile page (that could be our *cool feature* if that counts) containing reviews and liked tracks.
-    - So blueprint for Home, Tracks/Album Browsing (maybe two blueprints?), Authentication, Profile?
-- Should be actually browser for album since that wasn't in the requirements?
-- Needs a main content block
-- Other than that, good job with the layout!
-
-Yeah I reckon we should have browsable tracks and albums? 
-
--->

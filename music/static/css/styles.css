@@ -142,6 +142,10 @@ h5 {
     width: 150px;
     text-align: center;
 }
+#small-logo{
+    width: 20px;
+    text-align: center;
+}
 #sidebar1 {
     background-color: lightskyblue;
     color: aliceblue;
