@@ -146,17 +146,17 @@ def test_repository_artist_not_in_repo(in_memory_repo):
 
 # python -m pytest tests
 
-""" Comment tests <not use until reviews are added>
-def test_repository_can_add_a_comment(in_memory_repo):
+def test_repository_add_review(in_memory_repo):
+    track_id = 2
     user = in_memory_repo.get_user('thorke')
-    article = in_memory_repo.get_article(2)
-    comment = make_comment("Trump's onto it!", user, article)
+    track = in_memory_repo.get_track_by_id(track_id)
+    review = Review(track, user.user_name, "this is a review", 1)
 
-    in_memory_repo.add_comment(comment)
+    in_memory_repo.add_review(review)
 
-    assert comment in in_memory_repo.get_comments()
+    assert review in in_memory_repo.get_reviews_for_track(track_id)
 
-
+""" Comment tests <not use until reviews are added>
 def test_repository_does_not_add_a_comment_without_a_user(in_memory_repo):
     article = in_memory_repo.get_article(2)
     comment = Comment(None, article, "Trump's onto it!", datetime.today())
