@@ -7,7 +7,7 @@
 
 The cool feature that we have implemented in our app is the "Featured Tracks and Albums" bar. This allows anyone viewing the app to have a look at what tracks and albums are available in the app, by a randomly generated track and album available from the app. 
 
-![Image of sidebar](sidebar.png)
+![Image of sidebar](images/feature.png)
 
 
 On all of the pages of the app, this sidebar is visible on the right hand side of the page. The features "Featured Track", which contains the track's title, ID, artist, genre(s), album, URL, and duration. Right below the featured track is a "Featured Album", which contains the album's title and ID, and right below is the album's first five track containing the same information as the featured tracks information above. If the album contains five or less tracks in its album, then it would just generate the five tracks. If the album contains more than five tracks, then it would just generate the first five tracks of the album and some ellipsis at the bottom to indicate that this album contains more than five track in its album. Due to how these tracks are generated, the order of track would be by their Track ID.
@@ -34,7 +34,9 @@ For both ways, it gets the ID of the last track or album, since that is the maxi
 
 Now a cool thing about this feature is that there is a feature in the sidebar where by clicking on track's or album's title on the sidebar would link to the track's or album's respectively page. This would allow the user to easier access a track or album that interests them if there are not sure what to look for in the app.
 
-![Image of feature](feature.png)
+![Image of feature 1 (example of random track)](feature2.png)
+
+![Image of feature 2 (page of that random track)](feature3.png)
 
 This implemented by getting the randomly generated track's or album's ID and concatenating it into the track or album URL. `<a href="/browse_tracks?track_id={{random_track.track_id}}">`. This feature also works for the tracks in the randomly generated album as well.
 
