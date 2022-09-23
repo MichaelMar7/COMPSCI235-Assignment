@@ -34,9 +34,9 @@ For both ways, it gets the ID of the last track or album, since that is the maxi
 
 Now a cool thing about this feature is that there is a feature in the sidebar where by clicking on track's or album's title on the sidebar would link to the track's or album's respectively page. This would allow the user to easier access a track or album that interests them if there are not sure what to look for in the app.
 
-![Image of feature 1 (example of random track)](feature2.png)
+![Image of feature 1 (example of random track)](images/feature2.png)
 
-![Image of feature 2 (page of that random track)](feature3.png)
+![Image of feature 2 (page of that random track)](images/feature3.png)
 
 This implemented by getting the randomly generated track's or album's ID and concatenating it into the track or album URL. `<a href="/browse_tracks?track_id={{random_track.track_id}}">`. This feature also works for the tracks in the randomly generated album as well.
 
