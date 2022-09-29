@@ -73,7 +73,25 @@ class SqlAlchemyReposity(AbstractRepository):
     def get_track(self, id: id) -> Track:
         track = None
         try: 
-            track = self._session_context_manager.session.query(Track).filter(Track.__track_id == id).one()
+            track = self._session_context_manager.session.query(Track).filter(Track._track_id == id).one()
         except NoResultFound:
             pass
         return Track
+
+    def get_tracks_by_artist(self, target_artist_name: str):
+        if target_artist_name is None:
+            tracks = self._session_context_manager.session.query(Track).all()
+            return tracks
+        else:
+            tracks = self._session_context_manager.session.query(Track).filter(Track._artist == target_artist_name).all()
+            return tracks
+
+    def get_first_track(self):
+        track = self._session_context_manager.session.query(Track).first()
+        return track
+
+    def get_last_track(self):
+        track = self._session_context_manager.session.query(Track).order_by(desc(Track._track_id)).first()
+        return track
+    
+    
