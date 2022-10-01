@@ -94,4 +94,29 @@ class SqlAlchemyReposity(AbstractRepository):
         track = self._session_context_manager.session.query(Track).order_by(desc(Track._track_id)).first()
         return track
     
+    def get_tracks_by_album(self, target_album:str):
+        if target_album is None:
+            tracks = self._session_context_manager.session.query(Track).all()
+            return tracks
+        else:
+            tracks = self._session_context_manager.session.query(Track).filter(Track._album == target_album).all()
+            return tracks 
     
+    def get_tracks_by_genre(self, target_genre:str):
+        if target_genre is None:
+            tracks  = self._session_context_manager.session.query(Track).all()
+            return tracks 
+        else:
+            tracks = self._session_context_manager.session.query(Track).filter(Track._genres == target_genre).all()
+            return tracks 
+
+    def get_reviews_for_track(self):
+        reviews = self._session_context_manager.session.query(Review).all()
+        return reviews
+
+    def add_review(self, review: Review):
+        super().add_review(review)
+        with self._session_context_manager as scm:
+            scm.session.add(review)
+            scm.commit()
+
