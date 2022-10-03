@@ -1,6 +1,7 @@
-from symbol import arith_expr
-from tkinter import N
-from colorama import Fore
+#from symbol import arith_expr
+#from tkinter import N
+#from colorama import Fore
+
 from sqlalchemy import (
     Table, MetaData, Column, Integer, String, Date, DateTime,
     ForeignKey, column
@@ -25,7 +26,7 @@ users_table = Table(
 )
 reviews_table = Table(
     'reviews', metadata,
-    Column('id', Integer, primary_key=True, autoincremenet=True),
+    Column('id', Integer, primary_key=True, autoincrement=True),
     Column('track', ForeignKey('track.track_title')),
     Column('username', ForeignKey('user.user_name')),
     Column('review', String(1024), nullable=False),
