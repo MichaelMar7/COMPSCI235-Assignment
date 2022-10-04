@@ -13,7 +13,7 @@ from music.domainmodel.user import User
 from music.domainmodel.review import Review
 from music.domainmodel.playlist import PlayList
 from music.adapters.repository import AbstractRepository, RepositoryException
-from music.adapters.csvdatareader import TrackCSVReader
+
 
 class MemoryRepository(AbstractRepository):
     def __init__(self):
@@ -245,52 +245,8 @@ class MemoryRepository(AbstractRepository):
 #######################
 #####review methods####
 #######################
-def read_csv_file(filename:str):
-    with open(filename, encoding='utf-8-sig') as infile:
-        reader = csv.reader(infile)
-        headers = next(reader)
-        for row in reader:
-            row = [item.strip() for item in row]
-            yield row
-def load_users(data_path: Path, repo: MemoryRepository):
-    users = dict()
-    users_filename = str(Path(data_path) / "users.csv")
-    for data_row in read_csv_file(users_filename):
-        user = User(
-            1,
-            user_name = data_row[1],
-            password=generate_password_hash(data_row[2]))
-        repo.add_user(user)
-        users[data_row[0]] = user
-    return users
 
-def load_reviews(data_path: Path, repo: MemoryRepository, users):
-    reviews_filename = str(Path(data_path) / "reviews.csv")
-    for data_row in read_csv_file(reviews_filename):
-        review = Review(
-            track=repo.get_track_by_id(int[data_row[0]]),
-            review_text = data_row[2],
-            rating=data_row[3]
-        )
-        repo.add_review(review)
     
 
-def populate(data_path: Path, repo: MemoryRepository):
-    """
-    Reads csv files and adds all objects from the csv_reader object to this repo from csv_reader object's lists to the repo's lists.
-    """
-    albums_file_name = str(data_path / "raw_albums_excerpt.csv")
-    tracks_file_name = str(data_path / "raw_tracks_excerpt.csv") 
-    reader = TrackCSVReader(albums_file_name, tracks_file_name)
-    reader.read_csv_files()
-    for track in reader.dataset_of_tracks:
-        repo.add_track(track)
-    for album in reader.dataset_of_albums:
-        repo.add_album(album)
-    for artist in reader.dataset_of_artists:
-        repo.add_artist(artist)
-    for genre in reader.dataset_of_genres:
-        repo.add_genre(genre)
-    users = load_users(data_path, repo)
-    load_reviews(data_path, repo, users)
+
 

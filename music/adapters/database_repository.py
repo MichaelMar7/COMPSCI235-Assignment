@@ -42,7 +42,8 @@ class SessionContextManager:
         if not self.__session is None:
             self.__session.close()
 
-class SqlAlchemyReposity(AbstractRepository):
+class SqlAlchemyRepository(AbstractRepository):
+    # Add missing methods
     def __init__(self, session_factory):
         self._session_context_manager = SessionContextManager(session_factory)
     
@@ -70,13 +71,13 @@ class SqlAlchemyReposity(AbstractRepository):
             scm.session.add(track)
             scm.commit()
 
-    def get_track(self, id: id) -> Track:
+    def get_track_by_id(self, id: id) -> Track:
         track = None
         try: 
             track = self._session_context_manager.session.query(Track).filter(Track._track_id == id).one()
         except NoResultFound:
             pass
-        return Track
+        return track
 
     def get_tracks_by_artist(self, target_artist_name: str):
         if target_artist_name is None:
