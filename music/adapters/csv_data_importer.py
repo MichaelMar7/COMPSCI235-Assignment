@@ -13,6 +13,8 @@ from music.domainmodel.review import Review
 
 #from music.domain.model import Article, Tag, User, make_tag_association, make_comment, ModelException
 
+### TODO: MOVE TO csvdatareader.csv file
+
 def read_csv_file(filename:str):
     with open(filename, encoding='utf-8-sig') as infile:
         reader = csv.reader(infile)
