@@ -3,6 +3,7 @@ from pathlib import Path
 from music.adapters.repository import AbstractRepository
 from music.adapters.csvdatareader import TrackCSVReader, load_reviews, load_users
 
+# TODO: Association between Track and Genre?
 
 def populate(data_path: Path, repo: AbstractRepository, database_mode: bool):
     """
