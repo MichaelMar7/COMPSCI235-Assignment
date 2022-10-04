@@ -1,8 +1,7 @@
 from pathlib import Path
 
 from music.adapters.repository import AbstractRepository
-from music.adapters.csv_data_importer import load_reviews, load_users
-from music.adapters.csvdatareader import TrackCSVReader
+from music.adapters.csvdatareader import TrackCSVReader, load_reviews, load_users
 
 
 def populate(data_path: Path, repo: AbstractRepository, database_mode: bool):
