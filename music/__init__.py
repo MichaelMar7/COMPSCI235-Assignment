@@ -11,7 +11,7 @@ from sqlalchemy.orm import sessionmaker, clear_mappers
 from sqlalchemy.pool import NullPool
 
 import music.adapters.repository as repo
-from music.adapters import memory_repository, database_repository, repository_populate
+from music.adapters import memory_repository, database_repository, csvdatareader
 from music.adapters.orm import metadata, map_model_to_tables
 
 """
@@ -84,7 +84,7 @@ def create_app(test_config=None):
             map_model_to_tables()
 
             database_mode = True
-            repository_populate.populate(data_path, repo.repo_instance, database_mode)
+            csvdatareader.populate(data_path, repo.repo_instance, database_mode)
             print("REPOPULATING DATABASE... FINISHED")
 
         else:
