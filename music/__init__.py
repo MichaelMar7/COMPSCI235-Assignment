@@ -5,18 +5,8 @@ from flask import Flask, render_template
 
 import random
 
-import sqlalchemy
-from music.adapters import memory_repository
-
 import music.adapters.repository as repo
 from music.adapters.memory_repository import MemoryRepository, populate
-from music.adapters import database_repository
-from music.adapters.orm import metadata, map_model_to_tables
-
-#imports from SQLAlchemy 
-from sqlalchemy import create_engine
-from sqlalchemy.orm import sessionmaker, clear_mappers
-from sqlalchemy.pool import NullPool
 
 """""" # Stays here for now
 # TODO: Access to the tracks should be implemented via the repository pattern and using blueprints, so this can not
@@ -48,28 +38,12 @@ def create_app(test_config=None):
         app.config.from_mapping(test_config)
         data_path = app.config['TEST_DATA_PATH']
 
-    if app.config['REPOSITORY'] == 'memory':
-        repo.repo_instance = MemoryRepository()
-        database_mode = False
-        populate(data_path, repo.repo_instance, database_mode)
-    elif app.config['REPOSITORY'] == 'database':
-        database_uri = app.config['SQLALCHEMY_DATABASE_URI']
-        database_echo = app.config['SQLALCHEMY_ECHO']
-        database_engine = create_engine(database_uri, connect_arg={"check_same_thread":False}, poolclass=NullPool, echo=database_echo)
+    # Create the MemoryRepository implementation for a memory-based repository 
+    # and fill the content of the repository from the provided csv files.
+    repo.repo_instance = MemoryRepository()
+    populate(data_path, repo.repo_instance)
 
-        session_factory = sessionmaker(autocommit=False, autoflush=True, bind=database_engine)
-        repo.repo_instance = database_repository.SqlAlchemyReposity(session_factory)
-
-        if app.config['TESTING'] == 'TRUE' or len(database_engine.table_names()) == 0:
-            for table in reversed(metadata.sorted_tables):
-                database_engine.execute(table.delete())
-            map_model_to_tables()
-            database_mode = True 
-            populate(data_path, repo.repo_instance, database_mode)
-            print("REPOPULATING DATABASE ... FINISHED")
-        else:
-            map_model_to_tables()
-
+    # Build the application - these steps require an application context.
     with app.app_context():
         pass
         # Register blueprints.
@@ -84,15 +58,18 @@ def create_app(test_config=None):
         from .blueprints.authentication import authentication
         app.register_blueprint(authentication.authentication_blueprint)
 
-        @app.before_first_request
-        def before_flask_http_request_function():
-            if isinstance(repo.repo_instance, database_repository.SqlAlchemyReposity):
-                repo.repo_instance.reset_session()
+        """
 
-        @app.teardown_appcontext
-        def shutdown_session(exception=None):
-            if isinstance(repo.repo_instance, database_repository.SqlAlchemyReposity):
-                repo.repo_instance.close_session()
+    """"""
+    @app.route('/')
+    def home():
+        some_track = create_some_track()
+        # Use Jinja to customize a predefined html page rendering the layout for showing a single track.
+        return render_template('simple_track.html', track=get_random_track())
+        #return render_template('simple_track.html', track=create_some_track())
+        #return render_template('simple_track.html', track=get_random_track(), first_track = get_first_track(), track_list = get_100_tracks(0, 100), track_count = get_track_count())
+    """""""""
+
     return app
 
 # blueprint methods testing
@@ -113,4 +90,3 @@ def get_random_track():
         for track in get_100_tracks(index, index+1):
             if track is not None:
                 return track
-
