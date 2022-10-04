@@ -11,7 +11,7 @@ from sqlalchemy.orm import sessionmaker, clear_mappers
 from sqlalchemy.pool import NullPool
 
 import music.adapters.repository as repo
-from music.adapters import memory_repository, database_repository, csvdatareader
+from music.adapters import memory_repository, database_repository, repository_populate, csvdatareader
 from music.adapters.orm import metadata, map_model_to_tables
 
 """
