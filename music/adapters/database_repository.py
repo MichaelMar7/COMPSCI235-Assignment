@@ -143,9 +143,13 @@ class SqlAlchemyRepository(AbstractRepository):
             tracks = self._session_context_manager.session.query(Track).filter(Track._album == target_album_name).all()
             return tracks 
 
-    def get_tracks_by_genre(self, target_genre_name: str):
-        if target_genre_name is None:
-            tracks = self._session_context_manager.session.query(Track).filter(Track._genres == target_genre_name).all()
+    def get_tracks_by_genre(self, target_genre:str):
+        if target_genre is None:
+            tracks  = self._session_context_manager.session.query(Track).all()
+            return tracks 
+        else:
+            tracks = self._session_context_manager.session.query(Track).filter(Track._genres == target_genre).all()
+            return tracks 
 
     def get_first_track(self):
         track = self._session_context_manager.session.query(Track).first()
@@ -162,6 +166,9 @@ class SqlAlchemyRepository(AbstractRepository):
     def get_next_track(self, track: Track):
         next_track = self._session_context_manager.session.query(Track).filter(Track._track_id == track.track_id).one()
         return next_track
+
+    def track_index(self, track: Track):
+        return super().track_index(track)
 
     #################
     # Album Methods #
@@ -186,22 +193,13 @@ class SqlAlchemyRepository(AbstractRepository):
     def get_next_album(self, album: Album):
         next_album = self._session_context_manager.session.query(Album).filter(Album._album_id == album.album_id).one()
         return next_album
-
-    def get_tracks_by_album(self, target_album_name:str):
-        if target_album_name is None:
-            tracks = self._session_context_manager.session.query(Track).all()
-            return tracks
-        else:
-            tracks = self._session_context_manager.session.query(Track).filter(Track._album == target_album_name).all()
-            return tracks 
     
-    def get_tracks_by_genre(self, target_genre:str):
-        if target_genre is None:
-            tracks  = self._session_context_manager.session.query(Track).all()
-            return tracks 
-        else:
-            tracks = self._session_context_manager.session.query(Track).filter(Track._genres == target_genre).all()
-            return tracks 
+    def album_index(self, album: Album):
+        return super().album_index(album)
+
+    ##################
+    # Review Methods #
+    ##################
 
     def get_reviews_for_track(self):
         reviews = self._session_context_manager.session.query(Review).all()
@@ -219,6 +217,6 @@ class SqlAlchemyRepository(AbstractRepository):
             scm.commit()
 
     def add_genre(self, genre:Genre):
-        with self._session_context_managern as scm:
+        with self._session_context_manager as scm:
             scm.session.add(genre)
             scm.commit()
