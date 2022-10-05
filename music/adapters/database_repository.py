@@ -83,7 +83,7 @@ class SqlAlchemyRepository(AbstractRepository):
     def get_track_by_id(self, id: int) -> Track:
         track = None
         try: 
-            track = self._session_context_manager.session.query(Track).filter(Track._track_id == id).one()
+            track = self._session_context_manager.session.query(Track).filter(Track._Track__track_id == id).one()
         except NoResultFound:
             pass
         return track
@@ -95,7 +95,7 @@ class SqlAlchemyRepository(AbstractRepository):
     def get_album_by_id(self, album_id):
         album = None
         try:
-            album = self._session_context_manager.session.query(Album).filter(Album._album_id == album_id).one()
+            album = self._session_context_manager.session.query(Album).filter(Album._Album__album_id == album_id).one()
         except NoResultFound:
             pass 
         return album
@@ -107,7 +107,7 @@ class SqlAlchemyRepository(AbstractRepository):
     def get_artist(self, artist_name):
         artist = None
         try:
-            artist = self._session_context_manager.session.query(Track).filter(Track._artist == artist_name).one()
+            artist = self._session_context_manager.session.query(Artist).filter(Artist._Artist__full_name == artist_name).one()
         except NoResultFound:
             pass
         return artist
@@ -115,7 +115,7 @@ class SqlAlchemyRepository(AbstractRepository):
     def get_genre(self, genre_name):
         genre = None
         try:
-            genre = self._session_context_manager.session.query(Track).filter(Track._genres == genre_name).one()
+            genre = self._session_context_manager.session.query(Genre).filter(Genre._Genre__genre_name == genre_name).one()
         except NoResultFound:
             pass 
         return genre 
@@ -124,29 +124,36 @@ class SqlAlchemyRepository(AbstractRepository):
     # Track Methods #
     #################
     def get_tracks_by_id(self, id_list):
-        tracks = self._session_context_manager.session.query(Track).filter(Track._track_id.in_(id_list)).all()
+        tracks = self._session_context_manager.session.query(Track).filter(Track._Track__track_id.in_(id_list)).all()
         return tracks
 
     def get_tracks_by_artist(self, target_artist_name: str):
         if target_artist_name is None:
-            tracks = self._session_context_manager.session.query(Track).all()
-            return tracks
+            #tracks = self._session_context_manager.session.query(Track).all()
+            #return tracks
+            return list()
         else:
-            tracks = self._session_context_manager.session.query(Track).filter(Track._artist == target_artist_name).all()
+            """
+            TODO: Get ID of artist from table then use to find tracks
+            """
+            artist = self.get_artist(target_artist_name)
+            tracks = self._session_context_manager.session.query(Track).filter(Track._artist == artist.id).all()
             return tracks
 
     def get_tracks_by_album(self, target_album_name: str):
         if target_album_name is None:
-            tracks = self._session_context_manager.session.query(Track).all()
-            return tracks
+            #tracks = self._session_context_manager.session.query(Track).all()
+            #return tracks
+            return list()
         else:
             tracks = self._session_context_manager.session.query(Track).filter(Track._album == target_album_name).all()
             return tracks 
 
     def get_tracks_by_genre(self, target_genre:str):
         if target_genre is None:
-            tracks  = self._session_context_manager.session.query(Track).all()
-            return tracks 
+            #tracks  = self._session_context_manager.session.query(Track).all()
+            #return tracks 
+            return list()
         else:
             tracks = self._session_context_manager.session.query(Track).filter(Track._genres == target_genre).all()
             return tracks 
@@ -156,15 +163,15 @@ class SqlAlchemyRepository(AbstractRepository):
         return track
 
     def get_last_track(self):
-        track = self._session_context_manager.session.query(Track).order_by(desc(Track._track_id)).first()
+        track = self._session_context_manager.session.query(Track).order_by(desc(Track._Track__id)).first()
         return track
 
     def get_previous_track(self, track: Track):
-        previous_track = self._session_context_manager.session.query(Track).filter(Track._track_id == track.track_id).one()
+        previous_track = self._session_context_manager.session.query(Track).filter(Track._Track__id == track.track_id).one()
         return previous_track
 
     def get_next_track(self, track: Track):
-        next_track = self._session_context_manager.session.query(Track).filter(Track._track_id == track.track_id).one()
+        next_track = self._session_context_manager.session.query(Track).filter(Track._Track__id == track.track_id).one()
         return next_track
 
     def track_index(self, track: Track):
@@ -175,7 +182,7 @@ class SqlAlchemyRepository(AbstractRepository):
     #################
 
     def get_albums_by_id(self, id_list):
-        albums = self._session_context_manager.session.query(Album).filter(Album._album_id.in_(id_list)).all()
+        albums = self._session_context_manager.session.query(Album).filter(Album._Album__id.in_(id_list)).all()
         return albums
     
     def get_first_album(self):
@@ -183,15 +190,16 @@ class SqlAlchemyRepository(AbstractRepository):
         return album
     
     def get_last_album(self):
-        album = self._session_context_manager.session.query(Album).order_by(desc(Album._album_id)).first()
+        print(self._session_context_manager.session.query(Album).order_by(desc(Album._Album__id)).all())
+        album = self._session_context_manager.session.query(Album).order_by(desc(Album._Album__id)).first()
         return album
 
     def get_previous_album(self, album: Album):
-        previous_album = self._session_context_manager.session.query(Album).filter(Album._album_id == album.album_id).one() 
+        previous_album = self._session_context_manager.session.query(Album).filter(Album._Album__id == album.album_id).one() 
         return previous_album
 
     def get_next_album(self, album: Album):
-        next_album = self._session_context_manager.session.query(Album).filter(Album._album_id == album.album_id).one()
+        next_album = self._session_context_manager.session.query(Album).filter(Album._Album__id == album.album_id).one()
         return next_album
     
     def album_index(self, album: Album):

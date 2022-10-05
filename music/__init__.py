@@ -11,7 +11,7 @@ from sqlalchemy.orm import sessionmaker, clear_mappers
 from sqlalchemy.pool import NullPool
 
 import music.adapters.repository as repo
-from music.adapters import memory_repository, database_repository, repository_populate, csvdatareader
+from music.adapters import memory_repository, database_repository, repository_populate
 from music.adapters.orm import metadata, map_model_to_tables
 
 """
@@ -59,8 +59,8 @@ def create_app(test_config=None):
         database_uri = app.config["SQLALCHEMY_DATABASE_URI"]
 
         # We create a comparatively simple SQLite database, which is based on a single file (see .env for URI).
-        # For example the file database could be located locally and relative to the application in covid-19.db,
-        # leading to a URI of "sqlite:///covid-19.db".
+        # For example the file database could be located locally and relative to the application in music.db,
+        # leading to a URI of "sqlite:///music.db".
         # Note that create_engine does not establish any actual DB connection directly!
         database_echo = app.config['SQLALCHEMY_ECHO']
         # Please do not change the settings for connect_args and poolclass!
@@ -72,6 +72,7 @@ def create_app(test_config=None):
         # Create the SQLAlchemy DatabaseRepository instance for an sqlite3-based repository.
         repo.repo_instance = database_repository.SqlAlchemyRepository(session_factory)
 
+        #repository_populate.populate(data_path, repo.repo_instance, True)
         if app.config["TESTING"] == "True" or len(database_engine.table_names()) == 0:
             print("REPOPULATING DATABASE...")
             # For testing, or first-time use of the web application, reinitialise the database.
@@ -84,7 +85,7 @@ def create_app(test_config=None):
             map_model_to_tables()
 
             database_mode = True
-            csvdatareader.populate(data_path, repo.repo_instance, database_mode)
+            repository_populate.populate(data_path, repo.repo_instance, database_mode)
             print("REPOPULATING DATABASE... FINISHED")
 
         else:
@@ -94,7 +95,6 @@ def create_app(test_config=None):
 
     # Build the application - these steps require an application context.
     with app.app_context():
-        pass
         # Register blueprints.
         """These will be for each blueprint of the app"""
         
@@ -106,6 +106,19 @@ def create_app(test_config=None):
 
         from .blueprints.authentication import authentication
         app.register_blueprint(authentication.authentication_blueprint)
+
+        # Register a callback the makes sure that database sessions are associated with http requests
+        # We reset the session inside the database repository before a new flask request is generated
+        @app.before_request
+        def before_flask_http_request_function():
+            if isinstance(repo.repo_instance, database_repository.SqlAlchemyRepository):
+                repo.repo_instance.reset_session()
+
+        # Register a tear-down method that will be called after each request has been processed.
+        @app.teardown_appcontext
+        def shutdown_session(exception=None):
+            if isinstance(repo.repo_instance, database_repository.SqlAlchemyRepository):
+                repo.repo_instance.close_session()
 
         """
 
