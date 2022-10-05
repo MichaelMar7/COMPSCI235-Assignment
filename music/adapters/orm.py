@@ -28,6 +28,7 @@ reviews_table = Table(
     'reviews', metadata,
     Column('id', Integer, primary_key=True, autoincrement=True),
     Column('track', ForeignKey('tracks.id')),
+    Column('user', ForeignKey('users.id')),
     Column('username', String(1024), nullable=False),
     Column('review', String(1024), nullable=False),
     Column('rating', Integer, nullable=False),
@@ -66,9 +67,12 @@ def map_model_to_tables():
     mapper(User, users_table, properties={
         '_User__user_name': users_table.c.user_name,
         '_User__password': users_table.c.password,
-        '_User__reviews': relationship(Review, backred='_Review__user')
+        '_User__reviews': relationship(Review, backref='_Review__user')
     })
     mapper(Review, reviews_table, properties={
+        '_Review__id': reviews_table.c.id,
+        '_Review__track': reviews_table.c.track,
+        '_Review__username': reviews_table.c.username,
         '_Review__review': reviews_table.c.review,
         '_Review__timestamp': reviews_table.c.timestamp
     })
@@ -76,6 +80,11 @@ def map_model_to_tables():
         '_Track__id': tracks_table.c.id,
         '_Track__track_id': tracks_table.c.track_id,
         '_Track__track_title': tracks_table.c.track_title,
+        '_Track__artist': tracks_table.c.artist_id,
+        '_Track__album': tracks_table.c.album_id,
+        #'_Track__genres': relationship(Genre, backref='_Genre__id'),
+        '_Track__track_url': tracks_table.c.track_url,
+        '_Track__track_duration': tracks_table.c.track_duration,
         #'_Track__review': relationship(Review, backref='_Review__track')
     })
     mapper(Artist, artists_table, properties={
