@@ -3,6 +3,8 @@ from pathlib import Path
 from music.adapters.repository import AbstractRepository
 from music.adapters.csvdatareader import TrackCSVReader, load_reviews, load_users
 
+from music.domainmodel.artist import Artist
+
 # TODO: Association between Track and Genre?
 
 def populate(data_path: Path, repo: AbstractRepository, database_mode: bool):
@@ -13,14 +15,14 @@ def populate(data_path: Path, repo: AbstractRepository, database_mode: bool):
     tracks_file_name = str(data_path / "raw_tracks_excerpt.csv") 
     reader = TrackCSVReader(albums_file_name, tracks_file_name)
     reader.read_csv_files()
+    for artist in reader.dataset_of_artists:
+        repo.add_artist(artist)
+    for genre in reader.dataset_of_genres:
+        repo.add_genre(genre)
+    for album in reader.dataset_of_albums:
+        repo.add_album(album)
     for track in reader.dataset_of_tracks:
         repo.add_track(track)
-    if database_mode == False:
-        for album in reader.dataset_of_albums:
-            repo.add_album(album)
-        for artist in reader.dataset_of_artists:
-            repo.add_artist(artist)
-        for genre in reader.dataset_of_genres:
-            repo.add_genre(genre)
     users = load_users(data_path, repo)
     load_reviews(data_path, repo, users)
+    

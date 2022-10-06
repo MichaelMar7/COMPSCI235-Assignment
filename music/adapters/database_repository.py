@@ -173,12 +173,15 @@ class SqlAlchemyRepository(AbstractRepository):
         return list()
         """
         if target_artist_name is None:
-            #tracks = self._session_cm.session.query(Track).all()
-            #return tracks
             return list()
         else:
             artist = self.get_artist(target_artist_name)
-            tracks = self._session_cm.session.query(Track).filter(Track._Track__artist == artist).all()
+            artist_id = artist.artist_id
+            #artists = self._session_cm.session.query(Artist).filter(Artist._Artist__artist_id == artist.artist_id).fetchall()
+            artists = self._session_cm.session.execute('SELECT id FROM artists WHERE artist_id = :artist_id', {'artist_id': artist_id}).fetchall()
+            param = (artists,)
+            #tracks = self._session_cm.session.query(Track).filter(Track._Track__artist.in_(artists)).all()
+            tracks = self._session_cm.session.execute("SELECT * FROM tracks WHERE artist_id IN :artists", {"artists":artists}).fetchall()
             return tracks
         """
     
@@ -187,8 +190,6 @@ class SqlAlchemyRepository(AbstractRepository):
         return list()
         """
         if target_genre is None:
-            #tracks  = self._session_cm.session.query(Track).all()
-            #return tracks 
             return list()
         else:
             tracks = self._session_cm.session.query(Track).filter(Track._genres == target_genre).all()
@@ -204,12 +205,10 @@ class SqlAlchemyRepository(AbstractRepository):
         return track
 
     def get_previous_track(self, track: Track):
-        #previous_track = self._session_cm.session.query(Track).order_by(desc(Track._Track__id)).filter(Track._Track__id == track.track_id).one()
         previous_track = self._session_cm.session.query(Track).filter(Track._Track__track_id < track.track_id).order_by(desc(Track._Track__track_id)).first()
         return previous_track
 
     def get_next_track(self, track: Track):
-        #next_track = self._session_cm.session.query(Track).filter(Track._Track__id == track.track_id).one()
         next_track = self._session_cm.session.query(Track).filter(Track._Track__track_id > track.track_id).order_by(asc(Track._Track__track_id)).first()
         return next_track
 
@@ -229,17 +228,14 @@ class SqlAlchemyRepository(AbstractRepository):
         return album
     
     def get_last_album(self):
-        #print(self._session_cm.session.query(Album).order_by(desc(Album._Album__id)).all())
         album = self._session_cm.session.query(Album).order_by(desc(Album._Album__album_id)).first()
         return album
 
     def get_previous_album(self, album: Album):
-        #previous_album = self._session_cm.session.query(Album).order_by(desc(Album._Album__id)).filter(Album._Album__id == album.album_id).one() 
         previous_album = self._session_cm.session.query(Album).filter(Album._Album__album_id < album.album_id).order_by(desc(Album._Album__album_id)).first()
         return previous_album
 
     def get_next_album(self, album: Album):
-        #next_album = self._session_cm.session.query(Album).filter(Album._Album__id == album.album_id).one()
         next_album = self._session_cm.session.query(Album).filter(Album._Album__album_id > album.album_id).order_by(asc(Album._Album__album_id)).first()
         return next_album
     
