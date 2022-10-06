@@ -72,7 +72,7 @@ def create_app(test_config=None):
         # Create the SQLAlchemy DatabaseRepository instance for an sqlite3-based repository.
         repo.repo_instance = database_repository.SqlAlchemyRepository(session_factory)
 
-        #repository_populate.populate(data_path, repo.repo_instance, True)
+        #if True:
         if app.config["TESTING"] == "True" or len(database_engine.table_names()) == 0:
             print("REPOPULATING DATABASE...")
             # For testing, or first-time use of the web application, reinitialise the database.

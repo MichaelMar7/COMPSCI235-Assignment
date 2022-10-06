@@ -17,9 +17,10 @@ def populate(data_path: Path, repo: AbstractRepository, database_mode: bool):
         repo.add_track(track)
     for album in reader.dataset_of_albums:
         repo.add_album(album)
-    for artist in reader.dataset_of_artists:
-        repo.add_artist(artist)
-    for genre in reader.dataset_of_genres:
-        repo.add_genre(genre)
+    if database_mode == False:
+        for artist in reader.dataset_of_artists:
+            repo.add_artist(artist)
+        for genre in reader.dataset_of_genres:
+            repo.add_genre(genre)
     users = load_users(data_path, repo)
     load_reviews(data_path, repo, users)
