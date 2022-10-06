@@ -20,8 +20,9 @@
     </div>
 
     <div style="text-align:center; padding:20px">
-        <h3>{{ track.title }}</h3>
+        <h3><a href="/browse_tracks?track_id={{track.track_id}}">{{ track.title }}</a></h3>
         <h4>Track ID: {{ track.track_id }}</h4>
+        <!--
         <h4>Track Artist: {{ track.artist.full_name }}</h4>
             <h4>Track Genres: </h4>
             {% for genre in track.genres %}
@@ -29,6 +30,7 @@
             {% endfor %}
         <h4>Track Duration: <b>{{ track.track_duration }}</b></h4>
         <h4>Track URL: {{ track.track_url }}</a></h4>
+        -->
     </div>
 
     <div style="float:left">
