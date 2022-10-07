@@ -241,6 +241,9 @@ class MemoryRepository(AbstractRepository):
             if review.track.track_id == track_id:
                 reviews.append(review)
         return reviews
+    
+    def make_artists_genres_unique_table(self):
+        pass
 
 #######################
 #####review methods####

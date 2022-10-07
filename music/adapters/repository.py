@@ -146,6 +146,9 @@ class AbstractRepository(abc.ABC):
         raise NotImplementedError
     
     @abc.abstractmethod
-    def get_reviews_for_track(track_id: int):
+    def get_reviews_for_track(self, track_id: int):
         raise NotImplementedError
     
+    @abc.abstractmethod
+    def make_artists_genres_unique_table(self):
+        raise NotImplementedError

@@ -281,3 +281,7 @@ class SqlAlchemyRepository(AbstractRepository):
         with self._session_cm as scm:
             scm.session.add(genre)
             scm.commit()
+    
+    def make_artists_genres_unique_table(self):
+        self._session_cm.session.execute("CREATE TABLE artists_unique AS SELECT DISTINCT artists.artist_id, artists.full_name FROM artists ORDER BY artists.artist_id")
+        self._session_cm.session.execute("CREATE TABLE genres_unique AS SELECT DISTINCT genres.genre_id, genres.name FROM genres ORDER BY genres.genre_id")
