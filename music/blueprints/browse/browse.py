@@ -314,7 +314,7 @@ def browse_tracks_by_genre():
         random_album_tracks = repo.repo_instance.get_tracks_by_album(random_album.title)
 
         return render_template(
-            "browse/tracks.html",
+            "browse/tracks_by.html",
             page_title="Tracks by Genre",
             random_track=utilities.get_random_track(repo.repo_instance),
             random_album=random_album, 

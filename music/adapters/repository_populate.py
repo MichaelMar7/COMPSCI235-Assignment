@@ -25,4 +25,5 @@ def populate(data_path: Path, repo: AbstractRepository, database_mode: bool):
         repo.add_track(track)
     users = load_users(data_path, repo)
     load_reviews(data_path, repo, users)
+    repo.make_artists_genres_unique_table()
     

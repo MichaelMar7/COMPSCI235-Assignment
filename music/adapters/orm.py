@@ -63,12 +63,27 @@ albums_table = Table(
     Column('title', String(1024), nullable=False)
 )
 
+
 track_genres_table = Table(
     'track_genres', metadata,
     Column('id', Integer, primary_key=True, autoincrement=True),
     Column('track_id', ForeignKey('tracks.id')),
     Column('genre_id', ForeignKey('genres.id'))
 )
+
+"""
+artists_unique_table = Table(
+    'artists_unique', metadata,
+    Column('artist_id', Integer, nullable=False),
+    Column('full_name', String(255), nullable=False)
+)
+
+genres_unique_table = Table(
+    'genres_unique', metadata,
+    Column('genre_id', Integer, nullable=False),
+    Column('name', String(255), nullable=False)
+)
+"""
 
 def map_model_to_tables():
     mapper(User, users_table, properties={
