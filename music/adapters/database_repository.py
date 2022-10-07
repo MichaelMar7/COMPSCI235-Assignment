@@ -170,24 +170,40 @@ class SqlAlchemyRepository(AbstractRepository):
             return tracks 
 
     def get_tracks_by_artist(self, target_artist_name: str):
-        return list()
-        """
-        if target_artist_name is None:
-            return list()
-        else:
-            artist = self.get_artist(target_artist_name)
+        tracks = list()
+        artist = self.get_artist(target_artist_name)
+        if artist is not None:
             artist_id = artist.artist_id
-            #artists = self._session_cm.session.query(Artist).filter(Artist._Artist__artist_id == artist.artist_id).fetchall()
             artists = self._session_cm.session.execute('SELECT id FROM artists WHERE artist_id = :artist_id', {'artist_id': artist_id}).fetchall()
-            param = (artists,)
-            #tracks = self._session_cm.session.query(Track).filter(Track._Track__artist.in_(artists)).all()
-            tracks = self._session_cm.session.execute("SELECT * FROM tracks WHERE artist_id IN :artists", {"artists":artists}).fetchall()
+            artists_list = tuple()
+            for id in artists:
+                if id is not None:
+                    new_id = (id[0],)
+                    artists_list += new_id
+            tracks = self._session_cm.session.execute("SELECT * FROM tracks WHERE artist_id IN %s" % str(artists_list)).fetchall()
             return tracks
-        """
     
 
     def get_tracks_by_genre(self, target_genre:str):
-        return list()
+        tracks = list()
+        genre = self.get_genre(target_genre)
+        if genre is not None:
+            genre_id = genre.genre_id
+            genres = self._session_cm.session.execute('SELECT id FROM genres WHERE genre_id = :genre_id', {'genre_id': genre_id}).fetchall()
+            genres_list = tuple()
+            for id in genres:
+                if id is not None:
+                    new_id = (id[0],)
+                    genres_list += new_id
+            tracks_ids = self._session_cm.session.execute("SELECT track_id FROM track_genres WHERE genre_id IN %s" % str(genres_list)).fetchall()
+            tracks_ids_list = tuple()
+            for id in tracks_ids:
+                if id is not None:
+                    new_id = (id[0],)
+                    tracks_ids_list += new_id
+            tracks = self._session_cm.session.execute("SELECT * FROM tracks WHERE id IN %s" % str(tracks_ids_list)).fetchall()
+        return tracks
+        #return list()
         """
         if target_genre is None:
             return list()
