@@ -71,7 +71,7 @@ def test_comment(client, auth):
         '/review_track',
         data={'comment': 'I like this track', 'track_id': 3}
     )
-    assert response.headers['Location'] == "/browse_tracks?track_title=Electric+Ave&track_id=3&view_comments_for=3"
+    assert response.headers['Location'] == "/browse_tracks?track_id=3&view_comments_for=3"
 
 
 @pytest.mark.parametrize(('comment', 'messages'), (
