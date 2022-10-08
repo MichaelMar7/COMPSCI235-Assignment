@@ -283,5 +283,11 @@ class SqlAlchemyRepository(AbstractRepository):
             scm.commit()
     
     def make_artists_genres_unique_table(self):
+        self._session_cm.session.execute("DROP TABLE IF EXISTS artists_unique")
+        self._session_cm.session.execute("DROP TABLE IF EXISTS genres_unique")
         self._session_cm.session.execute("CREATE TABLE artists_unique AS SELECT DISTINCT artists.artist_id, artists.full_name FROM artists ORDER BY artists.artist_id")
         self._session_cm.session.execute("CREATE TABLE genres_unique AS SELECT DISTINCT genres.genre_id, genres.name FROM genres ORDER BY genres.genre_id")
+        #self._session_cm.session.execute("SELECT DISTINCT artists.artist_id, artists.full_name INTO artists_unique IN 'music1.db' FROM artists ORDER BY artists.artist_id")
+        #self._session_cm.session.execute("SELECT DISTINCT genres.genre_id, genres.name INTO genres_unique IN 'music1.db' FROM genres ORDER BY genres.genre_id")
+        #self._session_cm.session.execute("INSERT INTO artists_unique (artist_id, full_name) SELECT DISTINCT artists.artist_id, artists.full_name FROM artists ORDER BY artists.artist_id")
+        #self._session_cm.session.execute("INSERT INTO genres_unique (genre_id, name) SELECT DISTINCT genres.genre_id, genres.name FROM genres ORDER BY genres.genre_id")

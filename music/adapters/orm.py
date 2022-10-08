@@ -71,7 +71,7 @@ track_genres_table = Table(
     Column('genre_id', ForeignKey('genres.id'))
 )
 
-"""
+# These two tables will be deleted, for TESTING mode where these tables already exist
 artists_unique_table = Table(
     'artists_unique', metadata,
     Column('artist_id', Integer, nullable=False),
@@ -83,7 +83,7 @@ genres_unique_table = Table(
     Column('genre_id', Integer, nullable=False),
     Column('name', String(255), nullable=False)
 )
-"""
+
 
 def map_model_to_tables():
     mapper(User, users_table, properties={
