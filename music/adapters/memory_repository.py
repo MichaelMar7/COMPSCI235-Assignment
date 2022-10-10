@@ -242,6 +242,9 @@ class MemoryRepository(AbstractRepository):
                 reviews.append(review)
         return reviews
     
+    def load_tracks(self, dataset_of_tracks):
+        pass
+
     def make_artists_genres_unique_table(self):
         pass
 
