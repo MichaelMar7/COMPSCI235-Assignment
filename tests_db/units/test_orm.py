@@ -94,8 +94,8 @@ def test_saving_of_tracks(empty_session): # PASSED
     empty_session.add(track)
     empty_session.commit()
     
-    rows = list(empty_session.execute('SELECT title FROM tracks'))
-    assert rows == [('Not Food',)]
+    rows = list(empty_session.execute('SELECT track_id, title FROM tracks'))
+    assert rows == [(2, 'Not Food')]
 
 def test_loading_of_track(empty_session): # PASSED
     track_key = insert_track(empty_session)
