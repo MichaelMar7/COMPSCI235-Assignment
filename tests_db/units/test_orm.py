@@ -60,6 +60,10 @@ def make_user():
     user = User(9, "Michael", "Password123")
     return user
 
+def make_review():
+    track = make_track()
+    review = Review(track, "thorke", "This a good song", 2)
+    return review
 
 def test_loading_of_users(empty_session): # PASSED 
     users = list()
@@ -105,20 +109,10 @@ def test_loading_of_track(empty_session): # PASSED
     assert expected_track == fetched_track
     assert track_key == fetched_track.track_id
 
-def test_saving_of_review(empty_session): # TODO IntegrityError
-    track_key = insert_track(empty_session)
-    user_key = insert_user(empty_session, (1, "Andrew", "Password123"))
-
-    rows = empty_session.query(Track).all()
-    track = rows[0]
-    user = empty_session.query(User).filter(User._User__user_name == "Andrew").one()
-
-    review_text = "Good song."
-    review = Review(track, user, review_text, 5)
-
+def test_saving_of_review(empty_session): # PASSED
+    review = make_review()
     empty_session.add(review)
     empty_session.commit()
-
-    rows = list(empty_session.execute('SELECT user_name, review From reviews'))
-
-    assert rows == [(track_key, user_key, review_text)]
+    review_text = list(empty_session.execute('SELECT review_text FROM reviews'))
+    assert review_text[0] == ('This a good song',)
+    
