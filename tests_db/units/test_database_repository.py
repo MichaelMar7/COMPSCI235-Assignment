@@ -1,4 +1,5 @@
-"""import pytest 
+from flask import session
+import pytest 
 from music.adapters.database_repository import SqlAlchemyRepository
 from music.adapters.repository import RepositoryException
 from music.domainmodel.album import Album
@@ -146,5 +147,42 @@ def test_repository_does_not_retrieve_album_for_non_existent_id(session_factory)
     repo = SqlAlchemyRepository(session_factory)
 
     albums = repo.get_albums_by_id([10000, 9999])
-    assert len(albums) == 0
-"""
+    assert len(albums) == 0 
+
+def test_can_retrieve_an_track_and_add_a_review_to_it(session_factory):
+    repo = SqlAlchemyRepository(session_factory)
+
+    user = repo.get_user('thorke')
+    track = repo.get_track_by_id(20)
+    review = Review(track, user.user_name, "Good song", 1)
+
+    repo.add_review(review) 
+
+    assert track.title == "Spiritual Level"
+    assert [review] == repo.get_reviews_for_track(20)
+
+def test_repository_does_not_add_a_review_without_a_user(session_factory): 
+    repo = SqlAlchemyRepository(session_factory)
+
+    track = repo.get_track_by_id(2)
+    review = Review(track , "Doesnt exist", "This song is amazing", 5)
+    try:
+        repo.add_review(review)
+    except RepositoryException:
+        pass
+
+def test_repository_can_retrieve_genre(session_factory):
+    repo = SqlAlchemyRepository(session_factory)
+
+    album1 = repo.get_album_by_id(4)
+    album2 = repo.get_album_by_title("Niris")
+    
+    assert album1 == album2
+
+def test_repository_can_retrieve_artist(session_factory):
+    repo = SqlAlchemyRepository(session_factory)
+
+    artist1 = repo.get_artist_by_id(1)
+    artist2 = repo.get_artist("AWOL")
+
+    assert artist1 == artist2

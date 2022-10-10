@@ -9,21 +9,6 @@ from music.domainmodel.genre import Genre
 from music.domainmodel.user import User
 from music.domainmodel.review import Review
 
-# def insert_user(empty_session, values=None):
-#     new_id = 6
-#     new_name = "Michael"
-#     new_password = "1234567"
-
-#     if values is not None:
-#         new_id = values[0]
-#         new_name = values[0]
-#         new_password = values[0]
-    
-#     empty_session.execute("INSERT INTO users (id, user_name, password) VALUES (:id, :user_name, :password)",
-#                           {"user_id": new_id, "user_name": new_name, "password": new_password})
-#     row = empty_session.execute("SELECT id from users where user_name = :user_name",
-#                                 {"user_name": new_name}).fetchone()
-#     return row[0]
 def insert_user(empty_session, values=None):
     new_id = 3
     new_name = "Andrew"
@@ -33,10 +18,10 @@ def insert_user(empty_session, values=None):
         new_id = values[0]
         new_name = values[1]
         new_password = values[2]
-        empty_session.execute('INSERT INTO users (user_id, user_name, password) VALUES (:user_id, :user_name, :password)',
-                                {'user_id':new_id, 'user_name': new_name, 'password': new_password})
-        row = empty_session.execute('SELECT user_id from users where user_name = :user_name',
-                                {'user_name': new_name}).fetchone()
+    empty_session.execute('INSERT INTO users (user_id, user_name, password) VALUES (:user_id, :user_name, :password)',
+                            {'user_id':new_id, 'user_name': new_name, 'password': new_password})
+    row = empty_session.execute('SELECT user_id from users where user_name = :user_name',
+                            {'user_name': new_name}).fetchone()
     return row[0]
 
 def insert_users(empty_session, values):
@@ -49,83 +34,83 @@ def insert_users(empty_session, values):
 
 def insert_track(empty_session):
     empty_session.execute(
-        'INSERT INTO tracks (track_id, track_title, artist_id, album_id, track_url, track_duration) VALUES '
-        '(:track_id, "Food", :artist_id, :album_id, :track_url, :track_duration)',
-        {'track_id': 2}, 
-        {'artist_id' : 3},
-        {'track_url' : "www.testing.com :)"},
-        {'track_duration' : 3}
-        )
-    row = empty_session.execute('SELECT id from tracks').fetchone()
+        'INSERT INTO tracks (track_id, title, track_url, track_duration, album_id, artist_id) VALUES '
+        '(2, "Food", "www.AWebsite.com", 169, 1, 1)'
+    )
+    row = empty_session.execute('SELECT track_id from tracks').fetchone()
     return row[0]
 
 def make_track():
-    track = Track(
-        2,
-        "Not Food"
-    )
+    track = Track(2,"Not Food")
+    track.album = "Yessirski"
+    track.artist = "Lil Uzi Verrrrrrrrt"
+    track.track_duration = 5
+    track.track_url = "Website Name"
     return track
 
 def make_album():
-    album = Album(2, "Yep")
+    album = Album(2, "Album Name")
     return album
+
+def make_artist():
+    artist = Artist(2, "Artist Name")
+    return artist
 
 def make_user():
     user = User(9, "Michael", "Password123")
     return user
 
 
-# def test_loading_of_users(empty_session): # PASSED 
-#     users = list()
-#     users.append((10, "edward", "Abc123123"))
-#     insert_users(empty_session, users)
+def test_loading_of_users(empty_session): # PASSED 
+    users = list()
+    users.append((10, "edward", "Abc123123"))
+    insert_users(empty_session, users)
 
-#     expected = [
-#         User(10, "edward", "Abc123123"),
-#     ]
-#     assert empty_session.query(User).all() == expected
+    expected = [
+        User(10, "edward", "Abc123123"),
+    ]
+    assert empty_session.query(User).all() == expected
 
-# def test_saving_of_users(empty_session): # PASSED 
-#     user = make_user()
-#     empty_session.add(user)
-#     empty_session.commit()
+def test_saving_of_users(empty_session): # PASSED 
+    user = make_user()
+    empty_session.add(user)
+    empty_session.commit()
 
-#     rows = list(empty_session.execute('SELECT user_name, password FROM users'))
-#     assert rows == [('michael', 'Password123')]
+    rows = list(empty_session.execute('SELECT user_name, password FROM users'))
+    assert rows == [('michael', 'Password123')]
 
-# def test_saving_of_users_with_common_user_name(empty_session): # TODO IntegrityError not being raised
-#     insert_user(empty_session, (6, "Andrew", "Abc123123"))
-#     empty_session.commit()
+def test_saving_of_users_with_common_user_name(empty_session): # PASSED
+    insert_user(empty_session, (6, "Andrew", "Abc123123"))
+    empty_session.commit()
+    try:
+        user = User(6, "Andrew", "Abc123123")
+        empty_session.add(user)
+        empty_session.commit()
+    except IntegrityError:
+        pass
 
-#     with pytest.raises(IntegrityError):
-#         user = User(6, "Andrew", "Abc123123")
-#         empty_session.add(user)
-#         empty_session.commit()
+def test_saving_of_tracks(empty_session): # PASSED
+    track = make_track()
+    empty_session.add(track)
+    empty_session.commit()
+    
+    rows = list(empty_session.execute('SELECT title FROM tracks'))
+    assert rows == [('Not Food',)]
 
-# def test_saving_of_track(empty_session): # TODO IntegrityError
-#     track = make_track()
-#     album = make_album()
-#     empty_session.add(track)
-#     empty_session.add(album)
-#     empty_session.commit()
+def test_saving_of_review(empty_session): # TODO AttributeError
+    track_key = insert_track(empty_session)
+    user_key = insert_user(empty_session, (1, "Andrew", "Password123"))
 
-#     rows = list(empty_session.execute('SELECT track_id, track_title, artist_id, album_id, track_url, track_duration'))
-#     assert rows == [(2, "Food", 2, 3, "okay", 4)]
+    rows = empty_session.query(Track).all()
+    track = rows[0]
+    user = empty_session.query(User).filter(User._User__user_name == "Andrew").one()
 
-# def testing_saving_of_review(empty_session): # TODO AttributeError
-#     track_key = insert_track(empty_session)
-#     user_key = insert_user(empty_session, ("Andrew", "Password123"))
+    review_text = "Good song."
+    review = Review(track, user, review_text, 5)
 
-#     rows = empty_session.query(Track).all()
-#     track = rows[0]
-#     user = empty_session.query(User).filter(User._User__user_name == "Andrew").one()
+    empty_session.add(review)
+    empty_session.commit()
 
-#     review_text = "Good song."
-#     review = Review(track, user.user_name, review_text)
+    rows = list(empty_session.execute('SELECT review From reviews'))
 
-#     empty_session.add(review)
-#     empty_session.commit()
-
-#     rows = list(empty_session.execute('SELECT user_id, track_id, review From reviews'))
-
-#     assert rows == [(user_key, track_key, review_text)]
+    assert rows == [(review_text)]

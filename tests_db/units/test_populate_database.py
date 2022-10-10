@@ -1,7 +1,8 @@
+from unicodedata import name
 from sqlalchemy import select, inspect
 
 from music.adapters.orm import metadata
-"""
+
 def test_database_populate_inspect_table_names(database_engine):
 
     inspector = inspect(database_engine)
@@ -35,7 +36,8 @@ def test_database_populate_select_all_reviews(database_engine):
         for row in result:
             all_reviews.append((row['id'], row['username'], row['track'], row['review']))
         
-        assert len(all_reviews) == 0 
+        reviews = len(all_reviews)
+        assert reviews == 0 
 
 def test_database_populate_select_all_tracks(database_engine):
 
@@ -51,4 +53,52 @@ def test_database_populate_select_all_tracks(database_engine):
             all_tracks.append((row['id'],row['title']))
 
         tracks = len(all_tracks)
-        assert tracks == 2000"""
+        assert tracks == 2000
+
+def test_database_populate_select_all_artists(database_engine):
+
+    inspector = inspect(database_engine)
+    name_of_artists_table = inspector.get_table_names()[1]
+
+    with database_engine.connect() as connection:
+        select_statement = select([metadata.tables[name_of_artists_table]])
+        result = connection.execute(select_statement)
+    
+        all_artists = []
+        for row in result:
+            all_artists.append((row['artist_id'], row['full_name']))
+
+        artists = len(all_artists)
+        assert artists == 2000
+
+def test_database_populate_select_all_genres(database_engine):
+
+    inspector = inspect(database_engine)
+    name_of_genres_table = inspector.get_table_names()[3]
+    
+    with database_engine.connect() as connection:
+        select_statement = select([metadata.tables[name_of_genres_table]])
+        result = connection.execute(select_statement)
+
+        all_genres = []
+        for row in result:
+            all_genres.append((row['genre_id'], row['name']))
+
+        genres = len(all_genres)
+        assert genres == 2268
+
+def test_database_populate_select_all_albums(database_engine):
+
+    inspector = inspect(database_engine)
+    name_of_albums_table = inspector.get_table_names()[0]
+
+    with database_engine.connect() as connection:
+        select_statement = select([metadata.tables[name_of_albums_table]])
+        result = connection.execute(select_statement)
+
+        all_albums = []
+        for row in result:
+            all_albums.append((row['album_id'], row['title']))
+        
+        genres = len(all_albums)
+        assert genres == 427
