@@ -282,6 +282,11 @@ class SqlAlchemyRepository(AbstractRepository):
             scm.session.add(genre)
             scm.commit()
     
+    def load_tracks(self, dataset_of_tracks):
+        with self._session_cm as scm:
+            scm.session.add_all(dataset_of_tracks)
+            scm.commit()
+
     def make_artists_genres_unique_table(self):
         self._session_cm.session.execute("DROP TABLE IF EXISTS artists_unique")
         self._session_cm.session.execute("DROP TABLE IF EXISTS genres_unique")

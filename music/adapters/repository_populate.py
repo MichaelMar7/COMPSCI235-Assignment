@@ -15,15 +15,18 @@ def populate(data_path: Path, repo: AbstractRepository, database_mode: bool):
     tracks_file_name = str(data_path / "raw_tracks_excerpt.csv") 
     reader = TrackCSVReader(albums_file_name, tracks_file_name)
     reader.read_csv_files()
-    for artist in reader.dataset_of_artists:
-        repo.add_artist(artist)
-    for genre in reader.dataset_of_genres:
-        repo.add_genre(genre)
-    for album in reader.dataset_of_albums:
-        repo.add_album(album)
-    for track in reader.dataset_of_tracks:
-        repo.add_track(track)
+    if database_mode is False:
+        for artist in reader.dataset_of_artists:
+            repo.add_artist(artist)
+        for genre in reader.dataset_of_genres:
+            repo.add_genre(genre)
+        for album in reader.dataset_of_albums:
+            repo.add_album(album)
+        for track in reader.dataset_of_tracks:
+            repo.add_track(track)
+    elif database_mode is True:
+        repo.load_tracks(reader.dataset_of_tracks)
+        repo.make_artists_genres_unique_table()
     users = load_users(data_path, repo)
     load_reviews(data_path, repo, users)
-    repo.make_artists_genres_unique_table()
     

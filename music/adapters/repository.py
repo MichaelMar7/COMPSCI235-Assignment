@@ -150,5 +150,9 @@ class AbstractRepository(abc.ABC):
         raise NotImplementedError
     
     @abc.abstractmethod
+    def load_tracks(self, dataset_of_tracks):
+        raise NotImplementedError
+
+    @abc.abstractmethod
     def make_artists_genres_unique_table(self):
         raise NotImplementedError
