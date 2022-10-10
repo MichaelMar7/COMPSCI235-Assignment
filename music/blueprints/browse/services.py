@@ -24,7 +24,10 @@ def add_review(track_id: int, review_text: str, user_name: str, repo: AbstractRe
     user = repo.get_user(user_name)
     if user is None: 
         raise UnknownUserException
-    review = Review(track, user_name, review_text, 1)
+    #review = Review(track, user_name, review_text, 1)
+    review = Review(track, user.user_name, review_text, 1)
+    #print(review)
+    #print(review.user_name)
     repo.add_review(review)
 
 """

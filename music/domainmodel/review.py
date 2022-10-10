@@ -7,7 +7,7 @@ class Review:
     def __init__(self, track: Track, user_name: str, review_text: str, rating: int):
         self.__track = None
         if isinstance(track, Track):
-            self.__track = track
+            self.__track = track.track_id
 
         self.__user_name = None
         if isinstance(user_name, str):
