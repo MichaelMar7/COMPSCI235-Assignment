@@ -20,7 +20,7 @@ metadata = MetaData()
 users_table = Table(
     'users', metadata, 
     Column('id', Integer, primary_key=True, autoincrement=True),
-    #Column('user_id', Integer, nullable=False),
+    Column('user_id', Integer, nullable=False),
     Column('user_name', String(255), unique=True, nullable=False),
     Column('password', String(255), nullable=False)
 )
@@ -88,6 +88,7 @@ genres_unique_table = Table(
 
 def map_model_to_tables():
     mapper(User, users_table, properties={
+        '_User__user_id': users_table.c.user_id,
         '_User__user_name': users_table.c.user_name,
         '_User__password': users_table.c.password,
         #'_User__reviews': relationship(Review, backref='_Review__user')
