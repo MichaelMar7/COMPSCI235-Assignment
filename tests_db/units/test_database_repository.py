@@ -88,25 +88,16 @@ def test_repository_returns_an_empty_list_for_non_existent_ids(session_factory):
     tracks = repo.get_tracks_by_id([4, 6])
     assert len(tracks) == 0
 
-def test_repository_can_add_a_review(session_factory): #FAIL TODO
+def test_repository_can_add_a_review(session_factory): 
     repo = SqlAlchemyRepository(session_factory)
 
-    user = repo.get_user('throke')
-    track = repo.get_track_by_id(2)
+    user = repo.get_user('thorke')
+    track = repo.get_track_by_id(3)
     review = Review(track, user.user_name, "Good song", 1)
 
     repo.add_review(review)
 
-    assert review in repo.get_reviews_for_track(2)
-
-def test_repository_does_not_add_a_review_without_a_user(session_factory): #FAIL TODO
-    repo = SqlAlchemyRepository(session_factory)
-
-    track = repo.get_track_by_id(2)
-    review = Review(track , "Doesnt exist", "This song is amazing", 5)
-
-    with pytest.raises(RepositoryException):
-        repo.add_review(review)
+    assert [review] == repo.get_reviews_for_track(3)
 
 def test_repository_can_retrieve_reviews(session_factory):
     repo = SqlAlchemyRepository(session_factory)

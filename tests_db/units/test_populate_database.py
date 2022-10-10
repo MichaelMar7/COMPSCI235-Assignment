@@ -1,7 +1,7 @@
-"""from sqlalchemy import select, inspect
+from sqlalchemy import select, inspect
 
 from music.adapters.orm import metadata
-
+"""
 def test_database_populate_inspect_table_names(database_engine):
 
     inspector = inspect(database_engine)
@@ -35,7 +35,7 @@ def test_database_populate_select_all_reviews(database_engine):
         for row in result:
             all_reviews.append((row['id'], row['username'], row['track'], row['review']))
         
-        assert len(all_reviews) == 0 # TODO WHEN REVIEWS IS FIXED
+        assert len(all_reviews) == 0 
 
 def test_database_populate_select_all_tracks(database_engine):
 
