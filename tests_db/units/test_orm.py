@@ -42,8 +42,8 @@ def insert_track(empty_session):
 
 def make_track():
     track = Track(2,"Not Food")
-    track.album = "Yessirski"
-    track.artist = "Lil Uzi Verrrrrrrrt"
+    track.album = "Eternal Atake"
+    track.artist = "Lil Uzi Vert"
     track.track_duration = 5
     track.track_url = "Website Name"
     return track
@@ -97,7 +97,15 @@ def test_saving_of_tracks(empty_session): # PASSED
     rows = list(empty_session.execute('SELECT title FROM tracks'))
     assert rows == [('Not Food',)]
 
-def test_saving_of_review(empty_session): # TODO AttributeError
+def test_loading_of_track(empty_session): # PASSED
+    track_key = insert_track(empty_session)
+    expected_track = make_track()
+    fetched_track = empty_session.query(Track).one()
+
+    assert expected_track == fetched_track
+    assert track_key == fetched_track.track_id
+
+def test_saving_of_review(empty_session): # TODO IntegrityError
     track_key = insert_track(empty_session)
     user_key = insert_user(empty_session, (1, "Andrew", "Password123"))
 
@@ -111,6 +119,6 @@ def test_saving_of_review(empty_session): # TODO AttributeError
     empty_session.add(review)
     empty_session.commit()
 
-    rows = list(empty_session.execute('SELECT review From reviews'))
+    rows = list(empty_session.execute('SELECT user_name, review From reviews'))
 
-    assert rows == [(review_text)]
+    assert rows == [(track_key, user_key, review_text)]
